@@ -364,8 +364,8 @@
   %IMAGE{
     "%IF{"'%web%.%topic%'/Photo"
       then="$percntFORMFIELD{\"Photo\" topic=\"%web%.%topic%\"}$percnt" 
-      else="%IF{"'%web%.%topic%'/attachments[name=~'\.(gif|png|jpe?g)$']"
-        then="%QUERY{"'%web%.%topic%'/attachments[name=~'\.(gif|png|jpe?g)'][0].name"}%"
+      else="%IF{"'%web%.%topic%'/attachments[name=~'\.(gif|png|jpe?g|bmp|svg|ico)$']"
+        then="%QUERY{"'%web%.%topic%'/attachments[name=~'\.(gif|png|jpe?g|bmp|svg|ico)'][0].name"}%"
         else="%PUBURLPATH%/%SYSTEMWEB%/MetaCommentPlugin/nobody.gif"
       }%"
     }%"
@@ -374,7 +374,7 @@
     align="%IF{"'%align%'=~'^(left|right)$'" then="%align%" else="left"}%"
     href="%SCRIPTURLPATH{"view"}%/%web%/%topic%"
     size="48"
-    crop="northwest"
+    crop="center"
     title="%SPACEOUT{"%topic%"}%"
   }%
 <!-- -->%TMPL:END%
@@ -396,7 +396,7 @@
     align="%IF{"'%align%'=~'^(left|right)$'" then="%align%" else="left"}%"
     href="%SCRIPTURLPATH{"view"}%/%web%/%topic%"
     size="48"
-    crop="northwest"
+    crop="center"
     title="%SPACEOUT{"%topic%"}%"
   }%
 <!-- -->%TMPL:END%

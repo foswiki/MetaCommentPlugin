@@ -2,7 +2,7 @@
 
 Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 
-(c)opyright 2010-2013 Michael Daum http://michaeldaumconsulting.com
+(c)opyright 2010-2014 Michael Daum http://michaeldaumconsulting.com
 
 are listed in the AUTHORS file in the root of this distribution.
 NOTE: Please extend that file, not this notice.
@@ -31,7 +31,8 @@ jQuery(function($) {
           topic: foswiki.getPreference("TOPIC"),
           web: foswiki.getPreference("WEB")
         },
-        opts = $.extend({}, defaults, $this.metadata());
+        opts = $.extend({}, defaults, $this.metadata()),
+        hash;
 
     /* function to reload all dialogs **************************************/
     function loadDialogs(callback) {
@@ -53,7 +54,7 @@ jQuery(function($) {
         $(".cmtDialog form").resetForm();
         callback.call();
       }
-    };
+    }
 
     /* function to reload all comments *************************************/
     function loadComments(message) {
@@ -91,7 +92,7 @@ jQuery(function($) {
       $form.ajaxForm({
         dataType:"json",
         beforeSubmit: function() {
-          rev = $form.find("input[name='ref']").val(),
+          rev = $form.find("input[name='ref']").val();
           $("#cmtReplyComment").dialog("close");
           $.blockUI({
             message:"<h1>Submitting comment ...</h1>",
@@ -332,14 +333,14 @@ jQuery(function($) {
     });
 
     // scroll to comments hash
-    var hash = window.location.hash;
+    hash = window.location.hash;
     if (hash.match(/^#comment\d\.\d+$/)) {
       window.location.hash = "";
       window.location.hash = hash;
     }
 
     // work around blinking twisties
-    setTimeout(function() {
+    window.setTimeout(function() {
       $this.find(".twistyPlugin").show();
     }, 1);
   });

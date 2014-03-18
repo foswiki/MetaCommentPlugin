@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="micha" comment="reprev" date="1376560947" format="1.1" reprev="5" version="5"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1376560947" format="1.1" reprev="5" version="5"}%
 ---+!! !MetaCommentPlugin
 %SHORTDESCRIPTION%
 
@@ -39,7 +39,7 @@ Each comment is stored into a =META:COMMENT= field of a topic with properties
 ---++ Configuring the comment system
 
 ---+++ Using !MetaCommentPlugin on !NatSkin
-The easiest way to switch on commenting on a page is when using it together with Foswiki:Extensions/NatSkin.
+The easiest way to switch on commenting on a page is when using it together with [[Foswiki:Extensions/NatSkin][NatSkin]].
 When opening the topic editor, there's a "Settings" tab that allows you to switch on and off commenting,
 switch between different commenting styles as well as configure moderation.
 
@@ -62,7 +62,7 @@ Other values:
    * threaded (default): nested commenting; allows to reply on a reply
    * reverse: list comments in linear order in reverse twitter-like fashion
    * insidetab: list comments inside a tab at the bottom of the page; 
-     only available when used together with Foswiki:Extensions/TopicInteractionPlugin)
+     only available when used together with [[Foswiki:Extensions/TopicInteractionPlugin][TopicInteractionPlugin]])
 
 A discussion can be either open or closed:
 
@@ -247,11 +247,13 @@ The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
 -->
 
 |  Author(s): | Foswiki:Main/MichaelDaum |
-|  Copyright &copy;: | 2009-2013, Michael Daum http://michaeldaumconsulting.com |
+|  Copyright &copy;: | 2009-2014, Michael Daum http://michaeldaumconsulting.com |
 |  License: | [[http://www.gnu.org/licenses/gpl.html][GPL (Gnu General Public License)]] |
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  18 Mar 2014: | 2.60 - fix dependency on [[Foswiki:Extensions/ImagePlugin][ImagePlugin]]; \
+                         some css and js fixes |
 |  15 Aug 2013: | 2.50 - protect comments from being edited by others; \
                          fixed error reporting using pnotify now; \
                          reject commenting when discussion is already closed; \
@@ -277,12 +279,12 @@ The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
                          improved comment rendering features; \
                          added fixes for !PatternSkin |
 |  10 Jan 2012: | 1.10 - added german translation; \
-                         added missing dependency on Foswiki:Extensions/RenderPlugin; \
+                         added missing dependency on [[Foswiki:Extensions/RenderPlugin][RenderPlugin]]; \
                          backwards compatibility to older foswiki engines; \
                          adjusted index handler to latest changes in !SolrPlugin; \
                          improved print css; \
                          fixed js error together with newer jquery versions |
-|  10 May 2011: | 1.00 - partial rewrite to use Foswiki:Extensions/JsonRpcContrib; \
+|  10 May 2011: | 1.00 - partial rewrite to use [[Foswiki:Extensions/JsonRpcContrib][JsonRpcContrib]]; \
                   renamed preference COMMENTAPPROVAL to COMMENTMODERATION |
 |  20 Apr 2011: | fixed error in regular expression |
 |  15 Apr 2011: | using CPAN:JSON to properly encode json-rpc data; \

@@ -55,13 +55,8 @@ h3.cmtCommentNr {
   white-space:nowrap;
 }
 .cmtControls {
-  background-color:#fff;
   padding:0em 1.3846em 1.3076em;
   margin:0em -1.3846em -1.3076em;
-}
-.cmtCommentOdd .cmtControls,
-.cmtCommentOdd {
-  background-color:#f9f9f9;
 }
 .cmtComment {
   position:relative;
