@@ -252,6 +252,7 @@ The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  29 Aug 2014: | 2.70 - improved finding user photo |
 |  18 Mar 2014: | 2.60 - fix dependency on [[Foswiki:Extensions/ImagePlugin][ImagePlugin]]; \
                          some css and js fixes |
 |  15 Aug 2013: | 2.50 - protect comments from being edited by others; \

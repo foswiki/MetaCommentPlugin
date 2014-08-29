@@ -23,7 +23,7 @@ use Foswiki::Func ();
 use Error qw( :try );
 use Digest::MD5 ();
 
-use constant DEBUG => 0; # toggle me
+use constant TRACE => 0; # toggle me
 use constant DRY => 0; # toggle me
 
 # Error codes for json-rpc response
@@ -330,7 +330,7 @@ sub jsonRpcDeleteComment {
 
 ###############################################################################
 sub writeDebug {
-  print STDERR "- MetaCommentPlugin - $_[0]\n" if DEBUG;
+  print STDERR "- MetaCommentPlugin - $_[0]\n" if TRACE;
 }
 
 ##############################################################################

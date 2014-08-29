@@ -19,8 +19,8 @@ use Foswiki::Func ();
 use Foswiki::Plugins ();
 use Foswiki::Contrib::JsonRpcContrib ();
 
-our $VERSION = '2.60';
-our $RELEASE = '2.60';
+our $VERSION = '2.70';
+our $RELEASE = '2.70';
 our $SHORTDESCRIPTION = 'An easy to use comment system';
 our $NO_PREFS_IN_TOPIC = 1;
 our $core;
@@ -53,8 +53,6 @@ sub initPlugin {
     return getCore(shift)->jsonRpcDeleteComment(@_);
   });
 
-  # SMELL: this is not reliable as it depends on plugin order
-  # if (Foswiki::Func::getContext()->{SolrPluginEnabled}) {
   if ($Foswiki::cfg{Plugins}{SolrPlugin}{Enabled}) {
     require Foswiki::Plugins::SolrPlugin;
     Foswiki::Plugins::SolrPlugin::registerIndexTopicHandler(sub {

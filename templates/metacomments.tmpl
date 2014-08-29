@@ -360,12 +360,14 @@
   align="%align%"
 }%%TMPL:END%
 
+%TMPL:DEF{"comment::photo::exts"}%jpe?g|gif|png|bmp|svg|ico|tiff?|JE?PG|GIF|PNG|BMP|SVG|ICO|TIFF?%TMPL:END%
+
 %TMPL:DEF{"comment::photo::default"}%<!-- -->
   %IMAGE{
     "%IF{"'%web%.%topic%'/Photo"
       then="$percntFORMFIELD{\"Photo\" topic=\"%web%.%topic%\"}$percnt" 
-      else="%IF{"'%web%.%topic%'/attachments[name=~'\.(gif|png|jpe?g|bmp|svg|ico)$']"
-        then="%QUERY{"'%web%.%topic%'/attachments[name=~'\.(gif|png|jpe?g|bmp|svg|ico)'][0].name"}%"
+      else="%IF{"'%web%.%topic%'/attachments[name=~'\.(%TMPL:P{"comment::photo::exts"}%)$']"
+        then="%QUERY{"'%web%.%topic%'/attachments[name=~'\.(%TMPL:P{"comment::photo::exts"}%)'][0].name"}%"
         else="%PUBURLPATH%/%SYSTEMWEB%/MetaCommentPlugin/nobody.gif"
       }%"
     }%"
@@ -386,7 +388,14 @@
       else="$percntATTACHMENTS{
         topic=\"%web%.%topic%\"
         sort=\"comment:name\"
-        nullformat=\"%PUBURLPATH%/%SYSTEMWEB%/MetaCommentPlugin/nobody.gif\"
+        nullformat=\"$percntATTACHMENTS{
+          topic=\"%web%.%topic%\"
+          sort=\"comment:name\"
+          name=\".*\.(%TMPL:P{"comment::photo::exts"}%)\"
+          nullformat=\"%PUBURLPATH%/%SYSTEMWEB%/MetaCommentPlugin/nobody.gif\"
+          format=\"$dollarname\"
+          limit=\"1\"
+        }$percnt\"
         format=\"$dollarname\"
         limit=\"1\"
       }$percnt"

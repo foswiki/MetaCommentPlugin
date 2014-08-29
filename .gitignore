@@ -1,0 +1,13 @@
+*.gz
+*.swp
+igp_*
+pub/System/MetaCommentPlugin/metacomment.pattern.css
+pub/System/MetaCommentPlugin/metacomment.js
+pub/System/MetaCommentPlugin/metacomment.css
+MetaCommentPlugin.md5
+MetaCommentPlugin.sha1
+MetaCommentPlugin.tgz
+MetaCommentPlugin.txt
+MetaCommentPlugin.zip
+MetaCommentPlugin_installer
+MetaCommentPlugin_installer.pl
