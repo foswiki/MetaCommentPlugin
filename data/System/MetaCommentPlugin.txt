@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1376560947" format="1.1" reprev="5" version="5"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1418738387" format="1.1"  version="1"}%
 ---+!! !MetaCommentPlugin
 %SHORTDESCRIPTION%
 
@@ -252,8 +252,9 @@ The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  16 Dec 2014: | 2.80 - fixed extracting substrings from unicode strings |
 |  29 Aug 2014: | 2.70 - improved finding user photo |
-|  18 Mar 2014: | 2.60 - fix dependency on [[Foswiki:Extensions/ImagePlugin][ImagePlugin]]; \
+|  18 Mar 2014: | 2.60 - fixed dependency on [[Foswiki:Extensions/ImagePlugin][ImagePlugin]]; \
                          some css and js fixes |
 |  15 Aug 2013: | 2.50 - protect comments from being edited by others; \
                          fixed error reporting using pnotify now; \
@@ -297,4 +298,4 @@ The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
 
 <!-- Do _not_ attempt to edit this topic; it is auto-generated. -->
 
-%META:FILEATTACHMENT{name="MetaCommentSnap1.jpeg" attachment="MetaCommentSnap1.jpeg" attr="h" comment="" date="1266001003" path="MetaCommentSnap1.jpeg" size="51144" user="ProjectContributor" version="1"}%
+%META:FILEATTACHMENT{name="MetaCommentSnap1.jpeg" attachment="MetaCommentSnap1.jpeg" attr="h" comment="" date="1418738387" path="MetaCommentSnap1.jpeg" size="51144" user="ProjectContributor" version="1"}%

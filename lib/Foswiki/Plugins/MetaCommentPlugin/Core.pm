@@ -144,7 +144,7 @@ sub jsonRpcSaveComment {
   );
 
   Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, forcenewrevision=>1}) unless DRY;
-  writeEvent("comment", "state=($state) title=".($title||'').' text='.substr($cmtText, 0, 200)); # SMELL: does not objey approval state
+  writeEvent("comment", "state=($state) title=".($title||'').' text='.my_substr($cmtText, 0, 200)); # SMELL: does not objey approval state
 
   return;
 }
@@ -199,7 +199,7 @@ sub jsonRpcApproveComment {
   Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1}) 
     unless DRY;
 
-  writeEvent("commentapprove", "state=($comment->{state}) title=".($comment->{title}||'').' text='.substr($comment->{text}, 0, 200)); 
+  writeEvent("commentapprove", "state=($comment->{state}) title=".($comment->{title}||'').' text='.my_substr($comment->{text}, 0, 200)); 
 
   return;
 }
@@ -270,7 +270,7 @@ sub jsonRpcUpdateComment {
   );
 
   Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1}) unless DRY;
-  writeEvent("commentupdate", "state=($state) title=".($title||'')." text=".substr($cmtText, 0, 200)); 
+  writeEvent("commentupdate", "state=($state) title=".($title||'')." text=".my_substr($cmtText, 0, 200)); 
 
   return;
 }
@@ -323,7 +323,7 @@ sub jsonRpcDeleteComment {
   $meta->remove('COMMENT', $id);
 
   Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1}) unless DRY;
-  writeEvent("commentdelete", "state=($comment->{state}) title=".($comment->{title}||'')." text=".substr($comment->{text}, 0, 200)); 
+  writeEvent("commentdelete", "state=($comment->{state}) title=".($comment->{title}||'')." text=".my_substr($comment->{text}, 0, 200)); 
 
   return;
 }
@@ -637,7 +637,7 @@ sub formatComments {
 
     my $summary = '';
     if ($params->{format} =~ /\$summary/) {
-      $summary = substr($comment->{text}, 0, 100);
+      $summary = my_substr($comment->{text}, 0, 100);
       $summary =~ s/^\s*\-\-\-\++//g; # don't remove heading, just strip tml
       $summary = $session->renderer->TML2PlainText($summary, undef, "showvar") . " ...";
       $summary =~ s/\n/<br \/>/g;
@@ -748,19 +748,19 @@ sub indexTopicHandler {
   foreach my $comment (@comments) {
 
     # set doc fields
-    my $createDate = Foswiki::Func::formatTime($comment->{date}, 'iso', 'gmtime' );
-    my $date = defined($comment->{modified})?Foswiki::Func::formatTime($comment->{modified}, 'iso', 'gmtime' ):$createDate;
+    my $createDate = Foswiki::Func::formatTime($comment->{date}, 'iso', 'gmtime');
+    my $date = defined($comment->{modified}) ? Foswiki::Func::formatTime($comment->{modified}, 'iso', 'gmtime') : $createDate;
     my $webtopic = "$web.$topic";
     $webtopic =~ s/\//./g;
-    my $id = $webtopic.'#'.$comment->{name};
-    my $url = $indexer->getScriptUrlPath($web, $topic, 'view', '#'=>'comment'.$comment->{name});
+    my $id = $webtopic . '#' . $comment->{name};
+    my $url = $indexer->getScriptUrlPath($web, $topic, 'view', '#' => 'comment' . $comment->{name});
     my $title = $comment->{title};
-    $title = substr $comment->{text}, 0, 20 unless $title;
+    $title = my_substr($comment->{text}, 0, 20) unless $title;
 
     my $collection = $Foswiki::cfg{SolrPlugin}{DefaultCollection} || "wiki";
     my $language = $indexer->getContentLanguage($web, $topic);
 
-    my $state = $comment->{state}||'null';
+    my $state = $comment->{state} || 'null';
 
     # reindex this comment
     my $commentDoc = $indexer->newDocument();
@@ -781,11 +781,10 @@ sub indexTopicHandler {
       'text' => $comment->{text},
       'url' => $url,
       'state' => $state,
-      'container_id' => $web.'.'.$topic,
+      'container_id' => $web . '.' . $topic,
       'container_url' => Foswiki::Func::getViewUrl($web, $topic),
       'container_title' => $indexer->getTopicTitle($web, $topic, $meta),
     );
-
 
     if ($isModerated && $state =~ /\bunapproved\b/) {
       $commentDoc->add_fields('access_granted' => '');
@@ -793,8 +792,7 @@ sub indexTopicHandler {
       $commentDoc->add_fields(@aclFields) if @aclFields;
     }
 
-    
-$doc->add_fields('catchall' => $title);
+    $doc->add_fields('catchall' => $title);
     $doc->add_fields('catchall' => $comment->{text});
     $doc->add_fields('contributor' => $comment->{author});
 
@@ -802,11 +800,26 @@ $doc->add_fields('catchall' => $title);
     try {
       $indexer->add($commentDoc);
       $indexer->commit();
-    } catch Error::Simple with {
+    }
+    catch Error::Simple with {
       my $e = shift;
-      $indexer->log("ERROR: ".$e->{-text});
+      $indexer->log("ERROR: " . $e->{-text});
     };
   }
 }
+
+################################################################################
+sub my_substr {
+  my ($string, $offset, $length) = @_;
+
+  my $charset = $Foswiki::cfg{Site}{CharSet};
+
+  $string = Encode::decode($charset, $string);
+  $string = substr($string, $offset, $length);
+  $string = Encode::encode($charset, $string);
+
+  return $string;
+}
+
 
 1;
