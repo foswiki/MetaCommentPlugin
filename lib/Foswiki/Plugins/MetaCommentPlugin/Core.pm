@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2009-2014 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2009-2015 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -757,7 +757,6 @@ sub indexTopicHandler {
     my $title = $comment->{title};
     $title = my_substr($comment->{text}, 0, 20) unless $title;
 
-    my $collection = $Foswiki::cfg{SolrPlugin}{DefaultCollection} || "wiki";
     my $language = $indexer->getContentLanguage($web, $topic);
 
     my $state = $comment->{state} || 'null';
@@ -766,7 +765,6 @@ sub indexTopicHandler {
     my $commentDoc = $indexer->newDocument();
     $commentDoc->add_fields(
       'id' => $id,
-      'collection' => $collection,
       'language' => $language,
       'name' => $comment->{name},
       'type' => 'comment',
@@ -799,7 +797,6 @@ sub indexTopicHandler {
     # add the document to the index
     try {
       $indexer->add($commentDoc);
-      $indexer->commit();
     }
     catch Error::Simple with {
       my $e = shift;

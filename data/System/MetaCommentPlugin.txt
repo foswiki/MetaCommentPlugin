@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1418738387" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1425048174" format="1.1"  version="1"}%
 ---+!! !MetaCommentPlugin
 %SHORTDESCRIPTION%
 
@@ -247,11 +247,12 @@ The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
 -->
 
 |  Author(s): | Foswiki:Main/MichaelDaum |
-|  Copyright &copy;: | 2009-2014, Michael Daum http://michaeldaumconsulting.com |
+|  Copyright &copy;: | 2009-2015, Michael Daum http://michaeldaumconsulting.com |
 |  License: | [[http://www.gnu.org/licenses/gpl.html][GPL (Gnu General Public License)]] |
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  27 Feb 2015: | 2.90 - removing collection field form solr index handler |
 |  16 Dec 2014: | 2.80 - fixed extracting substrings from unicode strings |
 |  29 Aug 2014: | 2.70 - improved finding user photo |
 |  18 Mar 2014: | 2.60 - fixed dependency on [[Foswiki:Extensions/ImagePlugin][ImagePlugin]]; \
@@ -298,4 +299,4 @@ The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
 
 <!-- Do _not_ attempt to edit this topic; it is auto-generated. -->
 
-%META:FILEATTACHMENT{name="MetaCommentSnap1.jpeg" attachment="MetaCommentSnap1.jpeg" attr="h" comment="" date="1418738387" path="MetaCommentSnap1.jpeg" size="51144" user="ProjectContributor" version="1"}%
+%META:FILEATTACHMENT{name="MetaCommentSnap1.jpeg" attachment="MetaCommentSnap1.jpeg" attr="h" comment="" date="1425048174" path="MetaCommentSnap1.jpeg" size="51144" user="ProjectContributor" version="1"}%
