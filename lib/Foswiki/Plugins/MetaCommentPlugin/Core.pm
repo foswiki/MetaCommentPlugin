@@ -68,7 +68,7 @@ sub jsonRpcGetComment {
     unless Foswiki::Func::topicExists($this->{baseWeb}, $this->{baseTopic});
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
-    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $web, $topic);
+    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
 
   my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
 
@@ -95,7 +95,7 @@ sub jsonRpcSaveComment {
     unless Foswiki::Func::topicExists($this->{baseWeb}, $this->{baseTopic});
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
-    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $web, $topic);
+    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
     unless Foswiki::Func::checkAccessPermission('COMMENT', $this->{wikiName}, undef, $topic, $web) ||
@@ -115,18 +115,15 @@ sub jsonRpcSaveComment {
   my $date = time();
   my $fingerPrint = getFingerPrint($author);
 
-  my @state = ();
-  push @state, "new";
+  my $state = "new";
 
   if ($this->isModerated($web, $topic, $meta)) {
     if ($this->isModerator($web, $topic, $meta)) {
-      push @state, "approved";
+      $state = "approved";
     } else {
-      push @state, "unapproved";
+      $state = "unapproved";
     }
   }
-
-  my $state = join(", ", @state);
 
   $meta->putKeyed(
     'COMMENT',
@@ -144,7 +141,7 @@ sub jsonRpcSaveComment {
   );
 
   Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, forcenewrevision=>1}) unless DRY;
-  writeEvent("comment", "state=($state) title=".($title||'').' text='.my_substr($cmtText, 0, 200)); # SMELL: does not objey approval state
+  writeEvent("comment", "state=$state title=".($title||'').' text='.substr($cmtText, 0, 200)); # SMELL: does not objey approval state
 
   return;
 }
@@ -176,7 +173,7 @@ sub jsonRpcApproveComment {
     unless Foswiki::Func::topicExists($this->{baseWeb}, $this->{baseTopic});
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
-    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $web, $topic);
+    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
     unless Foswiki::Func::checkAccessPermission('CHANGE', $this->{wikiName}, undef, $topic, $web);
@@ -199,7 +196,7 @@ sub jsonRpcApproveComment {
   Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1}) 
     unless DRY;
 
-  writeEvent("commentapprove", "state=($comment->{state}) title=".($comment->{title}||'').' text='.my_substr($comment->{text}, 0, 200)); 
+  writeEvent("commentapprove", "state=$comment->{state} title=".($comment->{title}||'').' text='.substr($comment->{text}, 0, 200)); 
 
   return;
 }
@@ -215,7 +212,7 @@ sub jsonRpcUpdateComment {
     unless Foswiki::Func::topicExists($this->{baseWeb}, $this->{baseTopic});
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
-    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $web, $topic);
+    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
     unless Foswiki::Func::checkAccessPermission('COMMENT', $this->{wikiName}, undef, $topic, $web) ||
@@ -244,15 +241,8 @@ sub jsonRpcUpdateComment {
   my $ref = $request->param('ref');
   $ref = $comment->{ref} unless defined $ref;
 
-  my $state = $comment->{state};
-  my @new_state = ();
-  push (@new_state, "updated") if $state =~ /\b(new|updated)\b/;
-  if ($this->isModerated($web, $topic, $meta)) {
-    push (@new_state, "approved") if $state =~ /\bapproved\b/;
-    push (@new_state, "unapproved") if $state =~ /\bunapproved\b/;
-  }
-
-  $state = join(", ", @new_state);
+  my $state = "updated";
+  $state = "unapproved" if $this->isModerated($web, $topic, $meta) && $comment->{state} =~ /\bunapproved\b/;
 
   $meta->putKeyed(
     'COMMENT',
@@ -270,7 +260,7 @@ sub jsonRpcUpdateComment {
   );
 
   Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1}) unless DRY;
-  writeEvent("commentupdate", "state=($state) title=".($title||'')." text=".my_substr($cmtText, 0, 200)); 
+  writeEvent("commentupdate", "state=$state title=".($title||'')." text=".substr($cmtText, 0, 200)); 
 
   return;
 }
@@ -286,7 +276,7 @@ sub jsonRpcDeleteComment {
     unless Foswiki::Func::topicExists($this->{baseWeb}, $this->{baseTopic});
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
-    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $web, $topic);
+    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
     unless Foswiki::Func::checkAccessPermission('COMMENT', $this->{wikiName}, undef, $topic, $web) ||
@@ -323,7 +313,7 @@ sub jsonRpcDeleteComment {
   $meta->remove('COMMENT', $id);
 
   Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1}) unless DRY;
-  writeEvent("commentdelete", "state=($comment->{state}) title=".($comment->{title}||'')." text=".my_substr($comment->{text}, 0, 200)); 
+  writeEvent("commentdelete", "state=$comment->{state} title=".($comment->{title}||'')." text=".substr($comment->{text}, 0, 200)); 
 
   return;
 }
@@ -637,7 +627,7 @@ sub formatComments {
 
     my $summary = '';
     if ($params->{format} =~ /\$summary/) {
-      $summary = my_substr($comment->{text}, 0, 100);
+      $summary = substr($comment->{text}, 0, 100);
       $summary =~ s/^\s*\-\-\-\++//g; # don't remove heading, just strip tml
       $summary = $session->renderer->TML2PlainText($summary, undef, "showvar") . " ...";
       $summary =~ s/\n/<br \/>/g;
@@ -647,6 +637,7 @@ sub formatComments {
       $comment->{topic}, "view", "#"=>"comment".($comment->{name}||0));
 
     my $line = expandVariables($params->{format},
+      authorurl=>$comment->{author_url},
       author=>$comment->{author},
       state=>$comment->{state},
       count=>$params->{count},
@@ -736,8 +727,11 @@ sub isModerated {
 sub indexTopicHandler {
   my ($this, $indexer, $doc, $web, $topic, $meta, $text) = @_;
 
+  my $session = $Foswiki::Plugins::SESSION;
+
+
   # delete all previous comments of this topic
-  #$indexer->deleteByQuery("type:comment web:$web topic:$topic");
+  $indexer->deleteByQuery("type:comment web:$web topic:$topic");
 
   my @comments = $meta->find('COMMENT');
   return unless @comments;
@@ -755,9 +749,9 @@ sub indexTopicHandler {
     my $id = $webtopic . '#' . $comment->{name};
     my $url = $indexer->getScriptUrlPath($web, $topic, 'view', '#' => 'comment' . $comment->{name});
     my $title = $comment->{title};
-    $title = my_substr($comment->{text}, 0, 20) unless $title;
-
-    my $language = $indexer->getContentLanguage($web, $topic);
+    $title = substr($comment->{text}, 0, 20) unless $title;
+    $title = "empty comment" unless $title;
+    $title = $session->renderer->TML2PlainText($title, undef, "showvar");
 
     my $state = $comment->{state} || 'null';
 
@@ -765,13 +759,13 @@ sub indexTopicHandler {
     my $commentDoc = $indexer->newDocument();
     $commentDoc->add_fields(
       'id' => $id,
-      'language' => $language,
       'name' => $comment->{name},
       'type' => 'comment',
       'web' => $web,
       'topic' => $topic,
       'webtopic' => $webtopic,
       'author' => $comment->{author},
+#      'author_url' => $comment->{author_url},
       'contributor' => $comment->{author},
       'date' => $date,
       'createdate' => $createDate,
@@ -783,6 +777,15 @@ sub indexTopicHandler {
       'container_url' => Foswiki::Func::getViewUrl($web, $topic),
       'container_title' => $indexer->getTopicTitle($web, $topic, $meta),
     );
+
+    my $contentLanguage = $indexer->getContentLanguage($web, $topic);
+    if (defined $contentLanguage && $contentLanguage ne 'detect') {
+      $commentDoc->add_fields(
+        language => $contentLanguage,
+        'text_' . $contentLanguage => $comment->{text},
+      );
+    }
+
 
     if ($isModerated && $state =~ /\bunapproved\b/) {
       $commentDoc->add_fields('access_granted' => '');
@@ -804,19 +807,5 @@ sub indexTopicHandler {
     };
   }
 }
-
-################################################################################
-sub my_substr {
-  my ($string, $offset, $length) = @_;
-
-  my $charset = $Foswiki::cfg{Site}{CharSet};
-
-  $string = Encode::decode($charset, $string);
-  $string = substr($string, $offset, $length);
-  $string = Encode::encode($charset, $string);
-
-  return $string;
-}
-
 
 1;

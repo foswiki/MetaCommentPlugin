@@ -13,39 +13,35 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: templates/metacomments.tmpl:52
+#: templates/metacomments.tmpl:59
 msgid "%1 comments"
 msgstr "%1 Kommentare"
 
-#: templates/metacomments.tmpl:355
+#: templates/metacomments.tmpl:105 templates/metacomments.tmpl:415
 msgid "Add a comment"
 msgstr "Kommentar hinzufügen"
 
-#: templates/metacomments.tmpl:78
-msgid "Add a comment to this topic"
-msgstr "Dieses Topic kommentieren"
-
-#: templates/metacomments.tmpl:271
+#: templates/metacomments.tmpl:290
 msgid "Approve comment?"
 msgstr "Kommentar freigeben?"
 
-#: templates/metacomments.tmpl:159
+#: templates/metacomments.tmpl:180
 msgid "Approve this comment"
 msgstr "Diesen Kommentar freigeben"
 
-#: templates/metacomments.tmpl:278
+#: templates/metacomments.tmpl:297
 msgid "Are you sure that you want to approve comment %1 posted by %2 on %3?"
 msgstr ""
 "Sind Sie sicher, dass Sie Kommentar %1 von %2 erstellt am %3 freigeben "
 "wollen?"
 
-#: templates/metacomments.tmpl:257
+#: templates/metacomments.tmpl:276
 msgid "Are you sure that you want to delete comment %1 posted by %2 on %3?"
 msgstr ""
 "Sind Sie sicher, dass Sie Kommentar %1 von %2 erstellt am %3 löschen wollen?"
 
-#: templates/metacomments.tmpl:305 templates/metacomments.tmpl:327
-#: templates/metacomments.tmpl:402
+#: templates/metacomments.tmpl:325 templates/metacomments.tmpl:347
+#: templates/metacomments.tmpl:461
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -53,67 +49,96 @@ msgstr "Abbrechen"
 msgid "Comments"
 msgstr "Kommentare"
 
-#: templates/metacomments.tmpl:250
+#: templates/metacomments.tmpl:269
 msgid "Delete comment?"
 msgstr "Kommentar löschen?"
 
-#: templates/metacomments.tmpl:162
+#: templates/metacomments.tmpl:183
 msgid "Delete this comment"
 msgstr "Diesen Kommentar löschen"
 
-#: templates/metacomments.tmpl:291
+#: templates/metacomments.tmpl:311
 msgid "Edit comment"
 msgstr "Kommentar bearbeiten"
 
-#: templates/metacomments.tmpl:156
+#: templates/metacomments.tmpl:177
 msgid "Edit this comment"
 msgstr "Diesen Kommentar bearbeiten"
 
-#: templates/metacomments.tmpl:262 templates/metacomments.tmpl:283
+#: templates/metacomments.tmpl:281 templates/metacomments.tmpl:302
 msgid "No, thanks"
 msgstr "Nein, danke"
 
-#: templates/metacomments.tmpl:304 templates/metacomments.tmpl:326
+#: templates/metacomments.tmpl:324 templates/metacomments.tmpl:346
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
-#: templates/metacomments.tmpl:51
+#: templates/metacomments.tmpl:58
 msgid "One comment"
 msgstr "Ein Kommentar"
 
-#: templates/metacomments.tmpl:50
+#: templates/metacomments.tmpl:74
+msgid "Please [[%1][login]] or [[%2][register]] to comment."
+msgstr "Bitte [[%1][anmelden]] oder [[%2][registrieren]], um zu kommentieren."
+
+#: templates/metacomments.tmpl:75
+msgid "Please [[%1][login]] to comment."
+msgstr "Bitte [[%1][anmelden]], um zu kommentieren."
+
+#: data/System/MetaCommentPlugin.txt:237
+msgid "RSS comments feed for the %1 web"
+msgstr "RSS Kommentar Feed f&&uuml; das %1 Web"
+
+#: templates/metacomments.tmpl:57
 msgid "RSS feed of the comments on this topic"
 msgstr "RSS Feed für Kommentar zu diesem Topic"
 
-#: templates/metacomments.tmpl:314
+#: templates/metacomments.tmpl:334
 msgid "Reply on comment"
 msgstr "Kommentar beantworten"
 
-#: templates/metacomments.tmpl:153
+#: templates/metacomments.tmpl:174
 msgid "Reply on this comment"
 msgstr "Diesen Kommentar beantworten"
 
-#: templates/metacomments.tmpl:401
-msgid "Submit"
-msgstr "Übermitteln"
+#: templates/metacomments.tmpl:72
+msgid "Sorry, commenting not allowed."
+msgstr "Kommentieren leider nicht erlaubt."
 
-#: templates/metacomments.tmpl:282
+#: templates/metacomments.tmpl:460
+msgid "Submit"
+msgstr "&&Uuml;bermitteln"
+
+#: templates/metacomments.tmpl:301
 msgid "Yes, approve"
 msgstr "Ja, freigeben"
 
-#: templates/metacomments.tmpl:261
+#: templates/metacomments.tmpl:280
 msgid "Yes, delete"
 msgstr "Ja, löschen"
 
-#: templates/metacomments.tmpl:132 templates/metacomments.tmpl:191
-#: templates/metacomments.tmpl:230
+#: templates/metacomments.tmpl:121
+msgid "inside tab"
+msgstr "im tab"
+
+#: templates/metacomments.tmpl:121
+msgid "linear"
+msgstr "linear"
+
+#: templates/metacomments.tmpl:153 templates/metacomments.tmpl:211
+#: templates/metacomments.tmpl:249
 msgid "needs approval"
 msgstr "benötigt Freigabe"
 
-#: templates/metacomments.tmpl:139 templates/metacomments.tmpl:198
-#: templates/metacomments.tmpl:237
+#: templates/metacomments.tmpl:160 templates/metacomments.tmpl:218
+#: templates/metacomments.tmpl:256
 msgid "permlink"
-msgstr ""
+msgstr "permlink"
 
-#~ msgid "Reply to comment %1"
-#~ msgstr "Auf Kommentar %1 antworten"
+#: templates/metacomments.tmpl:121
+msgid "reverse"
+msgstr "umgekehrt"
+
+#: templates/metacomments.tmpl:121
+msgid "threaded"
+msgstr "verzweigt"

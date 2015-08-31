@@ -97,8 +97,7 @@ a.cmtPermLink,
   margin:0em 0.6923em 0.3077em 0em; /* 0px 9px 4px 0px */
 }
 .cmtStyle_insidetab h2.cmtCounter,
-.cmtStyle_insidetab .cmtAddComment h2,
-.cmtStyle_reverse .cmtAddComment h2 {
+.cmtStyle_insidetab .cmtAddComment h2 {
   display:none;
 }
 
