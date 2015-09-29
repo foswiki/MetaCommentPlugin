@@ -19,8 +19,8 @@ use Foswiki::Func ();
 use Foswiki::Plugins ();
 use Foswiki::Contrib::JsonRpcContrib ();
 
-our $VERSION = '3.00';
-our $RELEASE = '31 Aug 2015';
+our $VERSION = '4.10';
+our $RELEASE = '11 Sep 2015';
 our $SHORTDESCRIPTION = 'An easy to use comment system';
 our $NO_PREFS_IN_TOPIC = 1;
 our $core;
@@ -53,10 +53,28 @@ sub initPlugin {
     return getCore(shift)->jsonRpcDeleteComment(@_);
   });
 
+  Foswiki::Contrib::JsonRpcContrib::registerMethod("MetaCommentPlugin", "markComment", sub {
+    return getCore(shift)->jsonRpcMarkComment(@_);
+  });
+
   if ($Foswiki::cfg{Plugins}{SolrPlugin}{Enabled}) {
     require Foswiki::Plugins::SolrPlugin;
     Foswiki::Plugins::SolrPlugin::registerIndexTopicHandler(sub {
-      return getCore()->indexTopicHandler(@_);
+      return getCore()->solrIndexTopicHandler(@_);
+    });
+  }
+
+  if ($Foswiki::cfg{Plugins}{DBCachePlugin}{Enabled}) {
+    require Foswiki::Plugins::DBCachePlugin;
+    Foswiki::Plugins::DBCachePlugin::registerIndexTopicHandler(sub {
+      return getCore()->dbcacheIndexTopicHandler(@_);
+    });
+  }
+
+  if ($Foswiki::cfg{Plugins}{LikePlugin}{Enabled}) {
+    require Foswiki::Plugins::LikePlugin;
+    Foswiki::Plugins::LikePlugin::registerAfterLikeHandler(sub {
+      return getCore()->afterLikeHandler(@_);
     });
   }
 

@@ -1,0 +1,193 @@
+#: templates/metacomments.tmpl
+msgid "%1 comments"
+msgstr ""
+
+#: data/System/MetaCommentDeleteTemplate.txt
+msgid "%1 deleted a comment in %2"
+msgstr ""
+
+#: data/System/MetaCommentSaveTemplate.txt
+msgid "%1 saved a comment in %2"
+msgstr ""
+
+#: data/System/MetaCommentSaveTemplate.txt
+msgid "%1 saved a comment in %2:"
+msgstr ""
+
+#: data/System/MetaCommentUpdateTemplate.txt
+msgid "%1 updated a comment in %2"
+msgstr ""
+
+#: data/System/MetaCommentUpdateTemplate.txt
+msgid "%1 updated a comment in %2:"
+msgstr ""
+
+#: data/System/MetaCommentNotifyTemplate.txt
+msgid "%1 wants to notify you about a comment in %2"
+msgstr ""
+
+#: data/System/MetaCommentNotifyTemplate.txt
+msgid "%1 wants to notify you about a comment in %2:"
+msgstr ""
+
+#: data/System/MetaCommentDeleteTemplate.txt
+msgid "(No text)"
+msgstr ""
+
+#: data/System/MetaCommentDeleteTemplate.txt
+msgid "(No title)"
+msgstr ""
+
+#: data/System/MetaCommentNotifyTemplate.txt
+#: data/System/MetaCommentSaveTemplate.txt
+#: data/System/MetaCommentUpdateTemplate.txt
+msgid "(no text)"
+msgstr ""
+
+#: data/System/MetaCommentNotifyTemplate.txt
+#: data/System/MetaCommentSaveTemplate.txt
+#: data/System/MetaCommentUpdateTemplate.txt
+msgid "(no title)"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Add a comment"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Add a comment to this topic"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Approve comment?"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Approve this comment"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Are you sure that you want to approve comment %1 posted by %2 on %3?"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Are you sure that you want to delete comment %1 posted by %2 on %3?"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Are you sure that you want to notify comment %1 posted by %2 on %3?"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Cancel"
+msgstr ""
+
+#: templates/metacommentsrss.tmpl
+msgid "Comments"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Delete comment?"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Delete this comment"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Don't notify anyone"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Edit comment"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Edit this comment"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Mark as read"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "No, thanks"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Notify comment?"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Notify these people"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Notify this comment"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "OK"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "One comment"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Please [[%1][login]] or [[%2][register]] to comment."
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Please [[%1][login]] to comment."
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid ""
+"Please note, that people who have already been notified will not be notified "
+"again."
+msgstr ""
+
+#: data/System/MetaCommentPlugin.txt
+msgid "RSS comments feed for the %1 web"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "RSS feed of the comments on this topic"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Reply on comment"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Reply on this comment"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Sorry, commenting not allowed."
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Submit"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Who do you want to notify about this comment?"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Yes, approve"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "Yes, delete"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "needs approval"
+msgstr ""
+
+#: templates/metacomments.tmpl
+msgid "permlink"
+msgstr ""

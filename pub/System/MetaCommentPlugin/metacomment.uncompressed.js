@@ -314,6 +314,43 @@ jQuery(function($) {
       return false;
     });
 
+    /* add "mark as read" behaviour *************************************************/
+    $this.find(".cmtMark").click(function() {
+      var $this = $(this),
+          $comment = $this.parents(".cmtComment:first"),
+          commentOpts = $.extend({}, $comment.metadata());
+
+      $.jsonRpc(foswiki.getPreference("SCRIPTURL")+"/jsonrpc", {
+        namespace: "MetaCommentPlugin",
+        method: "markComment",
+        params: {
+          "topic": opts.web+"."+opts.topic,
+          "comment_id": commentOpts.comment_id
+        },
+        beforeSubmit: function() {
+          $.blockUI({ message:"<h1>Marking comment ...</h1>", });
+        },
+        success: function(json, msg, xhr) {
+          $.unblockUI();
+          if ($this.parent().is(".cmtMarkContainer")) {
+            $this.parent().remove();
+          } else {
+            $this.remove();
+          }
+          $comment.parent().removeClass("cmtCommentNew cmtCommentUpdated");
+        },
+        error: function(data, msg, xhr) {
+          $.unblockUI();
+          $.pnotify({
+            text: "Error: "+data.error.message,
+            type:"error"
+          });
+        }
+      });
+
+      return false;
+    });
+
     /* add approve behaviour ************************************************/
     $this.find(".cmtApprove").click(function() {
       var $comment = $(this).parents(".cmtComment:first"),
@@ -334,9 +371,10 @@ jQuery(function($) {
 
     // scroll to comments hash
     hash = window.location.hash;
-    if (hash.match(/^#comment\d\.\d+$/)) {
-      window.location.hash = "";
-      window.location.hash = hash;
+    if (hash.match(/^#comment\d+\.\d+$/)) {
+      $.scrollTo(hash.replace(/\./, "\\."), 500, {
+        easing: "easeInOutQuad"
+      });
     }
 
     // work around blinking twisties

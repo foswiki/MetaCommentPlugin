@@ -29,6 +29,7 @@ use constant DRY => 0; # toggle me
 # Error codes for json-rpc response
 # 1000: comment does not exist
 # 1001: approval not allowed
+# 1002: like plugin not installed
 
 ###############################################################################
 sub new {
@@ -65,7 +66,7 @@ sub jsonRpcGetComment {
   my $topic = $this->{baseTopic};
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(404, "Topic $web.$topic does not exist") 
-    unless Foswiki::Func::topicExists($this->{baseWeb}, $this->{baseTopic});
+    unless Foswiki::Func::topicExists($web, $topic);
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
     unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
@@ -85,14 +86,14 @@ sub jsonRpcGetComment {
 sub jsonRpcSaveComment {
   my ($this, $request) = @_;
 
-  my $web = $this->{session}{webName};
-  my $topic = $this->{session}{topicName};
+  my $web = $this->{baseWeb};
+  my $topic = $this->{baseTopic};
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
     if Foswiki::Func::isGuest() && !$this->{anonCommenting}; 
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(404, "Topic $web.$topic does not exist") 
-    unless Foswiki::Func::topicExists($this->{baseWeb}, $this->{baseTopic});
+    unless Foswiki::Func::topicExists($web, $topic);
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
     unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
@@ -137,6 +138,7 @@ sub jsonRpcSaveComment {
       ref => $ref,
       text => $cmtText,
       title => $title,
+      read => $this->{wikiName},
     }
   );
 
@@ -166,11 +168,11 @@ sub getFingerPrint {
 sub jsonRpcApproveComment {
   my ($this, $request) = @_;
 
-  my $web = $this->{session}{webName};
-  my $topic = $this->{session}{topicName};
+  my $web = $this->{baseWeb};
+  my $topic = $this->{baseTopic};
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(404, "Topic $web.$topic does not exist") 
-    unless Foswiki::Func::topicExists($this->{baseWeb}, $this->{baseTopic});
+    unless Foswiki::Func::topicExists($web, $topic);
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
     unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
@@ -193,7 +195,7 @@ sub jsonRpcApproveComment {
   # set the state
   $comment->{state} = "approved";
 
-  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1}) 
+  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, minor=>1}) 
     unless DRY;
 
   writeEvent("commentapprove", "state=$comment->{state} title=".($comment->{title}||'').' text='.substr($comment->{text}, 0, 200)); 
@@ -205,11 +207,11 @@ sub jsonRpcApproveComment {
 sub jsonRpcUpdateComment {
   my ($this, $request) = @_;
 
-  my $web = $this->{session}{webName};
-  my $topic = $this->{session}{topicName};
+  my $web = $this->{baseWeb};
+  my $topic = $this->{baseTopic};
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(404, "Topic $web.$topic does not exist") 
-    unless Foswiki::Func::topicExists($this->{baseWeb}, $this->{baseTopic});
+    unless Foswiki::Func::topicExists($web, $topic);
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
     unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
@@ -256,6 +258,7 @@ sub jsonRpcUpdateComment {
       text => $cmtText,
       title => $title,
       ref => $ref,
+      read => $this->{wikiName},
     }
   );
 
@@ -269,11 +272,11 @@ sub jsonRpcUpdateComment {
 sub jsonRpcDeleteComment {
   my ($this, $request) = @_;
 
-  my $web = $this->{session}{webName};
-  my $topic = $this->{session}{topicName};
+  my $web = $this->{baseWeb};
+  my $topic = $this->{baseTopic};
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(404, "Topic $web.$topic does not exist") 
-    unless Foswiki::Func::topicExists($this->{baseWeb}, $this->{baseTopic});
+    unless Foswiki::Func::topicExists($web, $topic);
 
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
     unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
@@ -316,6 +319,55 @@ sub jsonRpcDeleteComment {
   writeEvent("commentdelete", "state=$comment->{state} title=".($comment->{title}||'')." text=".substr($comment->{text}, 0, 200)); 
 
   return;
+}
+
+##############################################################################
+sub jsonRpcMarkComment {
+  my ($this, $request) = @_;
+
+  my $web = $this->{baseWeb};
+  my $topic = $this->{baseTopic};
+
+  throw Foswiki::Contrib::JsonRpcContrib::Error(404, "Topic $web.$topic does not exist")
+    unless Foswiki::Func::topicExists($web, $topic);
+
+  throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
+    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
+
+  my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
+
+  my $id = $request->param('comment_id') || '';
+  my $comment = $meta->get('COMMENT', $id);
+
+  throw Foswiki::Contrib::JsonRpcContrib::Error(1000, "Comment not found")
+    unless $comment;
+
+  $this->markComment($comment);
+
+  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions => 1, minor => 1}) unless DRY;
+
+  writeEvent("commentmark", "state=$comment->{state} title=" . ($comment->{title} || '') . " text=" . substr('Schnittlauch', 0, 200));
+
+  return;
+}
+
+###############################################################################
+sub markComment {
+  my ($this, $comment, $user) = @_;
+
+  $user ||= $this->{wikiName};
+
+  my %readUsers = ();
+  if ($comment->{read}) {
+    foreach my $user (split(',', $comment->{read})) {
+      $readUsers{$user} = 1;
+    }
+  }
+
+  $readUsers{$user} = 1;
+  $comment->{read} = join(', ', keys %readUsers);
+
+  return $comment;
 }
 
 ###############################################################################
@@ -403,9 +455,9 @@ sub METACOMMENTS {
   } else {
     @topComments = values %$comments;
   }
-  my @result = formatComments(\@topComments, $params);
+  my @result = $this->formatComments(\@topComments, $params);
 
-  return 
+  my $result = 
     expandVariables($params->{header}, 
       count=>$params->{count},
       ismoderator=>$params->{ismoderator},
@@ -415,6 +467,15 @@ sub METACOMMENTS {
       count=>$params->{count},
       ismoderator=>$params->{ismoderator},
     );
+
+  # oh well
+  $result =~ s/\$perce?nt/\%/go;
+  $result =~ s/\$nop//go;
+  $result =~ s/\$n/\n/go;
+  $result =~ s/\$dollar/\$/go;
+  $result =~ s/\\\\/\\/go;
+
+  return $result;
 }
 
 ##############################################################################
@@ -571,9 +632,7 @@ sub getTopics_SEARCH {
 
 ##############################################################################
 sub formatComments {
-  my ($comments, $params, $parentIndex, $seen) = @_;
-
-  my $session = $Foswiki::Plugins::SESSION;
+  my ($this, $comments, $params, $parentIndex, $seen) = @_;
 
   $parentIndex ||= '';
   $seen ||= {};
@@ -589,6 +648,8 @@ sub formatComments {
     @sortedComments = sort {$a->{modified} <=> $b->{modified}} @$comments;
   } elsif ($params->{sort} eq 'author') {
     @sortedComments = sort {$a->{author} cmp $b->{author}} @$comments;
+  } elsif ($params->{sort} eq 'likes') {
+    @sortedComments = sort {($a->{likes}||0) - ($a->{dislikes}||0) <=> ($b->{likes}||0) - ($b->{dislikes}||0)} @$comments;
   }
 
   @sortedComments = reverse @sortedComments if $params->{reverse} eq 'on';
@@ -607,7 +668,7 @@ sub formatComments {
       my $oldFormat = $params->{format};
       $params->{format} = $params->{subformat};
       $subComments = join(expandVariables($params->{separator}),
-        formatComments($comment->{children}, $params, $indexString, $seen));
+        $this->formatComments($comment->{children}, $params, $indexString, $seen));
       $params->{format} = $oldFormat;
       if ($subComments) {
         $subComments =
@@ -629,12 +690,16 @@ sub formatComments {
     if ($params->{format} =~ /\$summary/) {
       $summary = substr($comment->{text}, 0, 100);
       $summary =~ s/^\s*\-\-\-\++//g; # don't remove heading, just strip tml
-      $summary = $session->renderer->TML2PlainText($summary, undef, "showvar") . " ...";
+      $summary = $this->{session}->renderer->TML2PlainText($summary, undef, "showvar") . " ...";
       $summary =~ s/\n/<br \/>/g;
     }
 
     my $permlink = Foswiki::Func::getScriptUrl($comment->{web},
       $comment->{topic}, "view", "#"=>"comment".($comment->{name}||0));
+
+    my $isNew = ($comment->{read} && $comment->{read} =~ /\b$this->{wikiName}\b/)?0:1;
+    my $isUpdated = ($isNew && $comment->{state} eq 'updated')?1:0;
+    $isNew = 0 if $isUpdated;
 
     my $line = expandVariables($params->{format},
       authorurl=>$comment->{author_url},
@@ -657,9 +722,14 @@ sub formatComments {
       web=>$comment->{web},
       summary=>$summary,
       permlink=>$permlink,
+      isnew=>$isNew,
+      isupdated=>$isUpdated,
+      likes=>($comment->{likes}||0),
+      dislikes=>($comment->{dislikes}||0),
     );
 
     next unless $line;
+
     push @result, $line;
     last if $params->{limit} && $index >= $params->{limit};
   }
@@ -695,10 +765,10 @@ sub expandVariables {
     $text =~ s/\$$key\b/$val/g;
   }
 
-  $text =~ s/\$perce?nt/\%/go;
-  $text =~ s/\$nop//go;
-  $text =~ s/\$n/\n/go;
-  $text =~ s/\$dollar/\$/go;
+# $text =~ s/\$perce?nt/\%/go;
+# $text =~ s/\$nop//go;
+# $text =~ s/\$n/\n/go;
+# $text =~ s/\$dollar/\$/go;
 
   return $text;
 }
@@ -724,11 +794,30 @@ sub isModerated {
 }
 
 ##############################################################################
-sub indexTopicHandler {
+sub afterLikeHandler {
+  my ($this, $web, $topic, $type, $id, $user, $likes, $dislikes) = @_;
+
+  #print STDERR "called afterLikeHandler(web=$web,topic=$topic,type=$type,id=$id,user=$user,likes=$likes,dislikes=$dislikes)\n";
+
+  return unless $type && $type eq 'COMMENT';
+
+  my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
+  my $comment = $meta->get('COMMENT', $id);
+
+  unless ($comment) {
+    print STDERR "ERROR: afterLikeHandler - unknown comment $id\n";
+    return;
+  }
+
+  $comment->{likes} = $likes;
+  $comment->{dislikes} = $dislikes;
+
+  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, minor => 1}) unless DRY;
+}
+
+##############################################################################
+sub solrIndexTopicHandler {
   my ($this, $indexer, $doc, $web, $topic, $meta, $text) = @_;
-
-  my $session = $Foswiki::Plugins::SESSION;
-
 
   # delete all previous comments of this topic
   $indexer->deleteByQuery("type:comment web:$web topic:$topic");
@@ -751,7 +840,7 @@ sub indexTopicHandler {
     my $title = $comment->{title};
     $title = substr($comment->{text}, 0, 20) unless $title;
     $title = "empty comment" unless $title;
-    $title = $session->renderer->TML2PlainText($title, undef, "showvar");
+    $title = $this->{session}->renderer->TML2PlainText($title, undef, "showvar");
 
     my $state = $comment->{state} || 'null';
 
@@ -786,6 +875,11 @@ sub indexTopicHandler {
       );
     }
 
+    if ($comment->{read}) {
+      foreach my $read (split(/\s*,\s*/, $comment->{read})) {
+        $commentDoc->add_fields('read_lst' => $read);
+      }
+    }
 
     if ($isModerated && $state =~ /\bunapproved\b/) {
       $commentDoc->add_fields('access_granted' => '');
@@ -805,6 +899,41 @@ sub indexTopicHandler {
       my $e = shift;
       $indexer->log("ERROR: " . $e->{-text});
     };
+  }
+}
+
+##############################################################################
+sub dbcacheIndexTopicHandler {
+  my ($this, $db, $obj, $web, $topic, $meta, $text) = @_;
+
+
+  # cache comments
+  my $archivist = $db->getArchivist();
+  my @comments = $meta->find('COMMENT');
+  my $commentDate = 0;
+
+  my $cmts;
+
+  foreach my $comment (@comments) {
+    my $cmt = $archivist->newMap(initial => $comment);
+    my $cmtDate = $comment->{date};
+
+    if ($cmtDate > $commentDate) {
+      $commentDate = $cmtDate;
+    }
+
+    $cmts = $obj->get('comments');
+
+    if (!defined($cmts)) {
+      $cmts = $archivist->newArray();
+      $obj->set('comments', $cmts);
+    }
+
+    $cmts->add($cmt);
+  }
+
+  if ($commentDate) {
+    $obj->set('commentdate', $commentDate);
   }
 }
 

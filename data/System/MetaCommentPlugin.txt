@@ -1,6 +1,6 @@
 %META:TOPICINFO{author="ProjectContributor" comment="" date="1425048174" format="1.1"  version="1"}%
----+!! !MetaCommentPlugin
-%SHORTDESCRIPTION%
+---+!! MetaCommentPlugin
+%FORMFIELD{"Description"}%
 
 %TOC%
 
@@ -49,6 +49,7 @@ First, to enable commenting add the =metacomment= skin overlay to your =SKIN= va
 
 <verbatim>   * Set SKIN = metacomment, pattern</verbatim>
 
+---+++ Display settings
 To display the comment interface like shown above you need to set the preference variable:
 
 <verbatim>   * Set DISPLAYCOMMENTS = on</verbatim>
@@ -72,6 +73,20 @@ By setting this to =closed= comments gathered so far are still listed while the 
 
 These preferences can of course be set per topic or added to the WebPreferences in case you want to enable commenting
 on all of the web.
+
+Below each comment there is a set of infos that can be switched on and off as desired.
+
+This setting ...
+
+<verbatim>   * Set COMMENTVOTING = on/off</verbatim>
+
+enables voting per comment using the Foswiki:Extensions/LikePlugin (defaults to =on= when !LikePlugin is installed). 
+Users will be able to vote up or down each comment to indicate their level of agreement during a discussion.
+
+Finally, there is a so called "permlink" that lets you share a link to a specific comment in an email or so. However
+this feature is not desired. Use this to switch it of then:
+
+<verbatim>   * Set COMMENTPERMLINK = on/off</verbatim>
 
 ---+++ Permissions
 
@@ -171,7 +186,7 @@ Parameters:
    * mindate: minimum date of a comment to be displayed
    * maxdate: maximum date of a comment to be displayed
    * threaded: switch on/off threaded rendering, comments will be rendered recursively
-   * sort: specify the way comments are sorted; possible values: name (default), date, modified, author
+   * sort: specify the way comments are sorted; possible values: name (default), date, modified, author, likes (if [[Foswiki:Extensions/LikePlugin][LikePlugin]] is installed)
    * reverse: switch on/off reverse order of sorted comments
 
 When rendering a comment, the following variables can be used in the =format= strings:
@@ -196,6 +211,10 @@ When rendering a comment, the following variables can be used in the =format= st
    * $web: the web this comment is in
    * $topic: the topic this is a comment of
    * $permlink: a link to this comment
+   * $isnew: boolean flag indicating whether the current user hasn't read a newly created comment yet
+   * $isupdated: boolean flag indicating whether the current user hasn't read an updated comment yet
+   * $likes: number of likes
+   * $dislikes: number of dislikes
 
 Example:
 
@@ -238,15 +257,14 @@ The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
 </verbatim>
 
 ---++ Installation Instructions
-
 %$INSTALL_INSTRUCTIONS%
 
----++ Info
-<!--
-   * Set SHORTDESCRIPTION = %$SHORTDESCRIPTION%
--->
+---++ Dependencies
+%$DEPENDENCIES%
 
-|  Change History: | <!-- versions below in reverse order -->&nbsp; |
+---++ Change History
+|  11 Sep 2015: | 4.10 - added display settings to switch on of voting and permlink |
+|  09 Sep 2015: | 4.00 - added isnew/isupdated flags; optional integration with Foswiki:Extensions/LikePlugin; using new index handler architectur in Foswiki:Extensions/DBCachePlugin now |
 |  31 Aug 2015: | 3.00 - simplified comment approval; fixed ACL check (Foswiki:Main/StephanOsthold); fixed substr problem together with Foswiki-2.0 |
 |  27 Feb 2015: | 2.90 - removing collection field form solr index handler |
 |  16 Dec 2014: | 2.80 - fixed extracting substrings from unicode strings |
@@ -289,19 +307,15 @@ The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
 |  15 Apr 2011: | using CPAN:JSON to properly encode json-rpc data; \
                   fixed recoding of received data to the site's own charset; \
                   improved the way photos are gathered |
-|  Dependencies: | %$DEPENDENCIES% |
-|  Home page: | Foswiki:Extensions/MetaCommentPlugin |
-|  Support: | Foswiki:Support/MetaCommentPlugin |
 
-<!-- Do _not_ attempt to edit this topic; it is auto-generated. -->
-
+%META:FILEATTACHMENT{name="MetaCommentSnap1.jpeg" attachment="MetaCommentSnap1.jpeg" attr="h" comment="" date="1425048174" path="MetaCommentSnap1.jpeg" size="51144" user="ProjectContributor" version="1"}%
 %META:FORM{name="PackageForm"}%
 %META:FIELD{name="Author" title="Author" value="Foswiki:Main/MichaelDaum"}%
 %META:FIELD{name="Copyright" title="Copyright" value="2009-2015, Michael Daum http://michaeldaumconsulting.com"}%
+%META:FIELD{name="Description" title="Description" value="%25$SHORTDESCRIPTION%25"}%
 %META:FIELD{name="Home" title="Home" value="http://foswiki.org/Extensions/MetaCommentPlugin"}%
 %META:FIELD{name="License" title="License" value="[[http://www.gnu.org/licenses/gpl.html][GPL (Gnu General Public License)]]"}%
 %META:FIELD{name="Release" title="Release" value="%$RELEASE%"}%
 %META:FIELD{name="Repository" title="Repository" value="https://github.com/foswiki/MetaCommentPlugin"}%
 %META:FIELD{name="Support" title="Support" value="Foswiki:Support/MetaCommentPlugin"}%
 %META:FIELD{name="Version" title="Version" value="%$VERSION%"}%
-%META:FILEATTACHMENT{name="MetaCommentSnap1.jpeg" attachment="MetaCommentSnap1.jpeg" attr="h" comment="" date="1425048174" path="MetaCommentSnap1.jpeg" size="51144" user="ProjectContributor" version="1"}%

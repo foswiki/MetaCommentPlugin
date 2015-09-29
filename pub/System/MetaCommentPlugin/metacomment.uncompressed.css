@@ -31,6 +31,9 @@
   border-top:1px #ddd solid;
   border-bottom:1px #ddd solid;
 }
+.cmtMarkContainer {
+  color:#7CD400;
+}
 .cmtSubComments .cmtCommentContainer {
   margin:0px;
 }
@@ -61,6 +64,7 @@ h3.cmtCommentNr {
 .cmtComment {
   position:relative;
 }
+a.cmtMark,
 a.cmtPermLink,
 .cmtAuthor a {
   text-decoration:none;
@@ -103,8 +107,4 @@ a.cmtPermLink,
 
 .cmtStyle_insidetab .twistyPlugin {
   display:none; /* switched on by js */
-}
-
-.cmtDenyMessage {
-  margin:1.3846em 0em 0em;
 }

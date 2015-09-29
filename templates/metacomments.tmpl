@@ -6,17 +6,11 @@
 <div id='comments' class='cmtComments cmtStyle_%IF{"defined COMMENTFORMAT" then="%COMMENTFORMAT%" else="%TMPL:P{"comments::format::default"}%"}% cmtState_%IF{"defined COMMENTSTATE" then="%COMMENTSTATE%" else="open"}% cmtModeration_%IF{"defined COMMENTMODERATION" then="%COMMENTMODERATION%" else="off"}%'>
 %TMPL:P{"comments::topbar"}%<!-- -->
 %IF{"$COMMENTFORMAT=~'reverse|insidetab' and $COMMENTSTATE!='closed'" 
-  then="%IF{"context canComment" 
-    then="$dollarpercntTMPL:P{\\"comments::add::simple\\"}$dollarpercnt"
-    else="$dollarpercntTMPL:P{\\"comments::add::denied\\"}$dollarpercnt"
-  }%"
+  then="$percntTMPL:P{\"comments::add::simple\"}$percnt"
 }%<!-- -->
 %TMPL:P{"comments::list"}%<!-- -->
 %IF{"not $COMMENTFORMAT=~'reverse|insidetab' and $COMMENTSTATE!='closed'" 
-  then="%IF{"context canComment and not $COMMENTFORMAT=~'reverse|insidetab' and $COMMENTSTATE!='closed'" 
-    then="$dollarpercntTMPL:P{\\"comments::add::default\\"}$dollarpercnt"
-    else="$dollarpercntTMPL:P{\\"comments::add::denied\\"}$dollarpercnt"
-  }%"
+  then="$percntTMPL:P{\"comments::add::default\"}$percnt"
 }%<!-- -->
 </div>
 </noautolink><!-- -->%TMPL:END%
@@ -25,8 +19,7 @@
    metacomments::init - loads all required css and js
 }%
 %TMPL:DEF{"metacomments::init"}%<!-- -->
-<!-- %IMAGE% -->
-<!-- %JQREQUIRE{"blockui, ui::dialog, form, jsonrpc, button, pnotify"}% -->
+<!-- %JQREQUIRE{"blockui, ui::dialog, form, jsonrpc, button, pnotify, scrollto"}% -->
 %ADDTOZONE{
   "head" 
   id="METACOMMENTPLUGIN::CSS" 
@@ -34,7 +27,7 @@
 }%%ADDTOZONE{
   "script" 
   id="METACOMMENTPLUGIN::JS" 
-  requires="JQUERYPLUGIN::UI, JQUERYPLUGIN::FORM, JQUERYPLUGIN::JSONRPC, JQUERYPLUGIN::PNOTIFY" 
+  requires="JQUERYPLUGIN::UI, JQUERYPLUGIN::FORM, JQUERYPLUGIN::JSONRPC, JQUERYPLUGIN::PNOTIFY, JQUERYPLUGIN::SCROLLTO" 
   text="<script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/MetaCommentPlugin/metacomment.js'></script>"
 }%<!-- -->%TMPL:END%
 
@@ -66,16 +59,13 @@
 %{ ################################################################################ 
    comments::add::denied - display a message why somebody can't comment
 }%
-%TMPL:DEF{"comments::add::denied"}%<!-- -->
-<div class='cmtDenyMessage'>
-%IF{"context authenticated"
+%TMPL:DEF{"comments::add::denied"}%%IF{"context authenticated"
   then="%MAKETEXT{"Sorry, commenting not allowed."}%"
   else="%IF{"context registration_enabled"
-    then="%MAKETEXT{"Please [[[_1]][login]] or [[[_2]][register]] to comment." args="%SCRIPTURLPATH{login}%/%BASEWEB%/%BASETOPIC%, %SYSTEMWEB%.UserRegistration"}%"
-    else="%MAKETEXT{"Please [[[_1]][login]] to comment." args="%SCRIPTURLPATH{login}%/%BASEWEB%/%BASETOPIC%"}%"
+    then="%MAKETEXT{"Please log in or register to comment."}%"
+    else="%MAKETEXT{"Please log in to comment."}%"
   }%"
-}%
-</div>%TMPL:END%
+}%%TMPL:END%
 
 %{ ################################################################################ 
    comments::add::default - constructing the form to add a new comment
@@ -86,7 +76,10 @@
 %TMPL:P{"comments::namestep::hidden"}%<!-- -->
 %TMPL:P{"comments::titlestep"}%<!-- -->
 %TMPL:P{"comments::moresteps"}%<!-- -->
-%TMPL:P{"comments::textstep" ROWS="10" PLACEHOLDER=""}%<!-- -->
+%TMPL:P{"comments::textstep" 
+  ROWS="10" 
+  PLACEHOLDER="%IF{"not context canComment" then="$percntTMPL:P{\"comments::add::denied\"}$percnt"}%"
+}%<!-- -->
 %TMPL:P{"comments::buttonstep"}%<!-- -->
 %TMPL:P{"comments::formend"}%<!-- -->
 </div>
@@ -102,7 +95,7 @@
 %TMPL:P{"comments::moresteps"}%<!-- -->
 %TMPL:P{"comments::textstep" 
   ROWS="5" 
-  PLACEHOLDER="%MAKETEXT{"Add a comment"}%"
+  PLACEHOLDER="%IF{"not context canComment" then="$percntTMPL:P{\"comments::add::denied\"}$percnt" else="%MAKETEXT{"Add a comment"}%"}%"
 }%<!-- -->
 %TMPL:P{"comments::buttonstep"}%<!-- -->
 %TMPL:P{"comments::formend"}%<!-- -->
@@ -136,7 +129,7 @@
    comments::format::linear - format one comment in linear format
 }%
 %TMPL:DEF{"comments::format::linear"}%<!-- -->
-<div class='cmtCommentContainer cmtComment$evenodd' id='cmtComment$index'>
+<div class='cmtCommentContainer cmtComment$evenodd%IF{"context authenticated and $isnew" then=" cmtCommentNew"}%%IF{"context authenticated and $isupdated" then=" cmtCommentUpdated"}%%IF{"$COMMENTMODERATION='on' and '$state'=~'\bunapproved\b'" then=" cmtCommentNeedsApproval"}%' id='cmtComment$index'>
   <div id='comment$id' class='cmtComment $percntIF{"$COMMENTMODERATION='on' and '$state'=~'\bunapproved\b'" then="cmtCommentNeedsApproval"}$percnt {comment_id:"$id", index:"$index", author:"$percntSPACEOUT{$author}$percnt", date:"$date", authorurl:"$authorurl"}'>
     <h3 class='foswikiRight cmtCommentNr'>$index</h3>
     %TMPL:P{
@@ -156,8 +149,18 @@
       <span class='cmtAuthor'>%IF{"istopic '%USERSWEB%.$author'" then="[[%USERSWEB%.$author]]" else="%IF{"'$authorurl'!=''" then="[[$authorurl][%ENCODE{"$author" type="safe"}%]]" else="%ENCODE{"$author" type="safe"}%"}%"}%</span>
       &#124;
       <span class='cmtDate'>$date</span>
-      &#124;
-      <a class='cmtPermLink' href='$permlink'>%MAKETEXT{"permlink"}%</a>
+      %IF{"context authenticated and $isnew"
+        then="<span class='cmtMarkContainer'>&#124; %JQICON{"fa-exclamation-circle"}% <a href='#' class='cmtMark' title='%MAKETEXT{"Click to mark as read"}%'>%MAKETEXT{"new"}%</a></span>"
+      }%<!-- -->
+      %IF{"context authenticated and $isupdated"
+        then="<span class='cmtMarkContainer'>&#124; %JQICON{"fa-exclamation-circle"}% <a href='#' class='cmtMark' title='%MAKETEXT{"Click to mark as read"}%'>%MAKETEXT{"updated"}%</a></span>"
+      }%<!-- -->
+      %IF{"$COMMENTVOTING!='off' and context LikePluginEnabled"
+        then="$dollarpercntLIKE{header=\\"&#124; \\" theme=\\"simple\\" showlabel=\\"off\\" type=\\"COMMENT\\" id=\\"$id\\"}$dollarpercnt"
+      }%<!-- -->
+      %IF{"$COMMENTPERMLINK!='off'" 
+        then="&#124; <a class='cmtPermLink' href='$permlink'>%MAKETEXT{"permlink"}%</a>"
+      }%<!-- -->
     </span>
     %CLEAR%
   </div>
@@ -194,7 +197,7 @@
    comments::format::threaded - format comments in threaded format
 }%
 %TMPL:DEF{"comments::format::threaded"}%<!-- -->
-<div class='cmtCommentContainer cmtComment$evenodd $percntIF{"$COMMENTMODERATION='on' and '$state'=~'\bunapproved\b'" then="cmtCommentNeedsApproval"}$percnt' id='cmtComment$index'>
+<div class='cmtCommentContainer cmtComment$evenodd%IF{"context authenticated and $isnew" then=" cmtCommentNew"}%%IF{"context authenticated and $isupdated" then=" cmtCommentUpdated"}%%IF{"$COMMENTMODERATION='on' and '$state'=~'\bunapproved\b'" then=" cmtCommentNeedsApproval"}%' id='cmtComment$index'>
   <div id='comment$id' class='cmtComment {comment_id:"$id", index:"$index", author:"$percntSPACEOUT{$author}$percnt", date:"$date", authorurl:"$authorurl"}'>
     <h3 class='foswikiRight cmtCommentNr'>$index</h3>
     %TMPL:P{
@@ -214,8 +217,18 @@
       <span class='cmtAuthor'>%IF{"istopic '%USERSWEB%.$author'" then="[[%USERSWEB%.$author]]" else="%IF{"'$authorurl'!=''" then="[[$authorurl][%ENCODE{"$author" type="safe"}%]]" else="%ENCODE{"$author" type="safe"}%"}%"}%</span>
       &#124;
       <span class='cmtDate'>$date</span>
-      &#124;
-      <a class='cmtPermLink' href='$permlink'>%MAKETEXT{"permlink"}%</a>
+      %IF{"context authenticated and $isnew"
+        then="<span class='cmtMarkContainer'>&#124; %JQICON{"fa-exclamation-circle"}% <a href='#' class='cmtMark' title='%MAKETEXT{"Click to mark as read"}%'>%MAKETEXT{"new"}%</a></span>"
+      }%<!-- -->
+      %IF{"context authenticated and $isupdated"
+        then="<span class='cmtMarkContainer'>&#124; %JQICON{"fa-exclamation-circle"}% <a href='#' class='cmtMark' title='%MAKETEXT{"Click to mark as read"}%'>%MAKETEXT{"updated"}%</a></span>"
+      }%<!-- -->
+      %IF{"$COMMENTVOTING!='off' and context LikePluginEnabled"
+        then="$dollarpercntLIKE{header=\\"&#124; \\" theme=\\"simple\\" showlabel=\\"off\\" type=\\"COMMENT\\" id=\\"$id\\"}$dollarpercnt"
+      }%<!-- -->
+      %IF{"$COMMENTPERMLINK!='off'" 
+        then="&#124; <a class='cmtPermLink' href='$permlink'>%MAKETEXT{"permlink"}%</a>"
+      }%<!-- -->
     </span>
     %CLEAR%
   </div> $subcomments
@@ -232,7 +245,7 @@
    comments::format::reverse - format comments in reverse mode
 }%
 %TMPL:DEF{"comments::format::reverse"}%<!-- -->
-<div class='cmtCommentContainer cmtComment$evenodd' id='cmtComment$index'>
+<div class='cmtCommentContainer cmtComment$evenodd%IF{"context authenticated and $isnew" then=" cmtCommentNew"}%%IF{"context authenticated and $isupdated" then=" cmtCommentUpdated"}%%IF{"$COMMENTMODERATION='on' and '$state'=~'\bunapproved\b'" then=" cmtCommentNeedsApproval"}%' id='cmtComment$index'>
   <div id='comment$id' class='cmtComment {comment_id:"$id", index:"$index", author:"$percntSPACEOUT{$author}$percnt", date:"$date", authorurl:"$authorurl"}'>
     <h3 class='foswikiRight cmtCommentNr'>$index</h3>
     %TMPL:P{
@@ -252,8 +265,18 @@
       <span class='cmtAuthor'>%IF{"istopic '%USERSWEB%.$author'" then="[[%USERSWEB%.$author]]" else="%IF{"'$authorurl'!=''" then="[[$authorurl][%ENCODE{"$author" type="safe"}%]]" else="%ENCODE{"$author" type="safe"}%"}%"}%</span>
       &#124;
       <span class='cmtDate'>$date</span>
-      &#124;
-      <a class='cmtPermLink' href='$permlink'>%MAKETEXT{"permlink"}%</a>
+      %IF{"context authenticated and $isnew"
+        then="<span class='cmtMarkContainer'>&#124; %JQICON{"fa-exclamation-circle"}% <a href='#' class='cmtMark' title='%MAKETEXT{"Click to mark as read"}%'>%MAKETEXT{"new"}%</a></span>"
+      }%<!-- -->
+      %IF{"context authenticated and $isupdated"
+        then="<span class='cmtMarkContainer'>&#124; %JQICON{"fa-exclamation-circle"}% <a href='#' class='cmtMark' title='%MAKETEXT{"Click to mark as read"}%'>%MAKETEXT{"updated"}%</a></span>"
+      }%<!-- -->
+      %IF{"$COMMENTVOTING!='off' and context LikePluginEnabled"
+        then="$dollarpercntLIKE{header=\\"&#124; \\" theme=\\"simple\\" showlabel=\\"off\\" type=\\"COMMENT\\" id=\\"$id\\"}$dollarpercnt"
+      }%<!-- -->
+      %IF{"$COMMENTPERMLINK!='off'" 
+        then="&#124; <a class='cmtPermLink' href='$permlink'>%MAKETEXT{"permlink"}%</a>"
+      }%<!-- -->
     </span>
     %CLEAR% 
     <span id='bottomcomment$id'></span>
@@ -442,7 +465,7 @@
 %{ ################################################################################ }%
 %TMPL:DEF{"comments::titlestep"}%<!-- -->
 <div class="foswikiFormStep">
-  <input class="foswikiInputField" type="text" name="title" size="60" />
+  <input class="foswikiInputField" type="text" name="title" size="60" %IF{"not context canComment" then="disabled='disabled'"}% />
   <label for="title"><strong>Title</strong></label>
 </div>
 <!-- -->%TMPL:END%
@@ -450,15 +473,14 @@
 %{ ################################################################################ }%
 %TMPL:DEF{"comments::textstep"}%<!-- -->
 <div class="foswikiFormStep">
-  <textarea class="foswikiTextarea" wrap="virtual" name="text"  rows="%ROWS%" cols="80" %IF{"'%PLACEHOLDER%'!=''" then="placeholder='%PLACEHOLDER%'"}%></textarea>
+  <textarea class="foswikiTextarea" wrap="virtual" name="text"  rows="%ROWS%" cols="80" %IF{"not context canComment" then="disabled='disabled'"}% %IF{"'%PLACEHOLDER%'!=''" then="placeholder='%PLACEHOLDER%'"}%></textarea>
 </div>
 <!-- -->%TMPL:END%
 
 %{ ################################################################################ }%
 %TMPL:DEF{"comments::buttonstep"}%<!-- -->
 <div class="foswikiFormStep foswikiFormLast foswikiFormButtons">
-  %BUTTON{"%MAKETEXT{"Submit"}%" icon="tick" type="save"}%
-  %BUTTON{"%MAKETEXT{"Cancel"}%" icon="cross" type="reset"}%
-  %CLEAR%
+  %BUTTON{"%MAKETEXT{"Submit"}%" icon="tick" type="save" class="%IF{"not context canComment" then="jqButtonDisabled"}%"}%
+  %BUTTON{"%MAKETEXT{"Cancel"}%" icon="cross" type="reset" class="%IF{"not context canComment" then="jqButtonDisabled"}%"}%
 </div>
 <!-- -->%TMPL:END%

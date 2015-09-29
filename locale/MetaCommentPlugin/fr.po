@@ -1,64 +1,64 @@
 #: templates/metacomments.tmpl:52
 msgid "%1 comments"
-msgstr "%1 Kommentare"
+msgstr "%1 Commentaires"
 
 #: templates/metacomments.tmpl:438 templates/metacomments.tmpl:98
 msgid "Add a comment"
-msgstr "Kommentar hinzufgen"
+msgstr "Ajouter un commentaire"
 
 #: templates/metacomments.tmpl:313
 msgid "Approve comment?"
-msgstr "Kommentar freigeben?"
+msgstr "Approuver commentaire ?"
 
 #: templates/metacomments.tmpl:183
 msgid "Approve this comment"
-msgstr "Diesen Kommentar freigeben"
+msgstr "Approuver ce commentaire"
 
 #: templates/metacomments.tmpl:320
 msgid "Are you sure that you want to approve comment %1 posted by %2 on %3?"
 msgstr ""
-"Sind Sie sicher, dass Sie Kommentar %1 von %2 erstellt am %3 freigeben "
-"wollen?"
+"Etes-vous sr que vous voulez approuver commentaire %1 post par %2 sur %3 ?"
 
 #: templates/metacomments.tmpl:299
 msgid "Are you sure that you want to delete comment %1 posted by %2 on %3?"
 msgstr ""
-"Sind Sie sicher, dass Sie Kommentar %1 von %2 erstellt am %3 lschen wollen?"
+"Etes-vous sr que vous voulez effacer le commentaire %1 post par %2 sur %3 ?"
 
 #: templates/metacomments.tmpl:348 templates/metacomments.tmpl:370
 #: templates/metacomments.tmpl:484
 msgid "Cancel"
-msgstr "Abbrechen"
+msgstr "Annuler"
 
 #: templates/metacomments.tmpl:153 templates/metacomments.tmpl:156
 #: templates/metacomments.tmpl:221 templates/metacomments.tmpl:224
 #: templates/metacomments.tmpl:269 templates/metacomments.tmpl:272
+#, fuzzy
 msgid "Click to mark as read"
-msgstr "Klicken, um als gelesen zu markieren"
+msgstr "marquer comme lu"
 
 #: templates/metacommentsrss.tmpl:7
 msgid "Comments"
-msgstr "Kommentare"
+msgstr "Commentaires:"
 
 #: templates/metacomments.tmpl:292
 msgid "Delete comment?"
-msgstr "Kommentar lschen?"
+msgstr "Effacer commentaire ?"
 
 #: templates/metacomments.tmpl:186
 msgid "Delete this comment"
-msgstr "Diesen Kommentar lschen"
+msgstr "Effacer ce commentaie"
 
 #: templates/metacomments.tmpl:334
 msgid "Edit comment"
-msgstr "Kommentar bearbeiten"
+msgstr "Modifier le Commentaire"
 
 #: templates/metacomments.tmpl:180
 msgid "Edit this comment"
-msgstr "Diesen Kommentar bearbeiten"
+msgstr "Editer ce commentaire"
 
 #: templates/metacomments.tmpl:304 templates/metacomments.tmpl:325
 msgid "No, thanks"
-msgstr "Nein, danke"
+msgstr "non, merci"
 
 #: templates/metacomments.tmpl:347 templates/metacomments.tmpl:369
 msgid "OK"
@@ -66,80 +66,83 @@ msgstr "OK"
 
 #: templates/metacomments.tmpl:51
 msgid "One comment"
-msgstr "Ein Kommentar"
+msgstr "un Commentaire"
 
 #: templates/metacomments.tmpl:65
+#, fuzzy
 msgid "Please log in or register to comment."
-msgstr "Bitte anmelden oder registrieren, um zu kommentieren."
+msgstr "S'il vous plait [[%1][login]] ou bien [[%2][register]] pour commenter."
 
 #: templates/metacomments.tmpl:66
+#, fuzzy
 msgid "Please log in to comment."
-msgstr "Bitte anmelden, um zu kommentieren."
+msgstr "S'il vous plait [[%1][login]] pour commenter."
 
 #: data/System/MetaCommentPlugin.txt:256
 msgid "RSS comments feed for the %1 web"
-msgstr "RSS Kommentar Feed f&&uuml; das %1 Web"
+msgstr "Flux RSS des commentaires de l'% 1 Web"
 
 #: templates/metacomments.tmpl:50
 msgid "RSS feed of the comments on this topic"
-msgstr "RSS Feed fr Kommentar zu diesem Topic"
+msgstr "Flux RSS des commentaires sur ce sujet"
 
 #: templates/metacomments.tmpl:357
 msgid "Reply on comment"
-msgstr "Kommentar beantworten"
+msgstr "Rpondre au commentaire"
 
 #: templates/metacomments.tmpl:177
 msgid "Reply on this comment"
-msgstr "Diesen Kommentar beantworten"
+msgstr "Rpondre  ce commentaire"
 
 #: templates/metacomments.tmpl:63
 msgid "Sorry, commenting not allowed."
-msgstr "Kommentieren leider nicht erlaubt."
+msgstr "Dsol, commenter n'est pas permis."
 
 #: templates/metacomments.tmpl:483
 msgid "Submit"
-msgstr "&&Uuml;bermitteln"
+msgstr "Envoyer"
 
 #: templates/metacomments.tmpl:324
 msgid "Yes, approve"
-msgstr "Ja, freigeben"
+msgstr "oui, approuver"
 
 #: templates/metacomments.tmpl:303
 msgid "Yes, delete"
-msgstr "Ja, lschen"
+msgstr "oui, effacer"
 
 #: templates/metacomments.tmpl:114
 msgid "inside tab"
-msgstr "im tab"
+msgstr ""
 
 #: templates/metacomments.tmpl:114
 msgid "linear"
-msgstr "linear"
+msgstr ""
 
 #: templates/metacomments.tmpl:146 templates/metacomments.tmpl:214
 #: templates/metacomments.tmpl:262
 msgid "needs approval"
-msgstr "bentigt Freigabe"
+msgstr "besoin dapprobation"
 
 #: templates/metacomments.tmpl:153 templates/metacomments.tmpl:221
 #: templates/metacomments.tmpl:269
 msgid "new"
-msgstr "neu"
+msgstr ""
 
 #: templates/metacomments.tmpl:162 templates/metacomments.tmpl:230
 #: templates/metacomments.tmpl:278
 msgid "permlink"
-msgstr "permlink"
+msgstr "lien perma"
 
 #: templates/metacomments.tmpl:114
 msgid "reverse"
-msgstr "umgekehrt"
+msgstr ""
 
 #: templates/metacomments.tmpl:114
 msgid "threaded"
-msgstr "verzweigt"
+msgstr ""
 
 #: templates/metacomments.tmpl:156 templates/metacomments.tmpl:224
 #: templates/metacomments.tmpl:272
 msgid "updated"
-msgstr "geändert"
+msgstr ""
+

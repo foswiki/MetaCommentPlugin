@@ -1,139 +1,145 @@
-# NatEditPlugin translations
 msgid ""
-msgstr ""
-"Project-Id-Version: NatEditPlugin $Id\n"
-"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Michael Daum <daum@michaeldaumconsulting.com>\n"
-"Language-Team: Foswiki German Translation Team <none>\n"
-"Language: \n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+msgstr "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
 
-#: templates/metacomments.tmpl:59
+#: templates/metacomments.tmpl:52
 msgid "%1 comments"
 msgstr ""
 
-#: templates/metacomments.tmpl:105 templates/metacomments.tmpl:415
+#: templates/metacomments.tmpl:438 templates/metacomments.tmpl:98
 msgid "Add a comment"
 msgstr ""
 
-#: templates/metacomments.tmpl:290
+#: templates/metacomments.tmpl:313
 msgid "Approve comment?"
 msgstr ""
 
-#: templates/metacomments.tmpl:180
+#: templates/metacomments.tmpl:183
 msgid "Approve this comment"
 msgstr ""
 
-#: templates/metacomments.tmpl:297
+#: templates/metacomments.tmpl:320
 msgid "Are you sure that you want to approve comment %1 posted by %2 on %3?"
 msgstr ""
 
-#: templates/metacomments.tmpl:276
+#: templates/metacomments.tmpl:299
 msgid "Are you sure that you want to delete comment %1 posted by %2 on %3?"
 msgstr ""
 
-#: templates/metacomments.tmpl:325 templates/metacomments.tmpl:347
-#: templates/metacomments.tmpl:461
+#: templates/metacomments.tmpl:348 templates/metacomments.tmpl:370
+#: templates/metacomments.tmpl:484
 msgid "Cancel"
+msgstr ""
+
+#: templates/metacomments.tmpl:153 templates/metacomments.tmpl:156
+#: templates/metacomments.tmpl:221 templates/metacomments.tmpl:224
+#: templates/metacomments.tmpl:269 templates/metacomments.tmpl:272
+msgid "Click to mark as read"
 msgstr ""
 
 #: templates/metacommentsrss.tmpl:7
 msgid "Comments"
 msgstr ""
 
-#: templates/metacomments.tmpl:269
+#: templates/metacomments.tmpl:292
 msgid "Delete comment?"
 msgstr ""
 
-#: templates/metacomments.tmpl:183
+#: templates/metacomments.tmpl:186
 msgid "Delete this comment"
 msgstr ""
 
-#: templates/metacomments.tmpl:311
+#: templates/metacomments.tmpl:334
 msgid "Edit comment"
 msgstr ""
 
-#: templates/metacomments.tmpl:177
+#: templates/metacomments.tmpl:180
 msgid "Edit this comment"
 msgstr ""
 
-#: templates/metacomments.tmpl:281 templates/metacomments.tmpl:302
+#: templates/metacomments.tmpl:304 templates/metacomments.tmpl:325
 msgid "No, thanks"
 msgstr ""
 
-#: templates/metacomments.tmpl:324 templates/metacomments.tmpl:346
+#: templates/metacomments.tmpl:347 templates/metacomments.tmpl:369
 msgid "OK"
 msgstr ""
 
-#: templates/metacomments.tmpl:58
+#: templates/metacomments.tmpl:51
 msgid "One comment"
 msgstr ""
 
-#: templates/metacomments.tmpl:74
-msgid "Please [[%1][login]] or [[%2][register]] to comment."
+#: templates/metacomments.tmpl:65
+msgid "Please log in or register to comment."
 msgstr ""
 
-#: templates/metacomments.tmpl:75
-msgid "Please [[%1][login]] to comment."
+#: templates/metacomments.tmpl:66
+msgid "Please log in to comment."
 msgstr ""
 
-#: data/System/MetaCommentPlugin.txt:237
+#: data/System/MetaCommentPlugin.txt:256
 msgid "RSS comments feed for the %1 web"
 msgstr ""
 
-#: templates/metacomments.tmpl:57
+#: templates/metacomments.tmpl:50
 msgid "RSS feed of the comments on this topic"
 msgstr ""
 
-#: templates/metacomments.tmpl:334
+#: templates/metacomments.tmpl:357
 msgid "Reply on comment"
 msgstr ""
 
-#: templates/metacomments.tmpl:174
+#: templates/metacomments.tmpl:177
 msgid "Reply on this comment"
 msgstr ""
 
-#: templates/metacomments.tmpl:72
+#: templates/metacomments.tmpl:63
 msgid "Sorry, commenting not allowed."
 msgstr ""
 
-#: templates/metacomments.tmpl:460
+#: templates/metacomments.tmpl:483
 msgid "Submit"
 msgstr ""
 
-#: templates/metacomments.tmpl:301
+#: templates/metacomments.tmpl:324
 msgid "Yes, approve"
 msgstr ""
 
-#: templates/metacomments.tmpl:280
+#: templates/metacomments.tmpl:303
 msgid "Yes, delete"
 msgstr ""
 
-#: templates/metacomments.tmpl:121
+#: templates/metacomments.tmpl:114
 msgid "inside tab"
 msgstr ""
 
-#: templates/metacomments.tmpl:121
+#: templates/metacomments.tmpl:114
 msgid "linear"
 msgstr ""
 
-#: templates/metacomments.tmpl:153 templates/metacomments.tmpl:211
-#: templates/metacomments.tmpl:249
+#: templates/metacomments.tmpl:146 templates/metacomments.tmpl:214
+#: templates/metacomments.tmpl:262
 msgid "needs approval"
 msgstr ""
 
-#: templates/metacomments.tmpl:160 templates/metacomments.tmpl:218
-#: templates/metacomments.tmpl:256
+#: templates/metacomments.tmpl:153 templates/metacomments.tmpl:221
+#: templates/metacomments.tmpl:269
+msgid "new"
+msgstr ""
+
+#: templates/metacomments.tmpl:162 templates/metacomments.tmpl:230
+#: templates/metacomments.tmpl:278
 msgid "permlink"
 msgstr ""
 
-#: templates/metacomments.tmpl:121
+#: templates/metacomments.tmpl:114
 msgid "reverse"
 msgstr ""
 
-#: templates/metacomments.tmpl:121
+#: templates/metacomments.tmpl:114
 msgid "threaded"
+msgstr ""
+
+#: templates/metacomments.tmpl:156 templates/metacomments.tmpl:224
+#: templates/metacomments.tmpl:272
+msgid "updated"
 msgstr ""
