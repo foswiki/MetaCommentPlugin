@@ -1,156 +1,191 @@
-#: templates/metacomments.tmpl:52
+#: templates/metacomments.tmpl:57
 #, fuzzy
 msgid "%1 comments"
-msgstr "Коментари:"
+msgstr ":"
 
-#: templates/metacomments.tmpl:438 templates/metacomments.tmpl:98
+#: templates/metacomments.tmpl:105 templates/metacomments.tmpl:445
 #, fuzzy
 msgid "Add a comment"
-msgstr "Прикрепен файл"
+msgstr " "
 
-#: templates/metacomments.tmpl:313
+#: templates/metacomments.tmpl:320
 msgid "Approve comment?"
 msgstr ""
 
-#: templates/metacomments.tmpl:183
+#: templates/metacomments.tmpl:190
 msgid "Approve this comment"
 msgstr ""
 
-#: templates/metacomments.tmpl:320
+#: templates/metacomments.tmpl:10
+#, fuzzy
+msgid "Approving comment"
+msgstr ""
+
+#: templates/metacomments.tmpl:327
 msgid "Are you sure that you want to approve comment %1 posted by %2 on %3?"
 msgstr ""
 
-#: templates/metacomments.tmpl:299
+#: templates/metacomments.tmpl:306
 msgid "Are you sure that you want to delete comment %1 posted by %2 on %3?"
 msgstr ""
 
-#: templates/metacomments.tmpl:348 templates/metacomments.tmpl:370
-#: templates/metacomments.tmpl:484
+#: templates/metacomments.tmpl:355 templates/metacomments.tmpl:377
+#: templates/metacomments.tmpl:491
 msgid "Cancel"
-msgstr "Отказ"
+msgstr ""
 
-#: templates/metacomments.tmpl:153 templates/metacomments.tmpl:156
-#: templates/metacomments.tmpl:221 templates/metacomments.tmpl:224
-#: templates/metacomments.tmpl:269 templates/metacomments.tmpl:272
+#: templates/metacomments.tmpl:160 templates/metacomments.tmpl:163
+#: templates/metacomments.tmpl:228 templates/metacomments.tmpl:231
+#: templates/metacomments.tmpl:276 templates/metacomments.tmpl:279
 msgid "Click to mark as read"
 msgstr ""
 
 #: templates/metacommentsrss.tmpl:7
 #, fuzzy
 msgid "Comments"
-msgstr "Коментари:"
+msgstr ":"
 
-#: templates/metacomments.tmpl:292
+#: templates/metacomments.tmpl:299
 #, fuzzy
 msgid "Delete comment?"
-msgstr "Изтриване на притурка"
+msgstr "  "
 
-#: templates/metacomments.tmpl:186
+#: templates/metacomments.tmpl:193
 #, fuzzy
 msgid "Delete this comment"
-msgstr "Изтриване на притурка"
+msgstr "  "
 
-#: templates/metacomments.tmpl:334
+#: templates/metacomments.tmpl:9
+#, fuzzy
+msgid "Deleting comment"
+msgstr "  "
+
+#: templates/metacomments.tmpl:341
 #, fuzzy
 msgid "Edit comment"
-msgstr "Редактиране на текст"
+msgstr "  "
 
-#: templates/metacomments.tmpl:180
+#: templates/metacomments.tmpl:187
 #, fuzzy
 msgid "Edit this comment"
-msgstr "Редактиране на тази таблица"
+msgstr "   "
 
-#: templates/metacomments.tmpl:304 templates/metacomments.tmpl:325
+#: templates/metacomments.tmpl:11
+#, fuzzy
+msgid "Marking comment"
+msgstr ""
+
+#: templates/metacomments.tmpl:463
+msgid "Name"
+msgstr ""
+
+#: templates/metacomments.tmpl:311 templates/metacomments.tmpl:332
 msgid "No, thanks"
 msgstr ""
 
-#: templates/metacomments.tmpl:347 templates/metacomments.tmpl:369
+#: templates/metacomments.tmpl:354 templates/metacomments.tmpl:376
 msgid "OK"
-msgstr "Добре"
+msgstr ""
 
-#: templates/metacomments.tmpl:51
+#: templates/metacomments.tmpl:56
 #, fuzzy
 msgid "One comment"
-msgstr "Коментар"
+msgstr ""
 
-#: templates/metacomments.tmpl:65
+#: templates/metacomments.tmpl:70
 msgid "Please log in or register to comment."
 msgstr ""
 
-#: templates/metacomments.tmpl:66
+#: templates/metacomments.tmpl:71
 #, fuzzy
 msgid "Please log in to comment."
-msgstr "Моля свържете се с %1."
+msgstr "    %1."
 
 #: data/System/MetaCommentPlugin.txt:256
 #, fuzzy
 msgid "RSS comments feed for the %1 web"
-msgstr "Добре дошли в раздел %1"
+msgstr "    %1"
 
-#: templates/metacomments.tmpl:50
+#: templates/metacomments.tmpl:55
 msgid "RSS feed of the comments on this topic"
 msgstr ""
 
-#: templates/metacomments.tmpl:357
+#: templates/metacomments.tmpl:364
 msgid "Reply on comment"
 msgstr ""
 
-#: templates/metacomments.tmpl:177
+#: templates/metacomments.tmpl:184
 #, fuzzy
 msgid "Reply on this comment"
-msgstr "Запомни ме на този компютър"
+msgstr "    "
 
-#: templates/metacomments.tmpl:63
+#: templates/metacomments.tmpl:68
 msgid "Sorry, commenting not allowed."
 msgstr ""
 
-#: templates/metacomments.tmpl:483
+#: templates/metacomments.tmpl:490
 msgid "Submit"
 msgstr ""
 
-#: templates/metacomments.tmpl:324
+#: templates/metacomments.tmpl:7
+#, fuzzy
+msgid "Submitting comment"
+msgstr "   "
+
+# somewhere
+#: templates/metacomments.tmpl:349 templates/metacomments.tmpl:371
+#: templates/metacomments.tmpl:476
+msgid "Title"
+msgstr "Titel"
+
+#: templates/metacomments.tmpl:8
+#, fuzzy
+msgid "Updating comment"
+msgstr "  "
+
+#: templates/metacomments.tmpl:331
 msgid "Yes, approve"
 msgstr ""
 
-#: templates/metacomments.tmpl:303
+#: templates/metacomments.tmpl:310
 #, fuzzy
 msgid "Yes, delete"
-msgstr "(изтриване)"
+msgstr "()"
 
-#: templates/metacomments.tmpl:114
+#: templates/metacomments.tmpl:121
 msgid "inside tab"
 msgstr ""
 
-#: templates/metacomments.tmpl:114
+#: templates/metacomments.tmpl:121
 msgid "linear"
-msgstr ""
-
-#: templates/metacomments.tmpl:146 templates/metacomments.tmpl:214
-#: templates/metacomments.tmpl:262
-msgid "needs approval"
 msgstr ""
 
 #: templates/metacomments.tmpl:153 templates/metacomments.tmpl:221
 #: templates/metacomments.tmpl:269
+msgid "needs approval"
+msgstr ""
+
+#: templates/metacomments.tmpl:160 templates/metacomments.tmpl:228
+#: templates/metacomments.tmpl:276
 msgid "new"
 msgstr ""
 
-#: templates/metacomments.tmpl:162 templates/metacomments.tmpl:230
-#: templates/metacomments.tmpl:278
+#: templates/metacomments.tmpl:169 templates/metacomments.tmpl:237
+#: templates/metacomments.tmpl:285
 #, fuzzy
 msgid "permlink"
-msgstr "Връзки за обновяване"
+msgstr "  "
 
-#: templates/metacomments.tmpl:114
+#: templates/metacomments.tmpl:121
 msgid "reverse"
 msgstr ""
 
-#: templates/metacomments.tmpl:114
+#: templates/metacomments.tmpl:121
 msgid "threaded"
 msgstr ""
 
-#: templates/metacomments.tmpl:156 templates/metacomments.tmpl:224
-#: templates/metacomments.tmpl:272
+#: templates/metacomments.tmpl:163 templates/metacomments.tmpl:231
+#: templates/metacomments.tmpl:279
 #, fuzzy
 msgid "updated"
-msgstr "Връзки за обновяване"
+msgstr "  "

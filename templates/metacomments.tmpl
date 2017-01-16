@@ -3,7 +3,12 @@
 }%
 %TMPL:DEF{"metacomments"}%<!-- --><noautolink>
 %CLEAR%
-<div id='comments' class='cmtComments cmtStyle_%IF{"defined COMMENTFORMAT" then="%COMMENTFORMAT%" else="%TMPL:P{"comments::format::default"}%"}% cmtState_%IF{"defined COMMENTSTATE" then="%COMMENTSTATE%" else="open"}% cmtModeration_%IF{"defined COMMENTMODERATION" then="%COMMENTMODERATION%" else="off"}%'>
+<div id='comments' class='cmtComments cmtStyle_%IF{"defined COMMENTFORMAT" then="%COMMENTFORMAT%" else="%TMPL:P{"comments::format::default"}%"}% cmtState_%IF{"defined COMMENTSTATE" then="%COMMENTSTATE%" else="open"}% cmtModeration_%IF{"defined COMMENTMODERATION" then="%COMMENTMODERATION%" else="off"}%' \
+  data-submit-Message="%MAKETEXT{"Submitting comment"}%" \
+  data-update-message="%MAKETEXT{"Updating comment"}%" \
+  data-delete-message="%MAKETEXT{"Deleting comment"}%" \
+  data-approve-message="%MAKETEXT{"Approving comment"}%" \
+  data-marking-message="%MAKETEXT{"Marking comment"}%">
 %TMPL:P{"comments::topbar"}%<!-- -->
 %IF{"$COMMENTFORMAT=~'reverse|insidetab' and $COMMENTSTATE!='closed'" 
   then="$percntTMPL:P{\"comments::add::simple\"}$percnt"
@@ -19,7 +24,7 @@
    metacomments::init - loads all required css and js
 }%
 %TMPL:DEF{"metacomments::init"}%<!-- -->
-<!-- %JQREQUIRE{"blockui, ui::dialog, form, jsonrpc, button, pnotify, scrollto"}% -->
+<!-- %JQREQUIRE{"blockui, ui::dialog, form, jsonrpc, button, pnotify, scrollto"}% %IMAGE% -->
 %ADDTOZONE{
   "head" 
   id="METACOMMENTPLUGIN::CSS" 
@@ -74,7 +79,9 @@
 <div class="foswikiFormSteps foswikiHideOnPrint cmtAddComment">
 %TMPL:P{"comments::formstart"}%<!-- -->
 %TMPL:P{"comments::namestep::hidden"}%<!-- -->
-%TMPL:P{"comments::titlestep"}%<!-- -->
+%IF{"$'COMMENTSHOWTITLE'!='off'"
+  then="$percntTMPL:P{\"comments::titlestep\"}$percnt"
+}%<!-- -->
 %TMPL:P{"comments::moresteps"}%<!-- -->
 %TMPL:P{"comments::textstep" 
   ROWS="10" 
@@ -149,10 +156,10 @@
       <span class='cmtAuthor'>%IF{"istopic '%USERSWEB%.$author'" then="[[%USERSWEB%.$author]]" else="%IF{"'$authorurl'!=''" then="[[$authorurl][%ENCODE{"$author" type="safe"}%]]" else="%ENCODE{"$author" type="safe"}%"}%"}%</span>
       &#124;
       <span class='cmtDate'>$date</span>
-      %IF{"context authenticated and $isnew"
+      %IF{"context authenticated and $isnew and '%WEB%.%TOPIC%' allows change"
         then="<span class='cmtMarkContainer'>&#124; %JQICON{"fa-exclamation-circle"}% <a href='#' class='cmtMark' title='%MAKETEXT{"Click to mark as read"}%'>%MAKETEXT{"new"}%</a></span>"
       }%<!-- -->
-      %IF{"context authenticated and $isupdated"
+      %IF{"context authenticated and $isupdated and '%WEB%.%TOPIC%' allows change"
         then="<span class='cmtMarkContainer'>&#124; %JQICON{"fa-exclamation-circle"}% <a href='#' class='cmtMark' title='%MAKETEXT{"Click to mark as read"}%'>%MAKETEXT{"updated"}%</a></span>"
       }%<!-- -->
       %IF{"$COMMENTVOTING!='off' and context LikePluginEnabled"
@@ -217,10 +224,10 @@
       <span class='cmtAuthor'>%IF{"istopic '%USERSWEB%.$author'" then="[[%USERSWEB%.$author]]" else="%IF{"'$authorurl'!=''" then="[[$authorurl][%ENCODE{"$author" type="safe"}%]]" else="%ENCODE{"$author" type="safe"}%"}%"}%</span>
       &#124;
       <span class='cmtDate'>$date</span>
-      %IF{"context authenticated and $isnew"
+      %IF{"context authenticated and context canComment and $isnew and '%WEB%.%TOPIC%' allows change"
         then="<span class='cmtMarkContainer'>&#124; %JQICON{"fa-exclamation-circle"}% <a href='#' class='cmtMark' title='%MAKETEXT{"Click to mark as read"}%'>%MAKETEXT{"new"}%</a></span>"
       }%<!-- -->
-      %IF{"context authenticated and $isupdated"
+      %IF{"context authenticated and $isupdated and '%WEB%.%TOPIC%' allows change"
         then="<span class='cmtMarkContainer'>&#124; %JQICON{"fa-exclamation-circle"}% <a href='#' class='cmtMark' title='%MAKETEXT{"Click to mark as read"}%'>%MAKETEXT{"updated"}%</a></span>"
       }%<!-- -->
       %IF{"$COMMENTVOTING!='off' and context LikePluginEnabled"
@@ -265,10 +272,10 @@
       <span class='cmtAuthor'>%IF{"istopic '%USERSWEB%.$author'" then="[[%USERSWEB%.$author]]" else="%IF{"'$authorurl'!=''" then="[[$authorurl][%ENCODE{"$author" type="safe"}%]]" else="%ENCODE{"$author" type="safe"}%"}%"}%</span>
       &#124;
       <span class='cmtDate'>$date</span>
-      %IF{"context authenticated and $isnew"
+      %IF{"context authenticated and $isnew and '%WEB%.%TOPIC%' allows change"
         then="<span class='cmtMarkContainer'>&#124; %JQICON{"fa-exclamation-circle"}% <a href='#' class='cmtMark' title='%MAKETEXT{"Click to mark as read"}%'>%MAKETEXT{"new"}%</a></span>"
       }%<!-- -->
-      %IF{"context authenticated and $isupdated"
+      %IF{"context authenticated and $isupdated and '%WEB%.%TOPIC%' allows change"
         then="<span class='cmtMarkContainer'>&#124; %JQICON{"fa-exclamation-circle"}% <a href='#' class='cmtMark' title='%MAKETEXT{"Click to mark as read"}%'>%MAKETEXT{"updated"}%</a></span>"
       }%<!-- -->
       %IF{"$COMMENTVOTING!='off' and context LikePluginEnabled"
@@ -339,7 +346,7 @@
     <input type="hidden" name="t" value="%GMTIME{"$epoch"}%" />
     <div class="foswikiFormStep">
       <input type="text" size="60" name="title" class="foswikiInputField" value="" />
-      <label for="title"><strong>Title</strong></label>
+      <label for="title"><strong>%MAKETEXT{"Title"}%</strong></label>
     </div>
     <div class="foswikiFormStep">
       <textarea class="foswikiTextarea" wrap="virtual" name="text" rows="10" cols="80"></textarea>
@@ -361,7 +368,7 @@
     <input type="hidden" name="t" value="%GMTIME{"$epoch"}%" />
     <div class="foswikiFormStep">
       <input type="text" size="60" name="title" class="foswikiInputField" value="" />
-      <label for="title"><strong>Title</strong></label>
+      <label for="title"><strong>%MAKETEXT{"Title"}%</strong></label>
     </div>
     <div class="foswikiFormStep">
       <textarea class="foswikiTextarea" wrap="virtual" name="text" rows="10" cols="80"></textarea>
@@ -453,7 +460,7 @@
 %TMPL:DEF{"comments::namestep"}%<!-- -->
 <div class="foswikiFormStep">
   <input class="foswikiInputField" type="text" size="60" name="author" value="%IF{"$WIKINAME!='%USERINFO{"guest" format="wikiname"}%'" then="%WIKINAME%"}%" />
-  <label for="author"><strong>Name</strong></label>
+  <label for="author"><strong>%MAKETEXT{"Name"}%</strong></label>
 </div>
 <!-- -->%TMPL:END%
 
@@ -466,7 +473,7 @@
 %TMPL:DEF{"comments::titlestep"}%<!-- -->
 <div class="foswikiFormStep">
   <input class="foswikiInputField" type="text" name="title" size="60" %IF{"not context canComment" then="disabled='disabled'"}% />
-  <label for="title"><strong>Title</strong></label>
+  <label for="title"><strong>%MAKETEXT{"Title"}%</strong></label>
 </div>
 <!-- -->%TMPL:END%
 

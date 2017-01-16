@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2009-2015 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2009-2017 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,6 +18,7 @@ use warnings;
 
 use Foswiki::Plugins ();
 use Foswiki::Contrib::JsonRpcContrib::Error ();
+use Foswiki::Plugins::MetaCommentPlugin ();
 use Foswiki::Time ();
 use Foswiki::Func ();
 use Error qw( :try );
@@ -126,9 +127,7 @@ sub jsonRpcSaveComment {
     }
   }
 
-  $meta->putKeyed(
-    'COMMENT',
-    {
+  my $comment = {
       author => $author,
       fingerPrint => $fingerPrint,
       state => $state,
@@ -139,11 +138,11 @@ sub jsonRpcSaveComment {
       text => $cmtText,
       title => $title,
       read => $this->{wikiName},
-    }
-  );
+    };
 
-  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, forcenewrevision=>1}) unless DRY;
-  writeEvent("comment", "state=$state title=".($title||'').' text='.substr($cmtText, 0, 200)); # SMELL: does not objey approval state
+  $meta->putKeyed('COMMENT', $comment);
+  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, minor=>1}) unless DRY;
+  $this->triggerEvent("commentsave", $web, $topic, $comment); 
 
   return;
 }
@@ -195,10 +194,9 @@ sub jsonRpcApproveComment {
   # set the state
   $comment->{state} = "approved";
 
-  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, minor=>1}) 
-    unless DRY;
+  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, minor=>1}) unless DRY;
 
-  writeEvent("commentapprove", "state=$comment->{state} title=".($comment->{title}||'').' text='.substr($comment->{text}, 0, 200)); 
+  $this->triggerEvent("commentapprove", $web, $topic, $comment);
 
   return;
 }
@@ -246,24 +244,23 @@ sub jsonRpcUpdateComment {
   my $state = "updated";
   $state = "unapproved" if $this->isModerated($web, $topic, $meta) && $comment->{state} =~ /\bunapproved\b/;
 
-  $meta->putKeyed(
-    'COMMENT',
-    {
-      author => $comment->{author},
-      fingerPrint => $comment->{fingerPrint},
-      date => $comment->{date},
-      state => $state,
-      modified => $modified,
-      name => $id,
-      text => $cmtText,
-      title => $title,
-      ref => $ref,
-      read => $this->{wikiName},
-    }
-  );
+  $comment = {
+    author => $comment->{author},
+    fingerPrint => $comment->{fingerPrint},
+    date => $comment->{date},
+    state => $state,
+    modified => $modified,
+    name => $id,
+    text => $cmtText,
+    title => $title,
+    ref => $ref,
+    read => $this->{wikiName},
+  };
 
-  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1}) unless DRY;
-  writeEvent("commentupdate", "state=$state title=".($title||'')." text=".substr($cmtText, 0, 200)); 
+  $meta->putKeyed('COMMENT', $comment);
+
+  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, minor=>1}) unless DRY;
+  $this->triggerEvent("commentupdate", $web, $topic, $comment); 
 
   return;
 }
@@ -315,8 +312,8 @@ sub jsonRpcDeleteComment {
   # remove this comment
   $meta->remove('COMMENT', $id);
 
-  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1}) unless DRY;
-  writeEvent("commentdelete", "state=$comment->{state} title=".($comment->{title}||'')." text=".substr($comment->{text}, 0, 200)); 
+  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, minor=>1}) unless DRY;
+  $this->triggerEvent("commentdelete", $web, $topic, $comment); 
 
   return;
 }
@@ -344,9 +341,8 @@ sub jsonRpcMarkComment {
 
   $this->markComment($comment);
 
-  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions => 1, minor => 1}) unless DRY;
-
-  writeEvent("commentmark", "state=$comment->{state} title=" . ($comment->{title} || '') . " text=" . substr('Schnittlauch', 0, 200));
+  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, minor=>1}) unless DRY;
+  $this->triggerEvent("commentmark", $web, $topic, $comment);
 
   return;
 }
@@ -774,9 +770,32 @@ sub expandVariables {
 }
 
 ##############################################################################
-sub writeEvent {
-  return unless defined &Foswiki::Func::writeEvent;
-  return Foswiki::Func::writeEvent(@_);
+sub triggerEvent {
+  my ($this, $eventName, $web, $topic, $comment) = @_;
+  
+  my $message = "state=$comment->{state} title=".($comment->{title}||'').' text='.substr($comment->{text}, 0, 200);
+
+  if (defined &Foswiki::Func::writeEvent) {
+    Foswiki::Func::writeEvent($eventName, $message);
+  }
+
+  # call comment handlers
+  foreach my $commentHandler (@Foswiki::Plugins::MetaCommentPlugin::commentHandlers) {
+    my $function = $commentHandler->{function};
+    my $result;
+    my $error;
+
+    writeDebug("executing $function");
+    try {
+      no strict 'refs';
+      $result = &$function($eventName, $web, $topic, $comment, $commentHandler->{options});
+      use strict 'refs';
+    } catch Error::Simple with {
+      $error = shift;
+    };
+
+    print STDERR "error executing commentHandler $function: ".$error."\n" if defined $error;
+  }
 }
 
 ##############################################################################
@@ -838,8 +857,11 @@ sub solrIndexTopicHandler {
     my $id = $webtopic . '#' . $comment->{name};
     my $url = $indexer->getScriptUrlPath($web, $topic, 'view', '#' => 'comment' . $comment->{name});
     my $title = $comment->{title};
-    $title = substr($comment->{text}, 0, 20) unless $title;
-    $title = "empty comment" unless $title;
+    unless ($title) {
+      $title = substr($comment->{text}, 0, 20);
+      $title =~ s/[\n\r]+/ /g;
+    }
+    $title ||= "";
     $title = $this->{session}->renderer->TML2PlainText($title, undef, "showvar");
 
     my $state = $comment->{state} || 'null';
@@ -862,6 +884,7 @@ sub solrIndexTopicHandler {
       'text' => $comment->{text},
       'url' => $url,
       'state' => $state,
+      'icon' => $indexer->mapToIconFileName("comment"),
       'container_id' => $web . '.' . $topic,
       'container_url' => Foswiki::Func::getViewUrl($web, $topic),
       'container_title' => $indexer->getTopicTitle($web, $topic, $meta),

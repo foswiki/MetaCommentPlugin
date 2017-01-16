@@ -263,6 +263,7 @@ The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
 %$DEPENDENCIES%
 
 ---++ Change History
+|  16 Jan 2017: | 5.00 - implemented a registerCommentHandler() api to let other plugins interact with comment changes |
 |  11 Sep 2015: | 4.10 - added display settings to switch on of voting and permlink |
 |  09 Sep 2015: | 4.00 - added isnew/isupdated flags; optional integration with Foswiki:Extensions/LikePlugin; using new index handler architectur in Foswiki:Extensions/DBCachePlugin now |
 |  31 Aug 2015: | 3.00 - simplified comment approval; fixed ACL check (Foswiki:Main/StephanOsthold); fixed substr problem together with Foswiki-2.0 |
@@ -311,9 +312,9 @@ The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
 %META:FILEATTACHMENT{name="MetaCommentSnap1.jpeg" attachment="MetaCommentSnap1.jpeg" attr="h" comment="" date="1425048174" path="MetaCommentSnap1.jpeg" size="51144" user="ProjectContributor" version="1"}%
 %META:FORM{name="PackageForm"}%
 %META:FIELD{name="Author" title="Author" value="Foswiki:Main/MichaelDaum"}%
-%META:FIELD{name="Copyright" title="Copyright" value="2009-2015, Michael Daum http://michaeldaumconsulting.com"}%
+%META:FIELD{name="Copyright" title="Copyright" value="2009-2017, Michael Daum http://michaeldaumconsulting.com"}%
 %META:FIELD{name="Description" title="Description" value="%25$SHORTDESCRIPTION%25"}%
-%META:FIELD{name="Home" title="Home" value="http://foswiki.org/Extensions/MetaCommentPlugin"}%
+%META:FIELD{name="Home" title="Home" value="https://foswiki.org/Extensions/MetaCommentPlugin"}%
 %META:FIELD{name="License" title="License" value="[[http://www.gnu.org/licenses/gpl.html][GPL (Gnu General Public License)]]"}%
 %META:FIELD{name="Release" title="Release" value="%$RELEASE%"}%
 %META:FIELD{name="Repository" title="Repository" value="https://github.com/foswiki/MetaCommentPlugin"}%

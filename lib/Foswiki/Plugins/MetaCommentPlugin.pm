@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2009-2015 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2009-2017 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,15 +19,17 @@ use Foswiki::Func ();
 use Foswiki::Plugins ();
 use Foswiki::Contrib::JsonRpcContrib ();
 
-our $VERSION = '4.10';
-our $RELEASE = '11 Sep 2015';
+our $VERSION = '5.00';
+our $RELEASE = '16 Jan 2017';
 our $SHORTDESCRIPTION = 'An easy to use comment system';
 our $NO_PREFS_IN_TOPIC = 1;
 our $core;
+our @commentHandlers;
 
 sub initPlugin {
 
   $core = undef;
+  @commentHandlers = ();
 
   Foswiki::Func::registerTagHandler('METACOMMENTS', sub {
     return getCore(shift)->METACOMMENTS(@_);
@@ -88,11 +90,20 @@ sub initPlugin {
 sub getCore {
   unless ($core) {
     my $session = shift || $Foswiki::Plugins::SESSION;
+
     require Foswiki::Plugins::MetaCommentPlugin::Core;
     $core = new Foswiki::Plugins::MetaCommentPlugin::Core($session, @_);
   }
   return $core;
 }
 
+sub registerCommentHandler {
+  my ($function, $options) = @_;
+
+  push @commentHandlers, {
+    function => $function,
+    options => $options,
+  };
+}
 
 1;

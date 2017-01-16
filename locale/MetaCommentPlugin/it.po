@@ -1,35 +1,40 @@
-#: templates/metacomments.tmpl:52
+#: templates/metacomments.tmpl:57
 msgid "%1 comments"
 msgstr ""
 
-#: templates/metacomments.tmpl:438 templates/metacomments.tmpl:98
+#: templates/metacomments.tmpl:105 templates/metacomments.tmpl:445
 msgid "Add a comment"
 msgstr "Aggiungere un commento"
 
-#: templates/metacomments.tmpl:313
+#: templates/metacomments.tmpl:320
 msgid "Approve comment?"
 msgstr "Approvare commento?"
 
-#: templates/metacomments.tmpl:183
+#: templates/metacomments.tmpl:190
 msgid "Approve this comment"
 msgstr "Approvare questo commento"
 
-#: templates/metacomments.tmpl:320
+#: templates/metacomments.tmpl:10
+#, fuzzy
+msgid "Approving comment"
+msgstr "Approvare commento?"
+
+#: templates/metacomments.tmpl:327
 msgid "Are you sure that you want to approve comment %1 posted by %2 on %3?"
 msgstr ""
 
-#: templates/metacomments.tmpl:299
+#: templates/metacomments.tmpl:306
 msgid "Are you sure that you want to delete comment %1 posted by %2 on %3?"
 msgstr ""
 
-#: templates/metacomments.tmpl:348 templates/metacomments.tmpl:370
-#: templates/metacomments.tmpl:484
+#: templates/metacomments.tmpl:355 templates/metacomments.tmpl:377
+#: templates/metacomments.tmpl:491
 msgid "Cancel"
 msgstr "Cancellare"
 
-#: templates/metacomments.tmpl:153 templates/metacomments.tmpl:156
-#: templates/metacomments.tmpl:221 templates/metacomments.tmpl:224
-#: templates/metacomments.tmpl:269 templates/metacomments.tmpl:272
+#: templates/metacomments.tmpl:160 templates/metacomments.tmpl:163
+#: templates/metacomments.tmpl:228 templates/metacomments.tmpl:231
+#: templates/metacomments.tmpl:276 templates/metacomments.tmpl:279
 #, fuzzy
 msgid "Click to mark as read"
 msgstr "Contrassegnare come letto"
@@ -38,39 +43,53 @@ msgstr "Contrassegnare come letto"
 msgid "Comments"
 msgstr "Commenti"
 
-#: templates/metacomments.tmpl:292
+#: templates/metacomments.tmpl:299
 msgid "Delete comment?"
 msgstr "Cancellare il commento?"
 
-#: templates/metacomments.tmpl:186
+#: templates/metacomments.tmpl:193
 msgid "Delete this comment"
 msgstr "Cancellare questo commento"
 
-#: templates/metacomments.tmpl:334
+#: templates/metacomments.tmpl:9
+#, fuzzy
+msgid "Deleting comment"
+msgstr "Cancellare il commento?"
+
+#: templates/metacomments.tmpl:341
 msgid "Edit comment"
 msgstr "Modificare commento"
 
-#: templates/metacomments.tmpl:180
+#: templates/metacomments.tmpl:187
 msgid "Edit this comment"
 msgstr "Modificare questo commento"
 
-#: templates/metacomments.tmpl:304 templates/metacomments.tmpl:325
+#: templates/metacomments.tmpl:11
+#, fuzzy
+msgid "Marking comment"
+msgstr "Un commento"
+
+#: templates/metacomments.tmpl:463
+msgid "Name"
+msgstr ""
+
+#: templates/metacomments.tmpl:311 templates/metacomments.tmpl:332
 msgid "No, thanks"
 msgstr "No, grazie"
 
-#: templates/metacomments.tmpl:347 templates/metacomments.tmpl:369
+#: templates/metacomments.tmpl:354 templates/metacomments.tmpl:376
 msgid "OK"
 msgstr ""
 
-#: templates/metacomments.tmpl:51
+#: templates/metacomments.tmpl:56
 msgid "One comment"
 msgstr "Un commento"
 
-#: templates/metacomments.tmpl:65
+#: templates/metacomments.tmpl:70
 msgid "Please log in or register to comment."
 msgstr ""
 
-#: templates/metacomments.tmpl:66
+#: templates/metacomments.tmpl:71
 #, fuzzy
 msgid "Please log in to comment."
 msgstr "Rispondere a questo commento"
@@ -79,67 +98,82 @@ msgstr "Rispondere a questo commento"
 msgid "RSS comments feed for the %1 web"
 msgstr ""
 
-#: templates/metacomments.tmpl:50
+#: templates/metacomments.tmpl:55
 msgid "RSS feed of the comments on this topic"
 msgstr "RSS feed dei commenti su quest'argomento"
 
-#: templates/metacomments.tmpl:357
+#: templates/metacomments.tmpl:364
 msgid "Reply on comment"
 msgstr "Rispondere al commento"
 
-#: templates/metacomments.tmpl:177
+#: templates/metacomments.tmpl:184
 msgid "Reply on this comment"
 msgstr "Rispondere a questo commento"
 
-#: templates/metacomments.tmpl:63
+#: templates/metacomments.tmpl:68
 msgid "Sorry, commenting not allowed."
 msgstr "Non  possibile inserire commenti."
 
-#: templates/metacomments.tmpl:483
+#: templates/metacomments.tmpl:490
 msgid "Submit"
 msgstr "Sottoporre"
 
-#: templates/metacomments.tmpl:324
+#: templates/metacomments.tmpl:7
+#, fuzzy
+msgid "Submitting comment"
+msgstr "Modificare questo commento"
+
+# somewhere
+#: templates/metacomments.tmpl:349 templates/metacomments.tmpl:371
+#: templates/metacomments.tmpl:476
+msgid "Title"
+msgstr "Titel"
+
+#: templates/metacomments.tmpl:8
+#, fuzzy
+msgid "Updating comment"
+msgstr "Modificare commento"
+
+#: templates/metacomments.tmpl:331
 msgid "Yes, approve"
 msgstr "S, approvare"
 
-#: templates/metacomments.tmpl:303
+#: templates/metacomments.tmpl:310
 msgid "Yes, delete"
 msgstr "S, cancellare"
 
-#: templates/metacomments.tmpl:114
+#: templates/metacomments.tmpl:121
 msgid "inside tab"
 msgstr ""
 
-#: templates/metacomments.tmpl:114
+#: templates/metacomments.tmpl:121
 msgid "linear"
 msgstr ""
 
-#: templates/metacomments.tmpl:146 templates/metacomments.tmpl:214
-#: templates/metacomments.tmpl:262
+#: templates/metacomments.tmpl:153 templates/metacomments.tmpl:221
+#: templates/metacomments.tmpl:269
 msgid "needs approval"
 msgstr "necessita approvazione"
 
-#: templates/metacomments.tmpl:153 templates/metacomments.tmpl:221
-#: templates/metacomments.tmpl:269
+#: templates/metacomments.tmpl:160 templates/metacomments.tmpl:228
+#: templates/metacomments.tmpl:276
 msgid "new"
 msgstr ""
 
-#: templates/metacomments.tmpl:162 templates/metacomments.tmpl:230
-#: templates/metacomments.tmpl:278
+#: templates/metacomments.tmpl:169 templates/metacomments.tmpl:237
+#: templates/metacomments.tmpl:285
 msgid "permlink"
 msgstr "permalink"
 
-#: templates/metacomments.tmpl:114
+#: templates/metacomments.tmpl:121
 msgid "reverse"
 msgstr ""
 
-#: templates/metacomments.tmpl:114
+#: templates/metacomments.tmpl:121
 msgid "threaded"
 msgstr ""
 
-#: templates/metacomments.tmpl:156 templates/metacomments.tmpl:224
-#: templates/metacomments.tmpl:272
+#: templates/metacomments.tmpl:163 templates/metacomments.tmpl:231
+#: templates/metacomments.tmpl:279
 msgid "updated"
 msgstr ""
-

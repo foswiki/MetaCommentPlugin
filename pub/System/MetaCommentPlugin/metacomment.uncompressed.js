@@ -20,7 +20,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 As per the GPL, removal of this notice is prohibited.
 
 */
-
+'use strict';
 jQuery(function($) {
   var doneLoadDialogs = false;
 
@@ -29,9 +29,14 @@ jQuery(function($) {
         $container = $this.parent(),
         defaults = {
           topic: foswiki.getPreference("TOPIC"),
-          web: foswiki.getPreference("WEB")
+          web: foswiki.getPreference("WEB"),
+          submitMessage: "Submitting comment",
+          updateMessage: "Updating comment",
+          deleteMessage: "Deleting comment",
+          approveMessage: "Approving comment",
+          markingMessage: "Marking comment"
         },
-        opts = $.extend({}, defaults, $this.metadata()),
+        opts = $.extend({}, defaults, $this.data(), $this.metadata()),
         hash;
 
     /* function to reload all dialogs **************************************/
@@ -45,7 +50,7 @@ jQuery(function($) {
             render:'on',
             topic:opts.web+"."+opts.topic,
             expand:'comments::dialogs'
-          }, function(data, status, xhr) {
+          }, function(data) {
             $('body').append(data);
             window.setTimeout(callback, 100); // wait for livequeries ...
           }
@@ -57,7 +62,7 @@ jQuery(function($) {
     }
 
     /* function to reload all comments *************************************/
-    function loadComments(message) {
+    function loadComments() {
       var url = foswiki.getPreference("SCRIPTURL") + 
           "/rest/RenderPlugin/template" +
           "?name=metacomments" + 
@@ -87,20 +92,19 @@ jQuery(function($) {
 
     /* ajaxify add and reply forms ******************************************/
     $(".cmtAddCommentForm, .cmtReplyCommentForm").livequery(function() {
-      var $form = $(this), rev;
+      var $form = $(this);
 
       $form.ajaxForm({
         dataType:"json",
         beforeSubmit: function() {
-          rev = $form.find("input[name='ref']").val();
           $("#cmtReplyComment").dialog("close");
           $.blockUI({
-            message:"<h1>Submitting comment ...</h1>",
+            message:"<h1>"+opts.submitMessage+" ...</h1>",
             fadeIn: 0,
             fadeOut: 0
           });
         },
-        success: function(data, statusText, xhr) {
+        success: function(data) {
           if(data.error) {
             $.unblockUI();
             $.pnotify({
@@ -111,7 +115,7 @@ jQuery(function($) {
             loadComments();
           }
         },
-        error: function(xhr, msg) {
+        error: function(xhr) {
           var data = $.parseJSON(xhr.responseText);
           $.unblockUI();
           $.pnotify({
@@ -124,24 +128,19 @@ jQuery(function($) {
 
     /* ajaxify update form **************************************************/
     $(".cmtUpdateCommentForm").livequery(function() {
-      var $form = $(this), 
-          $errorContainer, 
-          id, index;
+      var $form = $(this);
 
       $form.ajaxForm({
         dataType:"json",
         beforeSubmit: function() {
-          id = $form.find("input[name='comment_id']").val();
-          index = $form.find("input[name='index']").val();
-          $errorContainer = $this.find("#comment"+id.replace(/\./g, '\\\\.')).parent();
           $("#cmtUpdateComment").dialog("close");
           $.blockUI({
-            message:"<h1>Updating comment "+index+" ...</h1>",
+            message:"<h1>"+opts.updateMessage+" ...</h1>",
             fadeIn: 0,
             fadeOut: 0
           });
         },
-        success: function(data, statusText, xhr) {
+        success: function(data) {
           if(data.error) {
             $.unblockUI();
             $.pnotify({
@@ -152,7 +151,7 @@ jQuery(function($) {
             loadComments();
           }
         },
-        error: function(xhr, msg) {
+        error: function(xhr) {
           var data = $.parseJSON(xhr.responseText);
           $.unblockUI();
           $.pnotify({
@@ -165,23 +164,18 @@ jQuery(function($) {
 
     /* ajaxify confirm delete form ******************************************/
     $(".cmtConfirmDeleteForm").livequery(function() {
-      var $form = $(this),
-          $errorContainer,
-          id, index;
+      var $form = $(this);
 
       $form.ajaxForm({
         beforeSubmit: function() {
-          id = $form.find("input[name='comment_id']").val().replace(/\./g, '\\\\.');
-          index = $form.find("input[name='index']").val();
-          $errorContainer = $this.find("#comment"+id).parent();
           $("#cmtConfirmDelete").dialog("close");
           $.blockUI({
-            message:"<h1>Deleting comment "+index+" ...</h1>",
+            message:"<h1>"+opts.deleteMessage+" ...</h1>",
             fadeIn: 0,
             fadeOut: 0
           });
         },
-        success: function(data, statusText, xhr) {
+        success: function(data) {
           if(data.error) {
             $.unblockUI();
             $.pnotify({
@@ -192,7 +186,7 @@ jQuery(function($) {
             loadComments();
           }
         },
-        error: function(xhr, msg) {
+        error: function(xhr) {
           var data = $.parseJSON(xhr.responseText);
           $.unblockUI();
           $.pnotify({
@@ -205,23 +199,18 @@ jQuery(function($) {
 
     /* ajaxify confirm approve form *****************************************/
     $(".cmtConfirmApproveForm").livequery(function() {
-      var $form = $(this),
-          $errorContainer,
-          id, index;
+      var $form = $(this);
 
       $form.ajaxForm({
         beforeSubmit: function() {
-          id = $form.find("input[name='comment_id']").val();
-          index = $form.find("input[name='index']").val();
-          $errorContainer = $this.find("#comment"+id.replace(/\./g, '\\\\.')).parent();
           $("#cmtConfirmApprove").dialog("close");
           $.blockUI({
-            message:"<h1>Approving comment "+index+" ...</h1>",
+            message:"<h1>"+opts.approveMessage+" ...</h1>",
             fadeIn: 0,
             fadeOut: 0
           });
         },
-        success: function(data, statusText, xhr) {
+        success: function(data) {
           if(data.error) {
             $.unblockUI();
             $.pnotify({
@@ -232,7 +221,7 @@ jQuery(function($) {
             loadComments();
           }
         },
-        error: function(xhr, msg) {
+        error: function(xhr) {
           var data = $.parseJSON(xhr.responseText);
           $.unblockUI();
           $.pnotify({
@@ -272,7 +261,7 @@ jQuery(function($) {
             "topic": opts.web+"."+opts.topic,
             "comment_id": commentOpts.comment_id
           },
-          success: function(json, msg, xhr) {
+          success: function(json) {
             $.unblockUI();
             $("#cmtUpdateComment").dialog("option", "open", function() {
               var $this = $(this);
@@ -283,7 +272,7 @@ jQuery(function($) {
               $this.find("textarea[name='text']").val(json.result.text);
             }).dialog("open");
           },
-          error: function(data, msg, xhr) {
+          error: function(data) {
             $.unblockUI();
             $.pnotify({
               text: "Error: "+data.error.message,
@@ -328,9 +317,9 @@ jQuery(function($) {
           "comment_id": commentOpts.comment_id
         },
         beforeSubmit: function() {
-          $.blockUI({ message:"<h1>Marking comment ...</h1>", });
+          $.blockUI({ message:"<h1>"+opts.markingMessage+" ...</h1>"});
         },
-        success: function(json, msg, xhr) {
+        success: function() {
           $.unblockUI();
           if ($this.parent().is(".cmtMarkContainer")) {
             $this.parent().remove();
@@ -339,7 +328,7 @@ jQuery(function($) {
           }
           $comment.parent().removeClass("cmtCommentNew cmtCommentUpdated");
         },
-        error: function(data, msg, xhr) {
+        error: function(data) {
           $.unblockUI();
           $.pnotify({
             text: "Error: "+data.error.message,

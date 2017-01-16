@@ -2,7 +2,7 @@
 %TMPL:INCLUDE{"metacomments"}%
 %TMPL:DEF{"contentfooter"}%%TMPL:P{"comments"}%%TMPL:END%
 %TMPL:DEF{"comments"}% %IF{ 
-  "$'DISPLAYCOMMENTS'='on' and $COMMENTFORMAT!='insidetab' and not context save and not context preview and not context edit" 
+  "$'DISPLAYCOMMENTS'='on' and $'COMMENTFORMAT'!='insidetab' and not context save and not context preview and not context edit" 
   then="<div>$percntTMPL:P{\"metacomments\"}$percnt</div>" 
   else="<!-- -->" 
 }%<!-- -->
