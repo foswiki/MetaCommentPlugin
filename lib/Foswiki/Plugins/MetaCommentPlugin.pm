@@ -19,7 +19,7 @@ use Foswiki::Func ();
 use Foswiki::Plugins ();
 use Foswiki::Contrib::JsonRpcContrib ();
 
-our $VERSION = '5.00';
+our $VERSION = '5.01';
 our $RELEASE = '16 Jan 2017';
 our $SHORTDESCRIPTION = 'An easy to use comment system';
 our $NO_PREFS_IN_TOPIC = 1;
@@ -59,7 +59,7 @@ sub initPlugin {
     return getCore(shift)->jsonRpcMarkComment(@_);
   });
 
-  if ($Foswiki::cfg{Plugins}{SolrPlugin}{Enabled}) {
+  if ($Foswiki::cfg{Plugins}{SolrPlugin} && $Foswiki::cfg{Plugins}{SolrPlugin}{Enabled}) {
     require Foswiki::Plugins::SolrPlugin;
     Foswiki::Plugins::SolrPlugin::registerIndexTopicHandler(sub {
       return getCore()->solrIndexTopicHandler(@_);
