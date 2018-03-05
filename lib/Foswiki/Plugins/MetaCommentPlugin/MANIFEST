@@ -1,3 +1,4 @@
+!noci
 data/System/MetaCommentPlugin.txt 0644
 lib/Foswiki/Plugins/MetaCommentPlugin/Config.spec 0644
 lib/Foswiki/Plugins/MetaCommentPlugin/Core.pm 0644

@@ -13,3 +13,4 @@ pub/System/MetaCommentPlugin/metacomment.css
 /MetaCommentPlugin.zip
 /MetaCommentPlugin_installer
 /MetaCommentPlugin_installer.pl
+locale/**/*.mo
