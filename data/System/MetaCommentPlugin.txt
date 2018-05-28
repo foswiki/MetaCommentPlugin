@@ -263,6 +263,7 @@ The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
 %$DEPENDENCIES%
 
 ---++ Change History
+|  28 May 2018: | 5.03 - depend on new [[Foswiki:Extensions/TopicTitlePlugin][TopicTitlePlugin]] |
 |  05 Mar 2018: | 5.01 - cleaned up templates |
 |  16 Jan 2017: | 5.00 - implemented a registerCommentHandler() api to let other plugins interact with comment changes |
 |  11 Sep 2015: | 4.10 - added display settings to switch on of voting and permlink |

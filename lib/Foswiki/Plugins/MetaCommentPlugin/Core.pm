@@ -887,7 +887,7 @@ sub solrIndexTopicHandler {
       'icon' => $indexer->mapToIconFileName("comment"),
       'container_id' => $web . '.' . $topic,
       'container_url' => Foswiki::Func::getViewUrl($web, $topic),
-      'container_title' => $indexer->getTopicTitle($web, $topic, $meta),
+      'container_title' => Foswiki::Func::getTopicTitle($web, $topic, undef, $meta),
     );
 
     my $contentLanguage = $indexer->getContentLanguage($web, $topic);

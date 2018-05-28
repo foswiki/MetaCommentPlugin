@@ -6,3 +6,5 @@ Foswiki::Plugins::SolrPlugin,>=4.0,perl,Optional.
 Foswiki::Plugins::LikePlugin,>=1.0,perl,Optional. 
 ONLYIF ( $Foswiki::Plugins::VERSION < 2.1)
 Foswiki::Plugins::ZonePlugin,>=3.1,perl,Required. required for Foswiki < 1.1
+ONLYIF ( $Foswiki::Plugins::VERSION < 2.6)
+Foswiki::Plugins::TopicTitlePlugin,>1.00,perl,Required for Foswiki < 2.2
