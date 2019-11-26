@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2009-2018 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2009-2019 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,8 +19,8 @@ use Foswiki::Func ();
 use Foswiki::Plugins ();
 use Foswiki::Contrib::JsonRpcContrib ();
 
-our $VERSION = '5.03';
-our $RELEASE = '28 May 2018';
+our $VERSION = '5.10';
+our $RELEASE = '26 Nov 2019';
 our $SHORTDESCRIPTION = 'An easy to use comment system';
 our $NO_PREFS_IN_TOPIC = 1;
 our $core;
@@ -53,6 +53,18 @@ sub initPlugin {
 
   Foswiki::Contrib::JsonRpcContrib::registerMethod("MetaCommentPlugin", "deleteComment", sub {
     return getCore(shift)->jsonRpcDeleteComment(@_);
+  });
+
+  Foswiki::Contrib::JsonRpcContrib::registerMethod("MetaCommentPlugin", "deleteAllComments", sub {
+    return getCore(shift)->jsonRpcDeleteAllComments(@_);
+  });
+
+  Foswiki::Contrib::JsonRpcContrib::registerMethod("MetaCommentPlugin", "approveAllComments", sub {
+    return getCore(shift)->jsonRpcApproveAllComments(@_);
+  });
+
+  Foswiki::Contrib::JsonRpcContrib::registerMethod("MetaCommentPlugin", "markAllComments", sub {
+    return getCore(shift)->jsonRpcMarkAllComments(@_);
   });
 
   Foswiki::Contrib::JsonRpcContrib::registerMethod("MetaCommentPlugin", "markComment", sub {

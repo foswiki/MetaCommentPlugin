@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2009-2018 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2009-2019 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -72,7 +72,8 @@ sub jsonRpcGetComment {
   throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
     unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
 
-  my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
+  my $rev = $request->param('rev');
+  my ($meta, $text) = Foswiki::Func::readTopic($web, $topic, $rev);
 
   my $id = $request->param('comment_id') || '';
   my $comment = $meta->get('COMMENT', $id);
@@ -232,7 +233,7 @@ sub jsonRpcUpdateComment {
 
   my $fingerPrint = getFingerPrint($this->{wikiName});
 
-  throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Acccess denied")
+  throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
     unless $isModerator || $fingerPrint eq ($comment->{fingerPrint}||'');
 
   my $title = $request->param('title') || '';
@@ -319,6 +320,129 @@ sub jsonRpcDeleteComment {
 }
 
 ##############################################################################
+sub jsonRpcDeleteAllComments {
+  my ($this, $request) = @_;
+
+  my $web = $this->{baseWeb};
+  my $topic = $this->{baseTopic};
+
+  throw Foswiki::Contrib::JsonRpcContrib::Error(404, "Topic $web.$topic does not exist") 
+    unless Foswiki::Func::topicExists($web, $topic);
+
+  throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
+    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
+
+  throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
+    unless Foswiki::Func::checkAccessPermission('COMMENT', $this->{wikiName}, undef, $topic, $web) ||
+           Foswiki::Func::checkAccessPermission('CHANGE', $this->{wikiName}, undef, $topic, $web);
+
+  my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
+  my $isModerator = $this->isModerator($web, $topic, $meta);
+
+  throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Discussion closed")
+    unless $isModerator || (Foswiki::Func::getPreferencesValue("COMMENTSTATE")||'open') ne 'closed';
+
+  my $fingerPrint = getFingerPrint($this->{wikiName});
+
+  # check all comments
+  foreach my $comment ($meta->find('COMMENT')) {
+    throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Acccess denied") 
+      unless $isModerator || $fingerPrint eq ($comment->{fingerPrint}||'');
+  }
+
+  # remove all comments
+  $meta->remove('COMMENT');
+
+  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, minor=>1}) unless DRY;
+  $this->triggerEvent("commentdeleteall", $web, $topic); 
+
+  return;
+}
+
+##############################################################################
+sub jsonRpcApproveAllComments {
+  my ($this, $request) = @_;
+
+  my $web = $this->{baseWeb};
+  my $topic = $this->{baseTopic};
+
+  throw Foswiki::Contrib::JsonRpcContrib::Error(404, "Topic $web.$topic does not exist") 
+    unless Foswiki::Func::topicExists($web, $topic);
+
+  throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
+    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
+
+  throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
+    unless Foswiki::Func::checkAccessPermission('COMMENT', $this->{wikiName}, undef, $topic, $web) ||
+           Foswiki::Func::checkAccessPermission('CHANGE', $this->{wikiName}, undef, $topic, $web);
+
+  my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
+  my $isModerator = $this->isModerator($web, $topic, $meta);
+
+  throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Discussion closed")
+    unless $isModerator || (Foswiki::Func::getPreferencesValue("COMMENTSTATE")||'open') ne 'closed';
+
+  my $fingerPrint = getFingerPrint($this->{wikiName});
+
+  # check all comments
+  foreach my $comment ($meta->find('COMMENT')) {
+    throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Acccess denied") 
+      unless $isModerator || $fingerPrint eq ($comment->{fingerPrint}||'');
+  }
+
+  # approve all comments
+  foreach my $comment ($meta->find('COMMENT')) {
+    $comment->{state} = "approved";
+  }
+
+  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, minor=>1}) unless DRY;
+  $this->triggerEvent("commentapproveall", $web, $topic); 
+
+  return;
+}
+##############################################################################
+sub jsonRpcMarkAllComments {
+  my ($this, $request) = @_;
+
+  my $web = $this->{baseWeb};
+  my $topic = $this->{baseTopic};
+
+  throw Foswiki::Contrib::JsonRpcContrib::Error(404, "Topic $web.$topic does not exist") 
+    unless Foswiki::Func::topicExists($web, $topic);
+
+  throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
+    unless Foswiki::Func::checkAccessPermission("VIEW", $this->{wikiName}, undef, $topic, $web);
+
+  throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Access denied")
+    unless Foswiki::Func::checkAccessPermission('COMMENT', $this->{wikiName}, undef, $topic, $web) ||
+           Foswiki::Func::checkAccessPermission('CHANGE', $this->{wikiName}, undef, $topic, $web);
+
+  my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
+  my $isModerator = $this->isModerator($web, $topic, $meta);
+
+  throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Discussion closed")
+    unless $isModerator || (Foswiki::Func::getPreferencesValue("COMMENTSTATE")||'open') ne 'closed';
+
+  my $fingerPrint = getFingerPrint($this->{wikiName});
+
+  # check all comments
+  foreach my $comment ($meta->find('COMMENT')) {
+    throw Foswiki::Contrib::JsonRpcContrib::Error(401, "Acccess denied") 
+      unless $isModerator || $fingerPrint eq ($comment->{fingerPrint}||'');
+  }
+
+  # mark all comments
+  foreach my $comment ($meta->find('COMMENT')) {
+    $this->markComment($comment);
+  }
+
+  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, minor=>1}) unless DRY;
+  $this->triggerEvent("commentmarkall", $web, $topic); 
+
+  return;
+}
+
+##############################################################################
 sub jsonRpcMarkComment {
   my ($this, $request) = @_;
 
@@ -382,6 +506,20 @@ sub isModerator {
 }
 
 ##############################################################################
+sub isModerated {
+  my ($this, $web, $topic, $meta) = @_;
+
+  ($meta) = Foswiki::Func::readTopic($web, $topic) unless defined $meta;
+
+  my $prefs = $this->{session}->{prefs}->loadPreferences($meta);
+  my $isModerated = $prefs->get("COMMENTMODERATION");
+  $isModerated = $prefs->getLocal("COMMENTMODERATION") unless defined $isModerated;
+  $isModerated = Foswiki::Func::getPreferencesValue("COMMENTMODERATION", $web) unless defined $isModerated;
+
+  return Foswiki::Func::isTrue($isModerated, 0);
+}
+
+##############################################################################
 sub METACOMMENTS {
   my ($this, $params, $topic, $web) = @_;
 
@@ -431,9 +569,10 @@ sub METACOMMENTS {
   $params->{threaded} = 'off'
     unless defined $params->{threaded};
   $params->{isclosed} = ((Foswiki::Func::getPreferencesValue("COMMENTSTATE")||'open') eq 'closed')?1:0;
+  $params->{rev} //= $params->{revision};
 
   # get all comments data
-  my ($meta) = Foswiki::Func::readTopic($theWeb, $theTopic);
+  my ($meta) = Foswiki::Func::readTopic($theWeb, $theTopic, $params->{rev});
   my $comments = $this->getComments($theWeb, $theTopic, $meta, $params);
 
   return '' unless $comments;
@@ -465,11 +604,11 @@ sub METACOMMENTS {
     );
 
   # oh well
-  $result =~ s/\$perce?nt/\%/go;
-  $result =~ s/\$nop//go;
-  $result =~ s/\$n/\n/go;
-  $result =~ s/\$dollar/\$/go;
-  $result =~ s/\\\\/\\/go;
+  $result =~ s/\$perce?nt/\%/g;
+  $result =~ s/\$nop//g;
+  $result =~ s/\$n/\n/g;
+  $result =~ s/\$dollar/\$/g;
+  $result =~ s/\\\\/\\/g;
 
   return $result;
 }
@@ -478,17 +617,17 @@ sub METACOMMENTS {
 sub getComments {
   my ($this, $web, $topic, $meta, $params) = @_;
 
-  ($meta) = Foswiki::Func::readTopic($web, $topic) unless defined $meta;
+  ($meta) = Foswiki::Func::readTopic($web, $topic, $params->{rev}) unless defined $meta;
 
   my $isModerator = $this->isModerator($web, $topic, $meta);
 
-  #writeDebug("called getComments");
+  writeDebug("called getComments web=$web");
 
   my @topics = ();
   if (defined $params->{search}) {
     @topics = $this->getTopics($web, $params->{search}, $params);
   } else {
-    return undef unless Foswiki::Func::checkAccessPermission('VIEW', $this->{wikiName}, undef, $topic, $web);
+    return unless Foswiki::Func::checkAccessPermission('VIEW', $this->{wikiName}, undef, $topic, $web);
     push @topics, $topic;
   }
 
@@ -496,13 +635,13 @@ sub getComments {
   my %comments = ();
 
   foreach my $thisTopic (@topics) {
-    my ($meta) = Foswiki::Func::readTopic($web, $thisTopic);
+    ($meta) = Foswiki::Func::readTopic($web, $thisTopic, $params->{rev});
     my $isModerated = $this->isModerated($web, $thisTopic, $meta);
 
     my @comments = $meta->find('COMMENT');
     foreach my $comment (@comments) {
       my $id = $comment->{name};
-      #writeDebug("id=$id, moderation=$params->{moderation}, isModerator=$isModerator, author=$comment->{author}, wikiName=$this->{wikiName}, state=$comment->{state}, isclosed=$params->{isclosed}");
+      writeDebug("id=$id, moderation=$params->{moderation}, isModerator=$isModerator, author=$comment->{author}, wikiName=$this->{wikiName}, state=$comment->{state}, isclosed=$params->{isclosed}");
       next if $params->{author} && $comment->{author} !~ /$params->{author}/;
       next if $params->{mindate} && $comment->{date} < $params->{mindate};
       next if $params->{maxdate} && $comment->{date} > $params->{maxdate};
@@ -529,7 +668,7 @@ sub getComments {
       $comment->{topic} = $thisTopic;
       $comment->{web} = $web;
 
-      #writeDebug("adding $id");
+      writeDebug("adding $id");
       $comments{$thisTopic.'::'.$id} = $comment;
     }
   }
@@ -582,7 +721,6 @@ sub getTopics_DBQUERY {
 
   my $search = new Foswiki::Contrib::DBCacheContrib::Search($where);
   return unless $search;
-
 
   my $db = Foswiki::Plugins::DBCachePlugin::getDB($web);
   my @topicNames = $db->getKeys();
@@ -761,10 +899,10 @@ sub expandVariables {
     $text =~ s/\$$key\b/$val/g;
   }
 
-# $text =~ s/\$perce?nt/\%/go;
-# $text =~ s/\$nop//go;
-# $text =~ s/\$n/\n/go;
-# $text =~ s/\$dollar/\$/go;
+# $text =~ s/\$perce?nt/\%/g;
+# $text =~ s/\$nop//g;
+# $text =~ s/\$n/\n/g;
+# $text =~ s/\$dollar/\$/g;
 
   return $text;
 }
@@ -773,7 +911,10 @@ sub expandVariables {
 sub triggerEvent {
   my ($this, $eventName, $web, $topic, $comment) = @_;
   
-  my $message = "state=$comment->{state} title=".($comment->{title}||'').' text='.substr($comment->{text}, 0, 200);
+  my $message = "";
+  if ($comment) {
+    $message = "state=$comment->{state} title=".($comment->{title}||'').' text='.substr($comment->{text}, 0, 200);
+  }
 
   if (defined &Foswiki::Func::writeEvent) {
     Foswiki::Func::writeEvent($eventName, $message);
@@ -787,7 +928,7 @@ sub triggerEvent {
 
     writeDebug("executing $function");
     try {
-      no strict 'refs';
+      no strict 'refs'; ## no critics
       $result = &$function($eventName, $web, $topic, $comment, $commentHandler->{options});
       use strict 'refs';
     } catch Error::Simple with {
@@ -796,20 +937,6 @@ sub triggerEvent {
 
     print STDERR "error executing commentHandler $function: ".$error."\n" if defined $error;
   }
-}
-
-##############################################################################
-sub isModerated {
-  my ($this, $web, $topic, $meta) = @_;
-
-  ($meta) = Foswiki::Func::readTopic($web, $topic) unless defined $meta;
-
-  my $prefs = $this->{session}->{prefs}->loadPreferences($meta);
-  my $isModerated = $prefs->get("COMMENTMODERATION");
-  $isModerated = $prefs->getLocal("COMMENTMODERATION") unless defined $isModerated;
-  $isModerated = Foswiki::Func::getPreferencesValue("COMMENTMODERATION", $web) unless defined $isModerated;
-
-  return Foswiki::Func::isTrue($isModerated, 0);
 }
 
 ##############################################################################
@@ -849,6 +976,8 @@ sub solrIndexTopicHandler {
 
   foreach my $comment (@comments) {
 
+    $indexer->log("Indexing comment $comment->{name} at $web.$topic");
+
     # set doc fields
     my $createDate = Foswiki::Func::formatTime($comment->{date}, 'iso', 'gmtime');
     my $date = defined($comment->{modified}) ? Foswiki::Func::formatTime($comment->{modified}, 'iso', 'gmtime') : $createDate;
@@ -871,11 +1000,13 @@ sub solrIndexTopicHandler {
     $commentDoc->add_fields(
       'id' => $id,
       'name' => $comment->{name},
-      'type' => 'comment',
+      'type' => 'metadata',
+      'form' => 'Comment',
       'web' => $web,
       'topic' => $topic,
       'webtopic' => $webtopic,
       'author' => $comment->{author},
+      'author_title' => Foswiki::Func::getTopicTitle($Foswiki::cfg{UsersWebName}, $comment->{author}),
 #      'author_url' => $comment->{author_url},
       'contributor' => $comment->{author},
       'date' => $date,
@@ -888,6 +1019,7 @@ sub solrIndexTopicHandler {
       'container_id' => $web . '.' . $topic,
       'container_url' => Foswiki::Func::getViewUrl($web, $topic),
       'container_title' => Foswiki::Func::getTopicTitle($web, $topic, undef, $meta),
+      'field_TopicType_lst' => 'Comment',
     );
 
     my $contentLanguage = $indexer->getContentLanguage($web, $topic);
@@ -910,9 +1042,12 @@ sub solrIndexTopicHandler {
       $commentDoc->add_fields(@aclFields) if @aclFields;
     }
 
+    $doc->add_fields('contributor' => $comment->{author});
+
+    # SMELL: why these two
     $doc->add_fields('catchall' => $title);
     $doc->add_fields('catchall' => $comment->{text});
-    $doc->add_fields('contributor' => $comment->{author});
+
 
     # add the document to the index
     try {

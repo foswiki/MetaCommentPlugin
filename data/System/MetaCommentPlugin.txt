@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1425048174" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1574759516" format="1.1"  version="1"}%
 ---+!! MetaCommentPlugin
 %FORMFIELD{"Description"}%
 
@@ -182,6 +182,7 @@ Parameters:
    * skip: number of comments to skip in the list, useful for pagination
    * limit: maximum number of comments to list, useful for pagination
    * singular: title used when only one comment is present, defaults to =One comment=
+   * rev, revision: specify the version of the topic to render its comments, defaults to most recent revision
    * plural: title when there are more than one comment, defaults to ="$count comments=
    * mindate: minimum date of a comment to be displayed
    * maxdate: maximum date of a comment to be displayed
@@ -263,6 +264,10 @@ The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
 %$DEPENDENCIES%
 
 ---++ Change History
+%TABLE{columnwidths="7em" tablewidth="100%"}%
+|  26 Nov 2019: | 5.10 - added rev parameter to display comments of previous revisions of a topic; \
+                         added "delete all", "approve all", "mark all" features to moderate comments in bunches; \
+                         improved [[Foswiki:Extensions/SolrPlugin][SolrPlugin]] integration |
 |  28 May 2018: | 5.03 - depend on new [[Foswiki:Extensions/TopicTitlePlugin][TopicTitlePlugin]] |
 |  05 Mar 2018: | 5.01 - cleaned up templates |
 |  16 Jan 2017: | 5.00 - implemented a registerCommentHandler() api to let other plugins interact with comment changes |
@@ -311,10 +316,10 @@ The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
                   fixed recoding of received data to the site's own charset; \
                   improved the way photos are gathered |
 
-%META:FILEATTACHMENT{name="MetaCommentSnap1.jpeg" attachment="MetaCommentSnap1.jpeg" attr="h" comment="" date="1425048174" path="MetaCommentSnap1.jpeg" size="51144" user="ProjectContributor" version="1"}%
+%META:FILEATTACHMENT{name="MetaCommentSnap1.jpeg" attachment="MetaCommentSnap1.jpeg" attr="h" comment="" date="1574759516" path="MetaCommentSnap1.jpeg" size="51144" user="ProjectContributor" version="1"}%
 %META:FORM{name="PackageForm"}%
 %META:FIELD{name="Author" title="Author" value="Foswiki:Main/MichaelDaum"}%
-%META:FIELD{name="Copyright" title="Copyright" value="2009-2017, Michael Daum http://michaeldaumconsulting.com"}%
+%META:FIELD{name="Copyright" title="Copyright" value="2009-2019, Michael Daum http://michaeldaumconsulting.com"}%
 %META:FIELD{name="Description" title="Description" value="%25$SHORTDESCRIPTION%25"}%
 %META:FIELD{name="Home" title="Home" value="https://foswiki.org/Extensions/MetaCommentPlugin"}%
 %META:FIELD{name="License" title="License" value="[[http://www.gnu.org/licenses/gpl.html][GPL (Gnu General Public License)]]"}%

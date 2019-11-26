@@ -2,11 +2,20 @@
   margin:1.3846em 0em 0em;
 }
 
+.cmtGlobalControls a {
+  float:left;
+  text-decoration:none;
+  padding:2px 2px 0px 2px;
+  margin:0 1em 0 0;
+}
+
 .cmtRssFeed {
   float:right;
   text-decoration:none;
   padding:2px 2px 0px 2px;
+  margin:0 0 0 1em;
 }
+.cmtDeleteAll:hover,
 .cmtRssFeed:hover {
   background-color:#eee;
   color:inherit;
@@ -15,6 +24,16 @@
 
 .foswikiMetaData .cmtAddComment {
   margin:1em 0em; /* 18px 0px */
+}
+
+.cmtCommentsContainer .cmtApproveAll, 
+.cmtCommentsContainer .cmtDeleteAll {
+  display:none;
+}
+
+.cmtCommentsIsModerator .cmtApproveAll, 
+.cmtCommentsIsModerator .cmtDeleteAll {
+  display:inline;
 }
 
 .cmtCommentContainer {
@@ -103,6 +122,9 @@ a.cmtPermLink,
 .cmtStyle_insidetab h2.cmtCounter,
 .cmtStyle_insidetab .cmtAddComment h2 {
   display:none;
+}
+h2.cmtCounter .jqTwisty {
+  margin-left:0.5em;
 }
 
 .cmtStyle_insidetab .twistyPlugin {

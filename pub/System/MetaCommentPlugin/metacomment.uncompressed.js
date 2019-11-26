@@ -2,7 +2,7 @@
 
 Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 
-(c)opyright 2010-2015 Michael Daum http://michaeldaumconsulting.com
+(c)opyright 2010-2019 Michael Daum http://michaeldaumconsulting.com
 
 are listed in the AUTHORS file in the root of this distribution.
 NOTE: Please extend that file, not this notice.
@@ -20,7 +20,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 As per the GPL, removal of this notice is prohibited.
 
 */
-'use strict';
+"use strict";
 jQuery(function($) {
   var doneLoadDialogs = false;
 
@@ -30,7 +30,6 @@ jQuery(function($) {
         defaults = {
           topic: foswiki.getPreference("TOPIC"),
           web: foswiki.getPreference("WEB"),
-          submitMessage: "Submitting comment",
           updateMessage: "Updating comment",
           deleteMessage: "Deleting comment",
           approveMessage: "Approving comment",
@@ -90,122 +89,22 @@ jQuery(function($) {
       }
     );
 
-    /* ajaxify add and reply forms ******************************************/
-    $(".cmtAddCommentForm, .cmtReplyCommentForm").livequery(function() {
-      var $form = $(this);
+    /* ajaxify forms ********************************************************/
+    $(".cmtJsonRpcForm").livequery(function() {
+      var $form = $(this), msg = $form.data("message");
 
       $form.ajaxForm({
-        dataType:"json",
-        beforeSubmit: function() {
-          $("#cmtReplyComment").dialog("close");
-          $.blockUI({
-            message:"<h1>"+opts.submitMessage+" ...</h1>",
-            fadeIn: 0,
-            fadeOut: 0
-          });
-        },
-        success: function(data) {
-          if(data.error) {
-            $.unblockUI();
-            $.pnotify({
-              text: "Error: "+data.error.message,
-              type:"error"
-            });
-          } else {
-            loadComments();
+        beforeSerialize: function() {
+          if (typeof(foswikiStrikeOne) !== 'undefined') {
+            foswikiStrikeOne($form[0]);
           }
         },
-        error: function(xhr) {
-          var data = $.parseJSON(xhr.responseText);
-          $.unblockUI();
-          $.pnotify({
-            text: "Error: "+data.error.message,
-            type:"error"
-          });
-        }
-      });
-    });
-
-    /* ajaxify update form **************************************************/
-    $(".cmtUpdateCommentForm").livequery(function() {
-      var $form = $(this);
-
-      $form.ajaxForm({
-        dataType:"json",
         beforeSubmit: function() {
-          $("#cmtUpdateComment").dialog("close");
-          $.blockUI({
-            message:"<h1>"+opts.updateMessage+" ...</h1>",
-            fadeIn: 0,
-            fadeOut: 0
-          });
-        },
-        success: function(data) {
-          if(data.error) {
-            $.unblockUI();
-            $.pnotify({
-              text: "Error: "+data.error.message,
-              type:"error"
-            });
-          } else {
-            loadComments();
+          if ($form.is(".cmtModalForm")) {
+            $form.parent().dialog("close");
           }
-        },
-        error: function(xhr) {
-          var data = $.parseJSON(xhr.responseText);
-          $.unblockUI();
-          $.pnotify({
-            text: "Error: "+data.error.message,
-            type:"error"
-          });
-        }
-      });
-    });
-
-    /* ajaxify confirm delete form ******************************************/
-    $(".cmtConfirmDeleteForm").livequery(function() {
-      var $form = $(this);
-
-      $form.ajaxForm({
-        beforeSubmit: function() {
-          $("#cmtConfirmDelete").dialog("close");
           $.blockUI({
-            message:"<h1>"+opts.deleteMessage+" ...</h1>",
-            fadeIn: 0,
-            fadeOut: 0
-          });
-        },
-        success: function(data) {
-          if(data.error) {
-            $.unblockUI();
-            $.pnotify({
-              text: "Error: "+data.error.message,
-              type:"error"
-            });
-          } else {
-            loadComments();
-          }
-        },
-        error: function(xhr) {
-          var data = $.parseJSON(xhr.responseText);
-          $.unblockUI();
-          $.pnotify({
-            text: "Error: "+data.error.message,
-            type:"error"
-          });
-        }
-      });
-    });
-
-    /* ajaxify confirm approve form *****************************************/
-    $(".cmtConfirmApproveForm").livequery(function() {
-      var $form = $(this);
-
-      $form.ajaxForm({
-        beforeSubmit: function() {
-          $("#cmtConfirmApprove").dialog("close");
-          $.blockUI({
-            message:"<h1>"+opts.approveMessage+" ...</h1>",
+            message:"<h1>"+msg+" ...</h1>",
             fadeIn: 0,
             fadeOut: 0
           });
@@ -303,9 +202,21 @@ jQuery(function($) {
       return false;
     });
 
+    /* add delete/approve/mark all behaviour ******************************************/
+    $this.find(".cmtDeleteAll, .cmtApproveAll, .cmtMarkAll").click(function() {
+      var id = $(this).attr("href");
+
+      loadDialogs(function() {
+        $(id).dialog("open");
+      });
+
+      return false;
+    });
+
     /* add "mark as read" behaviour *************************************************/
     $this.find(".cmtMark").click(function() {
-      var $this = $(this),
+      var $this = $(this), 
+          msg = $this.data("message"),
           $comment = $this.parents(".cmtComment:first"),
           commentOpts = $.extend({}, $comment.metadata());
 
@@ -317,7 +228,7 @@ jQuery(function($) {
           "comment_id": commentOpts.comment_id
         },
         beforeSubmit: function() {
-          $.blockUI({ message:"<h1>"+opts.markingMessage+" ...</h1>"});
+          $.blockUI({ message:"<h1>"+msg+" ...</h1>"});
         },
         success: function() {
           $.unblockUI();
