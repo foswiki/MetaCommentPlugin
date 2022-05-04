@@ -1,43 +1,75 @@
-#: templates/metacomments.tmpl:57
+#: templates/metacomments.tmpl:66
 #, fuzzy
 msgid "%1 comments"
 msgstr "Kommentit:"
 
-#: templates/metacomments.tmpl:105 templates/metacomments.tmpl:445
+#: templates/metacomments.tmpl:120 templates/metacomments.tmpl:514
 #, fuzzy
 msgid "Add a comment"
 msgstr "Liite"
 
-#: templates/metacomments.tmpl:320
+#: templates/metacomments.tmpl:167
+msgid "Approve all"
+msgstr ""
+
+#: templates/metacomments.tmpl:371
+#, fuzzy
+msgid "Approve all comments?"
+msgstr "Kommentti"
+
+#: templates/metacomments.tmpl:402
 msgid "Approve comment?"
 msgstr ""
 
-#: templates/metacomments.tmpl:190
+#: templates/metacomments.tmpl:255
 msgid "Approve this comment"
 msgstr ""
 
-#: templates/metacomments.tmpl:10
+#: templates/metacomments.tmpl:372
+#, fuzzy
+msgid "Approving all comments"
+msgstr "Kommentti"
+
+#: templates/metacomments.tmpl:403
 #, fuzzy
 msgid "Approving comment"
 msgstr "Kommentti"
 
-#: templates/metacomments.tmpl:327
+#: templates/metacomments.tmpl:376
+msgid "Are you sure that you want to approve all comments?"
+msgstr ""
+
+#: templates/metacomments.tmpl:409
 msgid "Are you sure that you want to approve comment %1 posted by %2 on %3?"
 msgstr ""
 
-#: templates/metacomments.tmpl:306
+#: templates/metacomments.tmpl:361
+msgid "Are you sure that you want to delete all comments ?"
+msgstr ""
+
+#: templates/metacomments.tmpl:344
 msgid "Are you sure that you want to delete comment %1 posted by %2 on %3?"
 msgstr ""
 
-#: templates/metacomments.tmpl:355 templates/metacomments.tmpl:377
-#: templates/metacomments.tmpl:491
+#: templates/metacomments.tmpl:391
+msgid "Are you sure that you want to mark all comments as read?"
+msgstr ""
+
+#: templates/metacomments.tmpl:30
+msgid "Bold"
+msgstr ""
+
+#: templates/metacomments.tmpl:435 templates/metacomments.tmpl:451
+#: templates/metacomments.tmpl:550
 msgid "Cancel"
 msgstr "Peru"
 
-#: templates/metacomments.tmpl:160 templates/metacomments.tmpl:163
-#: templates/metacomments.tmpl:228 templates/metacomments.tmpl:231
-#: templates/metacomments.tmpl:276 templates/metacomments.tmpl:279
+#: templates/metacomments.tmpl:215 templates/metacomments.tmpl:217
 msgid "Click to mark as read"
+msgstr ""
+
+#: templates/metacomments.tmpl:266
+msgid "Comment on this thread"
 msgstr ""
 
 #: templates/metacommentsrss.tmpl:7
@@ -45,147 +77,199 @@ msgstr ""
 msgid "Comments"
 msgstr "Kommentit:"
 
-#: templates/metacomments.tmpl:299
+#: templates/metacomments.tmpl:168
+msgid "Delete all"
+msgstr ""
+
+#: templates/metacomments.tmpl:356
+#, fuzzy
+msgid "Delete all comments?"
+msgstr "Poista liite"
+
+#: templates/metacomments.tmpl:337
 #, fuzzy
 msgid "Delete comment?"
 msgstr "Poista liite"
 
-#: templates/metacomments.tmpl:193
+#: templates/metacomments.tmpl:257
 #, fuzzy
 msgid "Delete this comment"
 msgstr "Poista liite"
 
-#: templates/metacomments.tmpl:9
+#: templates/metacomments.tmpl:357
+#, fuzzy
+msgid "Deleting all comments"
+msgstr "Poista liite"
+
+#: templates/metacomments.tmpl:338
 #, fuzzy
 msgid "Deleting comment"
 msgstr "Poista liite"
 
-#: templates/metacomments.tmpl:341
+#: templates/metacomments.tmpl:421
 #, fuzzy
 msgid "Edit comment"
 msgstr "Muokkaa teksti"
 
-#: templates/metacomments.tmpl:187
+#: templates/metacomments.tmpl:253
 #, fuzzy
 msgid "Edit this comment"
 msgstr "Muokkaa tt taulukkoa"
 
-#: templates/metacomments.tmpl:11
+#: templates/metacomments.tmpl:31
+msgid "Italic"
+msgstr ""
+
+#: templates/metacomments.tmpl:386
 #, fuzzy
-msgid "Marking comment"
+msgid "Mark all comments?"
 msgstr "Kommentti"
 
-#: templates/metacomments.tmpl:463
+#: templates/metacomments.tmpl:166
+msgid "Mark as read"
+msgstr ""
+
+#: templates/metacomments.tmpl:387
+#, fuzzy
+msgid "Marking all comments"
+msgstr "Kommentti"
+
+#: templates/metacomments.tmpl:33
+msgid "More character formats"
+msgstr ""
+
+#: templates/metacomments.tmpl:530
 msgid "Name"
 msgstr ""
 
-#: templates/metacomments.tmpl:311 templates/metacomments.tmpl:332
+#: templates/metacomments.tmpl:349 templates/metacomments.tmpl:364
+#: templates/metacomments.tmpl:379 templates/metacomments.tmpl:394
+#: templates/metacomments.tmpl:414
 msgid "No, thanks"
 msgstr ""
 
-#: templates/metacomments.tmpl:354 templates/metacomments.tmpl:376
+#: templates/metacomments.tmpl:434 templates/metacomments.tmpl:450
 msgid "OK"
 msgstr "OK"
 
-#: templates/metacomments.tmpl:56
+#: templates/metacomments.tmpl:65
 #, fuzzy
 msgid "One comment"
 msgstr "Kommentti"
 
-#: templates/metacomments.tmpl:70
+#: templates/metacomments.tmpl:88
 msgid "Please log in or register to comment."
 msgstr ""
 
-#: templates/metacomments.tmpl:71
+#: templates/metacomments.tmpl:89
 #, fuzzy
 msgid "Please log in to comment."
 msgstr "Ole hyv ja ota yhteytt %1."
 
-#: data/System/MetaCommentPlugin.txt:256
+#: data/System/MetaCommentPlugin.txt:258
 #, fuzzy
 msgid "RSS comments feed for the %1 web"
 msgstr "Tervetuloa %1 verkkoon"
 
-#: templates/metacomments.tmpl:55
+#: templates/metacomments.tmpl:79
 msgid "RSS feed of the comments on this topic"
 msgstr ""
 
-#: templates/metacomments.tmpl:364
+#: templates/metacomments.tmpl:34
+msgid "Remove Format"
+msgstr ""
+
+#: templates/metacomments.tmpl:262
+msgid "Reply"
+msgstr ""
+
+#: templates/metacomments.tmpl:442
 msgid "Reply on comment"
 msgstr ""
 
-#: templates/metacomments.tmpl:184
-#, fuzzy
-msgid "Reply on this comment"
-msgstr "Muista minut tll tietokoneella"
-
-#: templates/metacomments.tmpl:68
+#: templates/metacomments.tmpl:86
 msgid "Sorry, commenting not allowed."
 msgstr ""
 
-#: templates/metacomments.tmpl:490
+#: templates/metacomments.tmpl:549
 msgid "Submit"
 msgstr "Lhet"
 
-#: templates/metacomments.tmpl:7
+#: templates/metacomments.tmpl:443 templates/metacomments.tmpl:518
 #, fuzzy
 msgid "Submitting comment"
 msgstr "Muokkaa tt taulukkoa"
 
 # somewhere
-#: templates/metacomments.tmpl:349 templates/metacomments.tmpl:371
-#: templates/metacomments.tmpl:476
+#: templates/metacomments.tmpl:429 templates/metacomments.tmpl:539
 msgid "Title"
 msgstr "Titel"
 
-#: templates/metacomments.tmpl:8
+#: templates/metacomments.tmpl:32
+msgid "Underline"
+msgstr ""
+
+#: templates/metacomments.tmpl:422
 #, fuzzy
 msgid "Updating comment"
 msgstr "Muokkaa teksti"
 
-#: templates/metacomments.tmpl:331
+#: templates/metacomments.tmpl:413
 msgid "Yes, approve"
 msgstr ""
 
-#: templates/metacomments.tmpl:310
+#: templates/metacomments.tmpl:378
+msgid "Yes, approve all"
+msgstr ""
+
+#: templates/metacomments.tmpl:348
 #, fuzzy
 msgid "Yes, delete"
 msgstr "(poista)"
 
-#: templates/metacomments.tmpl:121
+#: templates/metacomments.tmpl:363
+#, fuzzy
+msgid "Yes, delete all"
+msgstr "(poista)"
+
+#: templates/metacomments.tmpl:393
+msgid "Yes, mark all"
+msgstr ""
+
+#: templates/metacomments.tmpl:135
 msgid "inside tab"
 msgstr ""
 
-#: templates/metacomments.tmpl:121
+#: templates/metacomments.tmpl:135
 msgid "linear"
 msgstr ""
 
-#: templates/metacomments.tmpl:153 templates/metacomments.tmpl:221
-#: templates/metacomments.tmpl:269
+#: templates/metacomments.tmpl:244
 msgid "needs approval"
 msgstr ""
 
-#: templates/metacomments.tmpl:160 templates/metacomments.tmpl:228
-#: templates/metacomments.tmpl:276
+#: templates/metacomments.tmpl:215
 msgid "new"
 msgstr ""
 
-#: templates/metacomments.tmpl:169 templates/metacomments.tmpl:237
-#: templates/metacomments.tmpl:285
+#: templates/metacomments.tmpl:225
 #, fuzzy
 msgid "permlink"
 msgstr "Pivit linkit"
 
-#: templates/metacomments.tmpl:121
+#: templates/metacomments.tmpl:135
 msgid "reverse"
 msgstr ""
 
-#: templates/metacomments.tmpl:121
+#: templates/metacomments.tmpl:135
 msgid "threaded"
 msgstr ""
 
-#: templates/metacomments.tmpl:163 templates/metacomments.tmpl:231
-#: templates/metacomments.tmpl:279
+#: templates/metacomments.tmpl:217
 #, fuzzy
 msgid "updated"
 msgstr "Pivit linkit"
+
+#, fuzzy
+#~ msgid "Reply on this comment"
+#~ msgstr "Muista minut tll tietokoneella"

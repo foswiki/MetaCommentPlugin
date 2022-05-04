@@ -14,178 +14,253 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: vi\n"
 
-#: templates/metacomments.tmpl:57
+#: templates/metacomments.tmpl:66
 msgid "%1 comments"
 msgstr "%1 Kommentare"
 
-#: templates/metacomments.tmpl:105 templates/metacomments.tmpl:445
+#: templates/metacomments.tmpl:120 templates/metacomments.tmpl:514
 msgid "Add a comment"
 msgstr "Kommentar hinzufügen"
 
-#: templates/metacomments.tmpl:320
+#: templates/metacomments.tmpl:167
+msgid "Approve all"
+msgstr "Alles freigeben"
+
+#: templates/metacomments.tmpl:371
+msgid "Approve all comments?"
+msgstr "Alle Kommentar freigeben?"
+
+#: templates/metacomments.tmpl:402
 msgid "Approve comment?"
 msgstr "Kommentar freigeben?"
 
-#: templates/metacomments.tmpl:190
+#: templates/metacomments.tmpl:255
 msgid "Approve this comment"
 msgstr "Diesen Kommentar freigeben"
 
-#: templates/metacomments.tmpl:10
+#: templates/metacomments.tmpl:372
+msgid "Approving all comments"
+msgstr "Alle Kommentare werden freigegeben"
+
+#: templates/metacomments.tmpl:403
 msgid "Approving comment"
 msgstr "Kommentar wird freigegeben"
 
-#: templates/metacomments.tmpl:327
+#: templates/metacomments.tmpl:376
+msgid "Are you sure that you want to approve all comments?"
+msgstr "Sind Sie sicher, dass Sie alle Kommentar freigegeben wollen?"
+
+#: templates/metacomments.tmpl:409
 msgid "Are you sure that you want to approve comment %1 posted by %2 on %3?"
 msgstr ""
 "Sind Sie sicher, dass Sie Kommentar %1 von %2 erstellt am %3 freigeben "
 "wollen?"
 
-#: templates/metacomments.tmpl:306
+#: templates/metacomments.tmpl:361
+msgid "Are you sure that you want to delete all comments ?"
+msgstr "Sind Sie sicher, dass Sie alle Kommentar löschen wollen?"
+
+#: templates/metacomments.tmpl:344
 msgid "Are you sure that you want to delete comment %1 posted by %2 on %3?"
 msgstr ""
 "Sind Sie sicher, dass Sie Kommentar %1 von %2 erstellt am %3 löschen wollen?"
 
-#: templates/metacomments.tmpl:355 templates/metacomments.tmpl:377
-#: templates/metacomments.tmpl:491
+#: templates/metacomments.tmpl:391
+msgid "Are you sure that you want to mark all comments as read?"
+msgstr "Sind Sie sicher, dass Sie alle Kommentar als gelesen markieren wollen?"
+
+#: templates/metacomments.tmpl:30
+msgid "Bold"
+msgstr "Fett"
+
+#: templates/metacomments.tmpl:435 templates/metacomments.tmpl:451
+#: templates/metacomments.tmpl:550
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: templates/metacomments.tmpl:160 templates/metacomments.tmpl:163
-#: templates/metacomments.tmpl:228 templates/metacomments.tmpl:231
-#: templates/metacomments.tmpl:276 templates/metacomments.tmpl:279
+#: templates/metacomments.tmpl:215 templates/metacomments.tmpl:217
 msgid "Click to mark as read"
 msgstr "Klicken, um als gelesen zu markieren"
+
+#: templates/metacomments.tmpl:266
+msgid "Comment on this thread"
+msgstr "Dieses Thema kommentieren"
 
 #: templates/metacommentsrss.tmpl:7
 msgid "Comments"
 msgstr "Kommentare"
 
-#: templates/metacomments.tmpl:299
+#: templates/metacomments.tmpl:168
+msgid "Delete all"
+msgstr "Alle löschen"
+
+#: templates/metacomments.tmpl:356
+msgid "Delete all comments?"
+msgstr "Alle Kommentar löschen?"
+
+#: templates/metacomments.tmpl:337
 msgid "Delete comment?"
 msgstr "Kommentar löschen?"
 
-#: templates/metacomments.tmpl:193
+#: templates/metacomments.tmpl:257
 msgid "Delete this comment"
 msgstr "Diesen Kommentar löschen"
 
-#: templates/metacomments.tmpl:9
+#: templates/metacomments.tmpl:357
+msgid "Deleting all comments"
+msgstr "Lösche alle Kommentare"
+
+#: templates/metacomments.tmpl:338
 msgid "Deleting comment"
 msgstr "Kommentar wird gelöscht"
 
-#: templates/metacomments.tmpl:341
+#: templates/metacomments.tmpl:421
 msgid "Edit comment"
 msgstr "Kommentar bearbeiten"
 
-#: templates/metacomments.tmpl:187
+#: templates/metacomments.tmpl:253
 msgid "Edit this comment"
 msgstr "Diesen Kommentar bearbeiten"
 
-#: templates/metacomments.tmpl:11
-msgid "Marking comment"
-msgstr "Kommentar wird markiert"
+#: templates/metacomments.tmpl:31
+msgid "Italic"
+msgstr "Kursiv"
 
-#: templates/metacomments.tmpl:463
+#: templates/metacomments.tmpl:386
+msgid "Mark all comments?"
+msgstr "Alle Kommentare markieren?"
+
+#: templates/metacomments.tmpl:166
+msgid "Mark as read"
+msgstr "Als gelesen markieren"
+
+#: templates/metacomments.tmpl:387
+msgid "Marking all comments"
+msgstr "Markiere alle Kommentar"
+
+#: templates/metacomments.tmpl:33
+msgid "More character formats"
+msgstr "Weitere Zeichenformate"
+
+#: templates/metacomments.tmpl:530
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
-#: templates/metacomments.tmpl:311 templates/metacomments.tmpl:332
+#: templates/metacomments.tmpl:349 templates/metacomments.tmpl:364
+#: templates/metacomments.tmpl:379 templates/metacomments.tmpl:394
+#: templates/metacomments.tmpl:414
 msgid "No, thanks"
 msgstr "Nein, danke"
 
-#: templates/metacomments.tmpl:354 templates/metacomments.tmpl:376
+#: templates/metacomments.tmpl:434 templates/metacomments.tmpl:450
 msgid "OK"
 msgstr "OK"
 
-#: templates/metacomments.tmpl:56
+#: templates/metacomments.tmpl:65
 msgid "One comment"
 msgstr "Ein Kommentar"
 
-#: templates/metacomments.tmpl:70
+#: templates/metacomments.tmpl:88
 msgid "Please log in or register to comment."
 msgstr "Bitte anmelden oder registrieren, um zu kommentieren."
 
-#: templates/metacomments.tmpl:71
+#: templates/metacomments.tmpl:89
 msgid "Please log in to comment."
 msgstr "Bitte anmelden, um zu kommentieren."
 
-#: data/System/MetaCommentPlugin.txt:256
+#: data/System/MetaCommentPlugin.txt:258
 msgid "RSS comments feed for the %1 web"
 msgstr "RSS Kommentar Feed für das %1 Web"
 
-#: templates/metacomments.tmpl:55
+#: templates/metacomments.tmpl:79
 msgid "RSS feed of the comments on this topic"
 msgstr "RSS Feed fr Kommentar zu diesem Topic"
 
-#: templates/metacomments.tmpl:364
+#: templates/metacomments.tmpl:34
+msgid "Remove Format"
+msgstr "Format entfernen"
+
+#: templates/metacomments.tmpl:262
+msgid "Reply"
+msgstr "Antworten"
+
+#: templates/metacomments.tmpl:442
 msgid "Reply on comment"
 msgstr "Kommentar beantworten"
 
-#: templates/metacomments.tmpl:184
-msgid "Reply on this comment"
-msgstr "Diesen Kommentar beantworten"
-
-#: templates/metacomments.tmpl:68
+#: templates/metacomments.tmpl:86
 msgid "Sorry, commenting not allowed."
 msgstr "Kommentieren leider nicht erlaubt."
 
-#: templates/metacomments.tmpl:490
+#: templates/metacomments.tmpl:549
 msgid "Submit"
 msgstr "Übermitteln"
 
-#: templates/metacomments.tmpl:7
+#: templates/metacomments.tmpl:443 templates/metacomments.tmpl:518
 msgid "Submitting comment"
 msgstr "Kommentar wird abgeschickt"
 
 # somewhere
-#: templates/metacomments.tmpl:349 templates/metacomments.tmpl:371
-#: templates/metacomments.tmpl:476
+#: templates/metacomments.tmpl:429 templates/metacomments.tmpl:539
 msgid "Title"
 msgstr "Titel"
 
-#: templates/metacomments.tmpl:8
+#: templates/metacomments.tmpl:32
+msgid "Underline"
+msgstr "Unterstrichen"
+
+#: templates/metacomments.tmpl:422
 msgid "Updating comment"
 msgstr "Kommentar wird gespeichert"
 
-#: templates/metacomments.tmpl:331
+#: templates/metacomments.tmpl:413
 msgid "Yes, approve"
 msgstr "Ja, freigeben"
 
-#: templates/metacomments.tmpl:310
+#: templates/metacomments.tmpl:378
+msgid "Yes, approve all"
+msgstr "Ja, alles freigeben"
+
+#: templates/metacomments.tmpl:348
 msgid "Yes, delete"
 msgstr "Ja, löschen"
 
-#: templates/metacomments.tmpl:121
+#: templates/metacomments.tmpl:363
+msgid "Yes, delete all"
+msgstr "Ja, alle löschen"
+
+#: templates/metacomments.tmpl:393
+msgid "Yes, mark all"
+msgstr "Ja, alles markieren"
+
+#: templates/metacomments.tmpl:135
 msgid "inside tab"
 msgstr "im tab"
 
-#: templates/metacomments.tmpl:121
+#: templates/metacomments.tmpl:135
 msgid "linear"
 msgstr "linear"
 
-#: templates/metacomments.tmpl:153 templates/metacomments.tmpl:221
-#: templates/metacomments.tmpl:269
+#: templates/metacomments.tmpl:244
 msgid "needs approval"
 msgstr "benötigt Freigabe"
 
-#: templates/metacomments.tmpl:160 templates/metacomments.tmpl:228
-#: templates/metacomments.tmpl:276
+#: templates/metacomments.tmpl:215
 msgid "new"
 msgstr "neu"
 
-#: templates/metacomments.tmpl:169 templates/metacomments.tmpl:237
-#: templates/metacomments.tmpl:285
+#: templates/metacomments.tmpl:225
 msgid "permlink"
 msgstr "permlink"
 
-#: templates/metacomments.tmpl:121
+#: templates/metacomments.tmpl:135
 msgid "reverse"
 msgstr "umgekehrt"
 
-#: templates/metacomments.tmpl:121
+#: templates/metacomments.tmpl:135
 msgid "threaded"
 msgstr "verzweigt"
 
-#: templates/metacomments.tmpl:163 templates/metacomments.tmpl:231
-#: templates/metacomments.tmpl:279
+#: templates/metacomments.tmpl:217
 msgid "updated"
 msgstr "geändert"

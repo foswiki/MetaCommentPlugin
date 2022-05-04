@@ -2,7 +2,7 @@
 
 Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 
-(c)opyright 2010-2019 Michael Daum http://michaeldaumconsulting.com
+(c)opyright 2010-2022 Michael Daum http://michaeldaumconsulting.com
 
 are listed in the AUTHORS file in the root of this distribution.
 NOTE: Please extend that file, not this notice.
@@ -20,161 +20,102 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 As per the GPL, removal of this notice is prohibited.
 
 */
+
+/*global foswikiStrikeOne:false */
+
 "use strict";
-jQuery(function($) {
-  var doneLoadDialogs = false;
+(function($) {
 
-  $(".cmtComments:not(.cmtCommentsInited)").livequery(function() {
-    var $this = $(this),
-        $container = $this.parent(),
-        defaults = {
-          topic: foswiki.getPreference("TOPIC"),
-          web: foswiki.getPreference("WEB"),
-          updateMessage: "Updating comment",
-          deleteMessage: "Deleting comment",
-          approveMessage: "Approving comment",
-          markingMessage: "Marking comment"
-        },
-        opts = $.extend({}, defaults, $this.data(), $this.metadata()),
-        hash;
+  //globals
+  var doneLoadDialogs = false,
+  globalMetaComments;
 
-    /* function to reload all dialogs **************************************/
-    function loadDialogs(callback) {
-      if (!doneLoadDialogs) {
-        doneLoadDialogs = true;
-        $.get(
-          foswiki.getPreference("SCRIPTURL") + "/rest/RenderPlugin/template", 
-          {
-            name:'metacomments',
-            render:'on',
-            topic:opts.web+"."+opts.topic,
-            expand:'comments::dialogs'
-          }, function(data) {
-            $('body').append(data);
-            window.setTimeout(callback, 100); // wait for livequeries ...
-          }
-        );
-      } else {
-        $(".cmtDialog form").resetForm();
-        callback.call();
-      }
-    }
+  // constructor
+  function MetaComments(elem, opts) {
+    var self = this,
+        baseTopic = foswiki.getPreference("WEB")+"."+foswiki.getPreference("TOPIC");
 
-    /* function to reload all comments *************************************/
-    function loadComments() {
-      var url = foswiki.getPreference("SCRIPTURL") + 
-          "/rest/RenderPlugin/template" +
-          "?name=metacomments" + 
-          ";render=on" +
-          ";topic="+opts.web+"."+opts.topic +
-          ";expand=metacomments";
+    globalMetaComments = self;
 
-      $container.load(url, function() {
-        $.unblockUI();
-        $container.height('auto');
+    self.elem = $(elem);
+
+    // gather options by merging opts
+    self.opts = $.extend({
+      baseTopic: baseTopic,
+      topic: baseTopic
+    }, self.elem.data(), opts);
+
+    self.init();
+  }
+
+  // initializer *********************************************************
+  MetaComments.prototype.init = function () {
+    var self = this,
+        hash = window.location.hash;
+        
+    self.container = self.elem.parent();
+
+    // scroll to comments hash
+    if (hash.match(/^#comment\d+\.\d+$/)) {
+      $.scrollTo(hash.replace(/\./, "\\."), 500, {
+        easing: "easeInOutQuad"
       });
     }
 
-    /* add hover ***********************************************************/
-    $this.find(".cmtComment").hover(
-      function() {
-        var $this = $(this), $controls = $this.children(".cmtControls");
-        $this.addClass("cmtHover");
-        $controls.stop(true, true).fadeIn(500);
-      },
-      function() {
-        var $this = $(this), $controls = $this.children(".cmtControls");
-        $controls.stop(true, true).hide();
-        $this.removeClass("cmtHover");
-      }
-    );
+    // add reply behaviour 
+    self.elem.find(".cmtReply").on("click", function() {
+      var $comment = $(this).parent().find(".cmtComment:first"),
+          commentOpts = $.extend({}, $comment.data());
 
-    /* ajaxify forms ********************************************************/
-    $(".cmtJsonRpcForm").livequery(function() {
-      var $form = $(this), msg = $form.data("message");
-
-      $form.ajaxForm({
-        beforeSerialize: function() {
-          if (typeof(foswikiStrikeOne) !== 'undefined') {
-            foswikiStrikeOne($form[0]);
-          }
-        },
-        beforeSubmit: function() {
-          if ($form.is(".cmtModalForm")) {
-            $form.parent().dialog("close");
-          }
-          $.blockUI({
-            message:"<h1>"+msg+" ...</h1>",
-            fadeIn: 0,
-            fadeOut: 0
-          });
-        },
-        success: function(data) {
-          if(data.error) {
-            $.unblockUI();
-            $.pnotify({
-              text: "Error: "+data.error.message,
-              type:"error"
-            });
-          } else {
-            loadComments();
-          }
-        },
-        error: function(xhr) {
-          var data = $.parseJSON(xhr.responseText);
-          $.unblockUI();
-          $.pnotify({
-            text: "Error: "+data.error.message,
-            type:"error"
-          });
-        }
-      });
-    });
-
-    /* add reply behaviour **************************************************/
-    $this.find(".cmtReply").click(function() {
-      var $comment = $(this).parents(".cmtComment:first"),
-          commentOpts = $.extend({}, $comment.metadata());
-
-      loadDialogs(function() {
+      self.loadDialogs().then(function() {
         $("#cmtReplyComment").dialog("option", "open", function() {
           var $this = $(this);
+          $this.find("input[name='topic']").val(self.opts.topic);
           $this.find(".cmtCommentIndex").text(commentOpts.index);
-          $this.find("input[name='ref']").val(commentOpts.comment_id);
+          $this.find("input[name='ref']").val(commentOpts.commentId);
+          $this.find("form").trigger("refresh");
         }).dialog("open");
       });
 
       return false;
     });
 
-    /* add edit behaviour ***************************************************/
-    $this.find(".cmtEdit").click(function() {
+    // add edit behaviour 
+    self.elem.find(".cmtEdit").on("click", function() {
       var $comment = $(this).parents(".cmtComment:first"),
-          commentOpts = $.extend({}, $comment.metadata());
+          commentOpts = $.extend({}, $comment.data());
 
-      loadDialogs(function() {
+      self.loadDialogs().then(function() {
         $.jsonRpc(foswiki.getPreference("SCRIPTURL")+"/jsonrpc", {
           namespace: "MetaCommentPlugin",
           method: "getComment",
           params: {
-            "topic": opts.web+"."+opts.topic,
-            "comment_id": commentOpts.comment_id
+            "topic": self.opts.topic,
+            "comment_id": commentOpts.commentId
           },
           success: function(json) {
             $.unblockUI();
             $("#cmtUpdateComment").dialog("option", "open", function() {
               var $this = $(this);
-              $this.find("input[name='comment_id']").val(commentOpts.comment_id);
+              $this.find("input[name='topic']").val(self.opts.topic);
+              $this.find("input[name='comment_id']").val(commentOpts.commentId);
               $this.find("input[name='index']").val(commentOpts.index);
               $this.find(".cmtCommentIndex").text(commentOpts.index);
               $this.find("input[name='title']").val(json.result.title);
               $this.find("textarea[name='text']").val(json.result.text);
+              $this.find("form").trigger("refresh");
+              if ((""+commentOpts.index).match(/^\d+$/)) {
+                $this.find(".cmtTitleStep").show();
+              } else {
+                $this.find(".cmtTitleStep").hide();
+              }
             }).dialog("open");
           },
           error: function(data) {
             $.unblockUI();
             $.pnotify({
-              text: "Error: "+data.error.message,
+              title: "Error",
+              text: data.error.message,
               type:"error"
             });
           }
@@ -183,15 +124,16 @@ jQuery(function($) {
       return false;
     });
 
-    /* add delete behaviour *************************************************/
-    $this.find(".cmtDelete").click(function() {
+    // add delete behaviour 
+    self.elem.find(".cmtDelete").on("click", function() {
       var $comment = $(this).parents(".cmtComment:first"),
-          commentOpts = $.extend({}, $comment.metadata());
+          commentOpts = $.extend({}, $comment.data());
 
-      loadDialogs(function() {
+      self.loadDialogs().then(function() {
         $("#cmtConfirmDelete").dialog("option", "open", function() {
           var $this = $(this);
-          $this.find("input[name='comment_id']").val(commentOpts.comment_id);
+          $this.find("input[name='topic']").val(self.opts.topic);
+          $this.find("input[name='comment_id']").val(commentOpts.commentId);
           $this.find("input[name='index']").val(commentOpts.index);
           $this.find(".cmtCommentNr").text(commentOpts.index);
           $this.find(".cmtAuthor").text(commentOpts.author);
@@ -202,30 +144,33 @@ jQuery(function($) {
       return false;
     });
 
-    /* add delete/approve/mark all behaviour ******************************************/
-    $this.find(".cmtDeleteAll, .cmtApproveAll, .cmtMarkAll").click(function() {
+    // add delete/approve/mark all behaviour 
+    self.elem.find(".cmtDeleteAll, .cmtApproveAll, .cmtMarkAll").on("click", function() {
       var id = $(this).attr("href");
 
-      loadDialogs(function() {
-        $(id).dialog("open");
+      self.loadDialogs().then(function() {
+        $(id).dialog("option", "open", function() {
+          var $this = $(this);
+          $this.find("input[name='topic']").val(self.opts.topic);
+        }).dialog("open");
       });
 
       return false;
     });
 
-    /* add "mark as read" behaviour *************************************************/
-    $this.find(".cmtMark").click(function() {
+    // add "mark as read" 
+    self.elem.find(".cmtMark").on("click", function() {
       var $this = $(this), 
           msg = $this.data("message"),
           $comment = $this.parents(".cmtComment:first"),
-          commentOpts = $.extend({}, $comment.metadata());
+          commentOpts = $.extend({}, $comment.data());
 
       $.jsonRpc(foswiki.getPreference("SCRIPTURL")+"/jsonrpc", {
         namespace: "MetaCommentPlugin",
         method: "markComment",
         params: {
-          "topic": opts.web+"."+opts.topic,
-          "comment_id": commentOpts.comment_id
+          "topic": self.opts.topic,
+          "comment_id": commentOpts.commentId
         },
         beforeSubmit: function() {
           $.blockUI({ message:"<h1>"+msg+" ...</h1>"});
@@ -238,11 +183,13 @@ jQuery(function($) {
             $this.remove();
           }
           $comment.parent().removeClass("cmtCommentNew cmtCommentUpdated");
+          self.updateFavicon();
         },
         error: function(data) {
           $.unblockUI();
           $.pnotify({
-            text: "Error: "+data.error.message,
+            title: "Error",
+            text: data.error.message,
             type:"error"
           });
         }
@@ -251,35 +198,173 @@ jQuery(function($) {
       return false;
     });
 
-    /* add approve behaviour ************************************************/
-    $this.find(".cmtApprove").click(function() {
+    // add approve behaviour 
+    self.elem.find(".cmtApprove").on("click", function() {
       var $comment = $(this).parents(".cmtComment:first"),
-          commentOpts = $.extend({}, $comment.metadata());
+          commentOpts = $.extend({}, $comment.data());
 
-      loadDialogs(function() {
+      self.loadDialogs().then(function() {
         $("#cmtConfirmApprove").dialog("option", "open", function() {
           var $this = $(this);
-          $this.find("input[name='comment_id']").val(commentOpts.comment_id);
+          $this.find("input[name='topic']").val(self.opts.topic);
+          $this.find("input[name='comment_id']").val(commentOpts.commentId);
           $this.find("input[name='index']").val(commentOpts.index);
           $this.find(".cmtCommentNr").text(commentOpts.index);
           $this.find(".cmtAuthor").text(commentOpts.author);
           $this.find(".cmtDate").text(commentOpts.date);
         }).dialog("open");
       });
+
       return false;
     });
 
-    // scroll to comments hash
-    hash = window.location.hash;
-    if (hash.match(/^#comment\d+\.\d+$/)) {
-      $.scrollTo(hash.replace(/\./, "\\."), 500, {
-        easing: "easeInOutQuad"
-      });
-    }
-
     // work around blinking twisties
     window.setTimeout(function() {
-      $this.find(".twistyPlugin").show();
+      self.elem.find(".twistyPlugin").show();
     }, 1);
+
+    self.updateFavicon();
+  };
+
+  // update the favicon with the number of marks *************************
+  MetaComments.prototype.updateFavicon = function() {
+    var self = this, count;
+
+    if (!foswiki.faviconManager) {
+      return;
+    }
+
+    count = self.elem.find(".cmtMark").length;
+    //console.log("found cmtMarks=",count);
+    foswiki.faviconManager.setText(count ? count : "");
+  };
+
+  // function to reload all dialogs **************************************
+  MetaComments.prototype.loadDialogs = function() {
+    var self = this,
+        dld = $.Deferred();
+
+    if (!doneLoadDialogs) {
+      doneLoadDialogs = true;
+
+      $.get(
+        foswiki.getScriptUrl("rest", "RenderPlugin", "template", {
+          name:'metacomments',
+          render:'on',
+          topic: self.opts.baseTopic,
+          expand:'comments::dialogs'
+        }), function(data) {
+          $('body').append(data);
+
+          window.setTimeout(function() {
+            dld.resolve();
+          }, 100); // wait for livequeries ...
+        }
+      );
+
+    } else {
+      $(".cmtDialog form").resetForm();
+      dld.resolve();
+    }
+
+    return dld;
+  };
+
+  // reuload all comments ************************************************
+  MetaComments.prototype.reload = function() {
+    var self = this;
+
+    var url = foswiki.getScriptUrl("rest", "RenderPlugin", "template", {
+        "name": "metacomments",
+        "render": "on",
+        "topic": self.opts.baseTopic,
+        "commentstopic": self.opts.topic,
+        "expand": "metacomments",
+        "cachecontrol": 0
+    });
+
+    self.container.load(url, function() {
+      $.unblockUI();
+      self.container.height('auto');
+    });
+  };
+
+  $.fn.metaComments = function (opts) {
+    return this.each(function () {
+      if (!$.data(this, "MetaComments")) {
+        $.data(this, "MetaComments", new MetaComments(this, opts));
+      }
+    });
+  };
+
+  // Enable declarative widget instanziation
+  $(function() {
+    $(".cmtComments").livequery(function() {
+      $(this).metaComments();
+    });
   });
-});
+
+  /* ajaxify forms ********************************************************/
+  $(".cmtJsonRpcForm").livequery(function() {
+    var $form = $(this), 
+        msg = $form.data("message");
+
+    $form.on("refresh", function() {
+      $form.find(".natedit").each(function() {
+        var editor = $(this).data("natedit"),
+            val = $(this).val();
+        if (editor) {
+          editor.setValue(val);
+        }
+      });
+    });
+
+    $form.ajaxForm({
+      beforeSerialize: function() {
+        if (typeof(foswikiStrikeOne) !== 'undefined') {
+          foswikiStrikeOne($form[0]);
+        }
+        $form.find(".natedit").each(function() {
+          var editor = $(this).data("natedit");
+          if (editor) {
+            editor.beforeSubmit();
+          }
+        });
+      },
+      beforeSubmit: function() {
+        if ($form.is(".cmtModalForm")) {
+          $form.parent().dialog("close");
+        }
+        $.blockUI({
+          message:"<h1>"+msg+" ...</h1>",
+          fadeIn: 0,
+          fadeOut: 0
+        });
+      },
+      success: function(data) {
+        if(data.error) {
+          $.unblockUI();
+          $.pnotify({
+            title: "Error",
+            text: data.error.message,
+            type:"error"
+          });
+        } else {
+          if (globalMetaComments) {
+            globalMetaComments.reload();
+          }
+        }
+      },
+      error: function(xhr) {
+        var data = $.parseJSON(xhr.responseText);
+        $.unblockUI();
+        $.pnotify({
+          title: "Error",
+          text: data.error.message,
+          type:"error"
+        });
+      }
+    });
+  });
+
+})(jQuery);

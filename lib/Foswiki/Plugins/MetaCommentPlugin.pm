@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2009-2019 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2009-2022 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,9 +18,10 @@ use warnings;
 use Foswiki::Func ();
 use Foswiki::Plugins ();
 use Foswiki::Contrib::JsonRpcContrib ();
+use Foswiki::Plugins::JQueryPlugin ();
 
-our $VERSION = '5.10';
-our $RELEASE = '26 Nov 2019';
+our $VERSION = '7.00';
+our $RELEASE = '04 May 2022';
 our $SHORTDESCRIPTION = 'An easy to use comment system';
 our $NO_PREFS_IN_TOPIC = 1;
 our $core;
@@ -30,6 +31,8 @@ sub initPlugin {
 
   $core = undef;
   @commentHandlers = ();
+
+  Foswiki::Plugins::JQueryPlugin::registerPlugin("MetaComment", 'Foswiki::Plugins::MetaCommentPlugin::JQuery');
 
   Foswiki::Func::registerTagHandler('METACOMMENTS', sub {
     return getCore(shift)->METACOMMENTS(@_);
@@ -89,6 +92,37 @@ sub initPlugin {
     require Foswiki::Plugins::LikePlugin;
     Foswiki::Plugins::LikePlugin::registerAfterLikeHandler(sub {
       return getCore()->afterLikeHandler(@_);
+    });
+  }
+
+  if ($Foswiki::cfg{Plugins}{JQDataTablesPlugin}{Enabled}) {
+    # register qmstate properties to JQDataTablesPlugin
+    require Foswiki::Plugins::JQDataTablesPlugin;
+
+    Foswiki::Plugins::JQDataTablesPlugin::describeColumn("dbcache", "comments", {
+      type => "number",
+      data => 'length(comments)',
+      search => 'length(comments)',
+      sort => 'length(comments)',
+    });
+    Foswiki::Plugins::JQDataTablesPlugin::describeColumn("dbcache", "commentdate", {
+      type => 'date',
+      data => 'commentdate',
+      search => 'lc(n2d(commentdate))',
+      sort => 'commentdate',
+    });
+
+    Foswiki::Plugins::JQDataTablesPlugin::describeColumn("solr", "comments", {
+      type => 'number',
+      data => 'field_Comments_d',
+      search => 'field_Comments_d',
+      sort => 'field_Comments_d',
+    });
+    Foswiki::Plugins::JQDataTablesPlugin::describeColumn("solr", "commentdate", {
+      type => 'date',
+      data => 'field_Comments_dt',
+      search => 'field_Comments_search',
+      sort => 'field_Comments_dt',
     });
   }
 

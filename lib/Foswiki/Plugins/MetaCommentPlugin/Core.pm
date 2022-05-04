@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2009-2019 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2009-2021 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -41,6 +41,7 @@ sub new {
     baseWeb => $session->{webName},
     baseTopic => $session->{topicName},
     anonCommenting => $Foswiki::cfg{MetaCommentPlugin}{AnonymousCommenting},
+    commentNotify => Foswiki::Func::isTrue(Foswiki::Func::getPreferencesValue("COMMENTNOTIFY"), 1),
     wikiName => Foswiki::Func::getWikiName(),
   };
 
@@ -142,7 +143,7 @@ sub jsonRpcSaveComment {
     };
 
   $meta->putKeyed('COMMENT', $comment);
-  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, minor=>1}) unless DRY;
+  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, minor => !$this->{commentNotify}}) unless DRY;
   $this->triggerEvent("commentsave", $web, $topic, $comment); 
 
   return;
@@ -260,7 +261,7 @@ sub jsonRpcUpdateComment {
 
   $meta->putKeyed('COMMENT', $comment);
 
-  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, minor=>1}) unless DRY;
+  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, minor => !$this->{commentNotify}}) unless DRY;
   $this->triggerEvent("commentupdate", $web, $topic, $comment); 
 
   return;
@@ -313,7 +314,7 @@ sub jsonRpcDeleteComment {
   # remove this comment
   $meta->remove('COMMENT', $id);
 
-  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, minor=>1}) unless DRY;
+  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, minor => !$this->{commentNotify}}) unless DRY;
   $this->triggerEvent("commentdelete", $web, $topic, $comment); 
 
   return;
@@ -353,7 +354,7 @@ sub jsonRpcDeleteAllComments {
   # remove all comments
   $meta->remove('COMMENT');
 
-  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, minor=>1}) unless DRY;
+  Foswiki::Func::saveTopic($web, $topic, $meta, $text, {ignorepermissions=>1, minor => 1}) unless DRY;
   $this->triggerEvent("commentdeleteall", $web, $topic); 
 
   return;
@@ -400,6 +401,7 @@ sub jsonRpcApproveAllComments {
 
   return;
 }
+
 ##############################################################################
 sub jsonRpcMarkAllComments {
   my ($this, $request) = @_;
@@ -500,7 +502,6 @@ sub isModerator {
   my ($this, $web, $topic, $meta) = @_;
   
   return 1 if Foswiki::Func::isAnAdmin();
-  return 0 unless $this->isModerated($web, $topic, $meta);
   return 1 if Foswiki::Func::checkAccessPermission("MODERATE", $this->{wikiName}, undef, $topic, $web, $meta);
   return 0;
 }
@@ -581,7 +582,8 @@ sub METACOMMENTS {
 
   $params->{count} = ($count > 1)?$params->{plural}:$params->{singular};
   $params->{count} =~ s/\$count/$count/g;
-  $params->{ismoderator} = $this->isModerator($theWeb, $theTopic);
+  $params->{ismoderator} = $this->isModerator($theWeb, $theTopic, $meta);
+  $params->{ismoderated} = $this->isModerated($theWeb, $theTopic, $meta);
 
   # format the results
   my @topComments;
@@ -596,11 +598,13 @@ sub METACOMMENTS {
     expandVariables($params->{header}, 
       count=>$params->{count},
       ismoderator=>$params->{ismoderator},
+      ismoderated=>$params->{ismoderated},
     ).
     join(expandVariables($params->{separator}), @result).
     expandVariables($params->{footer}, 
       count=>$params->{count},
       ismoderator=>$params->{ismoderator},
+      ismoderated=>$params->{ismoderated},
     );
 
   # oh well
@@ -810,10 +814,12 @@ sub formatComments {
             count=>$params->{count}, 
             index=>$indexString,
             ismoderator=>$params->{ismoderator},
+            ismoderated=>$params->{ismoderated},
           ).$subComments.
           expandVariables($params->{subfooter}, 
             count=>$params->{count}, 
             ismoderator=>$params->{ismoderator},
+            ismoderated=>$params->{ismoderated},
             index=>$indexString)
       };
     }
@@ -841,6 +847,7 @@ sub formatComments {
       state=>$comment->{state},
       count=>$params->{count},
       ismoderator=>$params->{ismoderator},
+      ismoderated=>$params->{ismoderated},
       timestamp=>$comment->{date} || 0,
       date=>Foswiki::Time::formatTime(($comment->{date}||0)),
       modified=>Foswiki::Time::formatTime(($comment->{modified}||0)),
@@ -968,9 +975,8 @@ sub solrIndexTopicHandler {
   # delete all previous comments of this topic
   $indexer->deleteByQuery("type:comment web:$web topic:$topic");
 
+  my $commentDate = 0;
   my @comments = $meta->find('COMMENT');
-  return unless @comments;
-
   my @aclFields = $indexer->getAclFields($web, $topic, $meta);
   my $isModerated = $this->isModerated($web, $topic, $meta);
 
@@ -980,7 +986,15 @@ sub solrIndexTopicHandler {
 
     # set doc fields
     my $createDate = Foswiki::Func::formatTime($comment->{date}, 'iso', 'gmtime');
-    my $date = defined($comment->{modified}) ? Foswiki::Func::formatTime($comment->{modified}, 'iso', 'gmtime') : $createDate;
+    my $createStr = Foswiki::Func::formatTime($comment->{date});
+    my $cmtDate = $comment->{modified} || $comment->{date};
+    my $date = Foswiki::Func::formatTime($cmtDate, 'iso', 'gmtime');
+    my $dateStr = Foswiki::Func::formatTime($cmtDate);
+
+    if ($cmtDate > $commentDate) {
+      $commentDate = $cmtDate;
+    }
+
     my $webtopic = "$web.$topic";
     $webtopic =~ s/\//./g;
     my $id = $webtopic . '#' . $comment->{name};
@@ -1010,7 +1024,9 @@ sub solrIndexTopicHandler {
 #      'author_url' => $comment->{author_url},
       'contributor' => $comment->{author},
       'date' => $date,
+      'date_s' => $dateStr,
       'createdate' => $createDate,
+      'createdate_s' => $createStr,
       'title' => $title,
       'text' => $comment->{text},
       'url' => $url,
@@ -1048,7 +1064,6 @@ sub solrIndexTopicHandler {
     $doc->add_fields('catchall' => $title);
     $doc->add_fields('catchall' => $comment->{text});
 
-
     # add the document to the index
     try {
       $indexer->add($commentDoc);
@@ -1058,6 +1073,12 @@ sub solrIndexTopicHandler {
       $indexer->log("ERROR: " . $e->{-text});
     };
   }
+
+  my $numComments = scalar(@comments);
+
+  $doc->add_fields(field_Comments_d => $numComments);
+  $doc->add_fields(field_CommentDate_dt => Foswiki::Func::formatTime($commentDate, 'iso', 'gmtime'))
+    if $commentDate;
 }
 
 ##############################################################################
@@ -1068,6 +1089,7 @@ sub dbcacheIndexTopicHandler {
   # cache comments
   my $archivist = $db->getArchivist();
   my @comments = $meta->find('COMMENT');
+
   my $commentDate = 0;
 
   my $cmts;

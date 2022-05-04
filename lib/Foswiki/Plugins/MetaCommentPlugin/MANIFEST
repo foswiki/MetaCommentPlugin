@@ -3,6 +3,7 @@ data/System/MetaCommentPlugin.txt 0644
 lib/Foswiki/Plugins/MetaCommentPlugin/Config.spec 0644
 lib/Foswiki/Plugins/MetaCommentPlugin/Core.pm 0644
 lib/Foswiki/Plugins/MetaCommentPlugin/DEPENDENCIES 0644
+lib/Foswiki/Plugins/MetaCommentPlugin/JQuery.pm 0644
 lib/Foswiki/Plugins/MetaCommentPlugin.pm 0644
 locale/MetaCommentPlugin/bg.po 0644
 locale/MetaCommentPlugin/cs.po 0644
@@ -40,7 +41,11 @@ pub/System/MetaCommentPlugin/metacomment.pattern.uncompressed.css 0644
 pub/System/MetaCommentPlugin/MetaCommentSnap1.jpeg 0644
 pub/System/MetaCommentPlugin/metacomment.uncompressed.css 0644
 pub/System/MetaCommentPlugin/metacomment.uncompressed.js 0644
+pub/System/MetaCommentPlugin/naviblocker.js 0644
+pub/System/MetaCommentPlugin/naviblocker.js.gz 0644
+pub/System/MetaCommentPlugin/naviblocker.uncompressed.js 0644
 pub/System/MetaCommentPlugin/nobody.gif 0644
+pub/System/MetaCommentPlugin/nobody.png 0644
 templates/metacomments.pattern.tmpl 0644
 templates/metacommentsrss.tmpl 0644
 templates/metacomments.tmpl 0644

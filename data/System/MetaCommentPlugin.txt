@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1574759516" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1605804814" format="1.1" version="1"}%
 ---+!! MetaCommentPlugin
 %FORMFIELD{"Description"}%
 
@@ -6,10 +6,10 @@
 
 This is YACS (yet another comment system) which tries to
 
-   * (a) be easy to use,
-   * (b) scale up to lots of comments
-   * (c) provide different layouts and commenting requirements and
-   * (d) implement a moderation workflow for comments before they go live.
+   1 be easy to use,
+   1 scale up to lots of comments
+   1 provide different layouts and commenting requirements and
+   1 implement a moderation workflow for comments before they go live.
 
 <nop>%TOPIC% allows to easily add commenting to any topic. Discussiosn can
 either be displayed in linear or threaded mode. Different comment styles and
@@ -196,6 +196,7 @@ When rendering a comment, the following variables can be used in the =format= st
    * $state: the state of this comment
    * $count: the total number of comments
    * $ismoderator: true/false if the current user is allowed to moderate the comments or not
+   * $ismoderated: true/false if the current topic is moderated or not
    * $timestamp: the date when this comment was created; format in epoch seconds
    * $date: the date when this comment was created in Foswiki's default time format
    * $modified: the date this comment was last modified
@@ -265,6 +266,14 @@ The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
 
 ---++ Change History
 %TABLE{columnwidths="7em" tablewidth="100%"}%
+|  04 May 2022: | 7.00 - added interface to render comments from a base translation; \
+                         improve usability of threaded commenting; \
+                         better editor integration; \
+                         use new api of JQDataTablesPlugin to register custom columns to dbcache and solr connectors; \
+                         new solr fields =field_Comments_d= and =field_CommentDate_dt=  |
+|  17 Jun 2021: | 6.20 - added =ismoderated= to only show approval controls if the topic actually is moderated |
+|  06 May 2021: | 6.10 - added new preference setting COMMENTNOTIFY (default on) to suppress change notifications when a topic is commented |
+|  31 Mar 2021: | 6.00 - rewrite of javascript code; blocking browser navigation when there are unsaved comments |
 |  26 Nov 2019: | 5.10 - added rev parameter to display comments of previous revisions of a topic; \
                          added "delete all", "approve all", "mark all" features to moderate comments in bunches; \
                          improved [[Foswiki:Extensions/SolrPlugin][SolrPlugin]] integration |
@@ -316,14 +325,14 @@ The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
                   fixed recoding of received data to the site's own charset; \
                   improved the way photos are gathered |
 
-%META:FILEATTACHMENT{name="MetaCommentSnap1.jpeg" attachment="MetaCommentSnap1.jpeg" attr="h" comment="" date="1574759516" path="MetaCommentSnap1.jpeg" size="51144" user="ProjectContributor" version="1"}%
 %META:FORM{name="PackageForm"}%
 %META:FIELD{name="Author" title="Author" value="Foswiki:Main/MichaelDaum"}%
-%META:FIELD{name="Copyright" title="Copyright" value="2009-2019, Michael Daum http://michaeldaumconsulting.com"}%
+%META:FIELD{name="Version" title="Version" value="%25$VERSION%25"}%
+%META:FIELD{name="Release" title="Release" value="%25$RELEASE%25"}%
 %META:FIELD{name="Description" title="Description" value="%25$SHORTDESCRIPTION%25"}%
-%META:FIELD{name="Home" title="Home" value="https://foswiki.org/Extensions/MetaCommentPlugin"}%
-%META:FIELD{name="License" title="License" value="[[http://www.gnu.org/licenses/gpl.html][GPL (Gnu General Public License)]]"}%
-%META:FIELD{name="Release" title="Release" value="%$RELEASE%"}%
 %META:FIELD{name="Repository" title="Repository" value="https://github.com/foswiki/MetaCommentPlugin"}%
+%META:FIELD{name="Copyright" title="Copyright" value="2009-2022, Michael Daum"}%
+%META:FIELD{name="License" title="License" value="[[http://www.gnu.org/licenses/gpl.html][GPL (Gnu General Public License)]]"}%
+%META:FIELD{name="Home" title="Home" value="https://foswiki.org/Extensions/MetaCommentPlugin"}%
 %META:FIELD{name="Support" title="Support" value="Foswiki:Support/MetaCommentPlugin"}%
-%META:FIELD{name="Version" title="Version" value="%$VERSION%"}%
+%META:FILEATTACHMENT{name="MetaCommentSnap1.jpeg" attachment="MetaCommentSnap1.jpeg" attr="h" comment="" date="1574759516" path="MetaCommentSnap1.jpeg" size="51144" user="ProjectContributor" version="1"}%

@@ -17,8 +17,8 @@
 }
 .cmtDeleteAll:hover,
 .cmtRssFeed:hover {
-  background-color:#eee;
-  color:inherit;
+  background-color: var(--color-hover-background, #eee);
+  color: var(--color-hover-foreground, #222);
   text-decoration:none;
 }
 
@@ -68,7 +68,9 @@
 h3.cmtCommentNr {
   float:right;
   color:#444;
-  margin:0em 0em 1em 1em;
+  margin:-0.5em 0em 1em 1em;
+  transition: opacity 500ms;
+  opacity:1;
 }
 .ui-dialog .cmtDate,
 .ui-dialog .cmtAuthor,
@@ -77,28 +79,29 @@ h3.cmtCommentNr {
   white-space:nowrap;
 }
 .cmtControls {
-  padding:0em 1.3846em 1.3076em;
-  margin:0em -1.3846em -1.3076em;
+  position:absolute;
+  top:0;
+  right:0;
+  opacity:0;
+  transition: opacity 500ms;
+}
+.cmtControls a {
+  margin-left:1em;
 }
 .cmtComment {
   position:relative;
+  padding-top:0.5em;
+}
+.cmtComment:hover .cmtControls {
+  opacity:1;
+}
+.cmtComment:hover .cmtCommentNr {
+  opacity:0;
 }
 a.cmtMark,
 a.cmtPermLink,
 .cmtAuthor a {
   text-decoration:none;
-}
-.cmtControls {
-  position:absolute;
-  bottom:1px;
-  right:1px;
-  display:none;
-}
-.cmtControls a {
-  margin-left:0.6923em;
-}
-.cmtHover .cmtAlert {
-  visibility:hidden;
 }
 .cmtState_closed .cmtControls {
   display:none;
@@ -117,7 +120,7 @@ a.cmtPermLink,
 
 .cmtComment .imagePlain_left,
 .cmtComment .imageSimple_left {
-  margin:0em 0.6923em 0.3077em 0em; /* 0px 9px 4px 0px */
+  margin:-0.5em 0.6923em 0.3077em 0em; 
 }
 .cmtStyle_insidetab h2.cmtCounter,
 .cmtStyle_insidetab .cmtAddComment h2 {
