@@ -1,9 +1,14 @@
-Foswiki::Contrib::JsonRpcContrib,>=1.1,perl,Required. 
-Foswiki::Plugins::RenderPlugin,>=3.1,perl,Required. 
-Foswiki::Plugins::ImagePlugin,>=3.0,perl,Required. 
-Foswiki::Plugins::DBCachePlugin,>=9.0,perl,Optional. 
-Foswiki::Plugins::SolrPlugin,>=4.0,perl,Optional. 
-Foswiki::Plugins::LikePlugin,>=1.0,perl,Optional. 
+Foswiki::Contrib::JQTwistyContrib,>=1.0,perl,Required
+Foswiki::Plugins::MultiLingualPlugin,>=4.10,perl,Required
+Foswiki::Plugins::FaviconPlugin,>=0,perl,Optional
+Foswiki::Contrib::JsonRpcContrib,>=1.1,perl,Required
+Foswiki::Plugins::RenderPlugin,>=3.1,perl,Required
+Foswiki::Plugins::ImagePlugin,>=3.0,perl,Required
+Foswiki::Plugins::DBCachePlugin,>=9.0,perl,Optional
+Foswiki::Plugins::SolrPlugin,>=4.0,perl,Optional
+Foswiki::Plugins::LikePlugin,>=1.0,perl,Optional
+Foswiki::Plugins::DateManipPlugin,>=1.0,perl,Optional
+Foswiki::Plugins::DeeplPlugin,>=1.00,perl,Optional
 ONLYIF ( $Foswiki::Plugins::VERSION < 2.1)
 Foswiki::Plugins::ZonePlugin,>=3.1,perl,Required. required for Foswiki < 1.1
 ONLYIF ( $Foswiki::Plugins::VERSION < 2.6)

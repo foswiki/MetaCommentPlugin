@@ -5,6 +5,4 @@
   "$'DISPLAYCOMMENTS'='on' and $'COMMENTFORMAT'!='insidetab' and not context save and not context preview and not context edit" 
   then="<div>$percntTMPL:P{\"metacomments\"}$percnt</div>" 
   else="<!-- -->" 
-}%<!-- -->
-%TMPL:P{"metacomments::init"}%<!-- -->
-<!-- -->%TMPL:END%
+}%%TMPL:P{"metacomments::init"}%%TMPL:END%

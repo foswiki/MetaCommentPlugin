@@ -1,265 +1,364 @@
-#: templates/metacomments.tmpl:66
-msgid "%1 comments"
+#: templates/metacomments.tmpl:101
+#, fuzzy
+msgid "%1 Comments"
+msgstr "Commenti"
+
+#: data/System/MetaCommentPluginNotifyTemplate.txt:48
+#: data/System/MetaCommentPluginNotifyTemplate.txt:74
+msgid "%1 commented on %2:"
 msgstr ""
 
-#: templates/metacomments.tmpl:120 templates/metacomments.tmpl:514
+#: templates/metacomments.tmpl:171
 msgid "Add a comment"
 msgstr "Aggiungere un commento"
 
-#: templates/metacomments.tmpl:167
+#: templates/metacomments.tmpl:671
+#, fuzzy
+msgid "Add comment"
+msgstr "Aggiungere un commento"
+
+#: templates/metacomments.tmpl:126
 msgid "Approve all"
 msgstr ""
 
-#: templates/metacomments.tmpl:371
+#: templates/metacomments.tmpl:454
 #, fuzzy
 msgid "Approve all comments?"
 msgstr "Approvare commento?"
 
-#: templates/metacomments.tmpl:402
+#: templates/metacomments.tmpl:500
 msgid "Approve comment?"
 msgstr "Approvare commento?"
 
-#: templates/metacomments.tmpl:255
+#: templates/metacomments.tmpl:322
 msgid "Approve this comment"
 msgstr "Approvare questo commento"
 
-#: templates/metacomments.tmpl:372
+#: templates/metacomments.tmpl:455
 #, fuzzy
 msgid "Approving all comments"
 msgstr "Approvare commento?"
 
-#: templates/metacomments.tmpl:403
+#: templates/metacomments.tmpl:501
 #, fuzzy
 msgid "Approving comment"
 msgstr "Approvare commento?"
 
-#: templates/metacomments.tmpl:376
+#: templates/metacomments.tmpl:459
 msgid "Are you sure that you want to approve all comments?"
 msgstr ""
 
-#: templates/metacomments.tmpl:409
+#: templates/metacomments.tmpl:507
 msgid "Are you sure that you want to approve comment %1 posted by %2 on %3?"
 msgstr ""
 
-#: templates/metacomments.tmpl:361
+#: templates/metacomments.tmpl:444
 msgid "Are you sure that you want to delete all comments ?"
 msgstr ""
 
-#: templates/metacomments.tmpl:344
+#: templates/metacomments.tmpl:489
+msgid "Are you sure that you want to delete all subscriptions?"
+msgstr ""
+
+#: templates/metacomments.tmpl:425
 msgid "Are you sure that you want to delete comment %1 posted by %2 on %3?"
 msgstr ""
 
-#: templates/metacomments.tmpl:391
+#: templates/metacomments.tmpl:474
 msgid "Are you sure that you want to mark all comments as read?"
 msgstr ""
 
-#: templates/metacomments.tmpl:30
+#: data/System/MetaCommentPluginNotifyTemplate.txt:67
+#: data/System/MetaCommentPluginNotifyTemplate.txt:98
+msgid "Best Regards, Your Wiki Team."
+msgstr ""
+
+#: templates/metacomments.tmpl:65
 msgid "Bold"
 msgstr ""
 
-#: templates/metacomments.tmpl:435 templates/metacomments.tmpl:451
-#: templates/metacomments.tmpl:550
+#: templates/metacomments.tmpl:549 templates/metacomments.tmpl:574
 msgid "Cancel"
 msgstr "Annullare"
 
-#: templates/metacomments.tmpl:215 templates/metacomments.tmpl:217
+#: templates/metacomments.tmpl:266 templates/metacomments.tmpl:268
 #, fuzzy
 msgid "Click to mark as read"
 msgstr "Contrassegnare come letto"
 
-#: templates/metacomments.tmpl:266
+#: templates/metacomments.tmpl:334
 msgid "Comment on this thread"
 msgstr ""
 
-#: templates/metacommentsrss.tmpl:7
+#: templates/metacomments.tmpl:94 templates/metacommentsrss.tmpl:7
 msgid "Comments"
 msgstr "Commenti"
 
-#: templates/metacomments.tmpl:168
-msgid "Delete all"
-msgstr ""
+#: templates/metacomments.tmpl:127
+#, fuzzy
+msgid "Delete all comments"
+msgstr "Cancellare il commento?"
 
-#: templates/metacomments.tmpl:356
+#: templates/metacomments.tmpl:439
 #, fuzzy
 msgid "Delete all comments?"
 msgstr "Cancellare il commento?"
 
-#: templates/metacomments.tmpl:337
+#: templates/metacomments.tmpl:484
+#, fuzzy
+msgid "Delete all subscriptions?"
+msgstr "Cancellare il commento?"
+
+#: templates/metacomments.tmpl:418
 msgid "Delete comment?"
 msgstr "Cancellare il commento?"
 
-#: templates/metacomments.tmpl:257
+#: templates/metacomments.tmpl:326
 msgid "Delete this comment"
 msgstr "Cancellare questo commento"
 
-#: templates/metacomments.tmpl:357
+#: templates/metacomments.tmpl:440
 #, fuzzy
 msgid "Deleting all comments"
 msgstr "Cancellare il commento?"
 
-#: templates/metacomments.tmpl:338
+#: templates/metacomments.tmpl:485
+#, fuzzy
+msgid "Deleting all subscriptions"
+msgstr "Cancellare il commento?"
+
+#: templates/metacomments.tmpl:419
 #, fuzzy
 msgid "Deleting comment"
 msgstr "Cancellare il commento?"
 
-#: templates/metacomments.tmpl:421
+#: templates/metacomments.tmpl:521
 msgid "Edit comment"
 msgstr "Modificare commento"
 
-#: templates/metacomments.tmpl:253
+#: templates/metacomments.tmpl:318
 msgid "Edit this comment"
 msgstr "Modificare questo commento"
 
-#: templates/metacomments.tmpl:31
+#: templates/metacomments.tmpl:109
+msgid "Get an email notification on new comments"
+msgstr ""
+
+#: data/System/MetaCommentPluginNotifyTemplate.txt:66
+#: data/System/MetaCommentPluginNotifyTemplate.txt:97
+msgid "Hello"
+msgstr ""
+
+#: templates/metacomments.tmpl:61
+msgid "Insert Image"
+msgstr ""
+
+#: templates/metacomments.tmpl:60
+msgid "Insert a link"
+msgstr ""
+
+#: templates/metacomments.tmpl:66
 msgid "Italic"
 msgstr ""
 
-#: templates/metacomments.tmpl:386
+#: templates/metacomments.tmpl:315
+#, fuzzy
+msgid "Link to this comment"
+msgstr "Modificare questo commento"
+
+#: templates/metacomments.tmpl:469
 #, fuzzy
 msgid "Mark all comments?"
 msgstr "Un commento"
 
-#: templates/metacomments.tmpl:166
+#: templates/metacomments.tmpl:125
 #, fuzzy
 msgid "Mark as read"
 msgstr "Contrassegnare come letto"
 
-#: templates/metacomments.tmpl:387
+#: templates/metacomments.tmpl:470
 #, fuzzy
 msgid "Marking all comments"
 msgstr "Un commento"
 
-#: templates/metacomments.tmpl:33
+#: templates/metacomments.tmpl:115
+msgid "More"
+msgstr ""
+
+#: templates/metacomments.tmpl:68
 msgid "More character formats"
 msgstr ""
 
-#: templates/metacomments.tmpl:530
+#: templates/metacomments.tmpl:652
 msgid "Name"
 msgstr ""
 
-#: templates/metacomments.tmpl:349 templates/metacomments.tmpl:364
-#: templates/metacomments.tmpl:379 templates/metacomments.tmpl:394
-#: templates/metacomments.tmpl:414
+#: templates/metacomments.tmpl:432 templates/metacomments.tmpl:447
+#: templates/metacomments.tmpl:462 templates/metacomments.tmpl:477
+#: templates/metacomments.tmpl:492 templates/metacomments.tmpl:514
 msgid "No, thanks"
 msgstr "No, grazie"
 
-#: templates/metacomments.tmpl:434 templates/metacomments.tmpl:450
-msgid "OK"
+#: templates/metacomments.tmpl:678
+msgid "Notify me of followup comments"
 msgstr ""
 
-#: templates/metacomments.tmpl:65
-msgid "One comment"
+#: templates/metacomments.tmpl:100
+#, fuzzy
+msgid "One Comment"
 msgstr "Un commento"
 
-#: templates/metacomments.tmpl:88
+#: templates/metacomments.tmpl:136
 msgid "Please log in or register to comment."
 msgstr ""
 
-#: templates/metacomments.tmpl:89
+#: templates/metacomments.tmpl:137
 #, fuzzy
 msgid "Please log in to comment."
 msgstr "Rispondere a questo commento"
 
-#: data/System/MetaCommentPlugin.txt:258
+#: data/System/MetaCommentPlugin.txt:339
 msgid "RSS comments feed for the %1 web"
 msgstr ""
 
-#: templates/metacomments.tmpl:79
+#: templates/metacomments.tmpl:103
 msgid "RSS feed of the comments on this topic"
 msgstr "RSS feed dei commenti su quest'argomento"
 
-#: templates/metacomments.tmpl:34
+#: templates/metacomments.tmpl:69
 msgid "Remove Format"
 msgstr ""
 
-#: templates/metacomments.tmpl:262
+#: templates/metacomments.tmpl:330
 msgid "Reply"
 msgstr ""
 
-#: templates/metacomments.tmpl:442
+#: templates/metacomments.tmpl:555
 msgid "Reply on comment"
 msgstr "Rispondere al commento"
 
-#: templates/metacomments.tmpl:86
+#: data/System/MetaCommentPluginNotifyTemplate.txt:55
+#: data/System/MetaCommentPluginNotifyTemplate.txt:87
+msgid "See %1"
+msgstr ""
+
+#: templates/metacomments.tmpl:134
 msgid "Sorry, commenting not allowed."
 msgstr "Non  possibile inserire commenti."
 
-#: templates/metacomments.tmpl:549
+#: templates/metacomments.tmpl:548 templates/metacomments.tmpl:573
 msgid "Submit"
 msgstr "Sottoporre"
 
-#: templates/metacomments.tmpl:443 templates/metacomments.tmpl:518
+#: templates/metacomments.tmpl:562 templates/metacomments.tmpl:640
 #, fuzzy
 msgid "Submitting comment"
 msgstr "Modificare questo commento"
 
+#: templates/metacomments.tmpl:110
+msgid "Subscribe"
+msgstr ""
+
+#: data/System/MetaCommentPluginNotifyTemplate.txt:18
+#: data/System/MetaCommentPluginNotifyTemplate.txt:96
+msgid "There is a new comment on '%1'"
+msgstr ""
+
 # somewhere
-#: templates/metacomments.tmpl:429 templates/metacomments.tmpl:539
+#: templates/metacomments.tmpl:540 templates/metacomments.tmpl:661
 msgid "Title"
 msgstr "Titel"
 
-#: templates/metacomments.tmpl:32
+#: templates/metacomments.tmpl:67
 msgid "Underline"
 msgstr ""
 
-#: templates/metacomments.tmpl:422
+#: templates/metacomments.tmpl:111
+#, fuzzy
+msgid "Unsbscribe"
+msgstr "S, approvare"
+
+#: templates/metacomments.tmpl:128
+msgid "Unsubscribe all"
+msgstr ""
+
+#: data/System/MetaCommentPluginNotifyTemplate.txt:91
+msgid "Unsubscribe from notifications"
+msgstr ""
+
+#: data/System/MetaCommentPluginNotifyTemplate.txt:57
+msgid "Unsubscribe: %1"
+msgstr ""
+
+#: templates/metacomments.tmpl:531
 #, fuzzy
 msgid "Updating comment"
 msgstr "Modificare commento"
 
-#: templates/metacomments.tmpl:413
+#: templates/metacomments.tmpl:513
 msgid "Yes, approve"
 msgstr "S, approvare"
 
-#: templates/metacomments.tmpl:378
+#: templates/metacomments.tmpl:461
 #, fuzzy
 msgid "Yes, approve all"
 msgstr "S, approvare"
 
-#: templates/metacomments.tmpl:348
+#: templates/metacomments.tmpl:431
 msgid "Yes, delete"
 msgstr "S, cancellare"
 
-#: templates/metacomments.tmpl:363
+#: templates/metacomments.tmpl:446
 #, fuzzy
 msgid "Yes, delete all"
 msgstr "S, cancellare"
 
-#: templates/metacomments.tmpl:393
+#: templates/metacomments.tmpl:476
 msgid "Yes, mark all"
 msgstr ""
 
-#: templates/metacomments.tmpl:135
-msgid "inside tab"
+#: templates/metacomments.tmpl:491
+#, fuzzy
+msgid "Yes, unsubscribe all"
+msgstr "S, approvare"
+
+#: lib/Foswiki/Plugins/MetaCommentPlugin/Core.pm:662
+msgid "You subscribed to this thread."
 msgstr ""
 
-#: templates/metacomments.tmpl:135
+#: lib/Foswiki/Plugins/MetaCommentPlugin/Core.pm:687
+#: lib/Foswiki/Plugins/MetaCommentPlugin/Core.pm:89
+msgid "You unsubscribed from this thread."
+msgstr ""
+
+#: templates/metacomments.tmpl:262
+msgid "about now"
+msgstr ""
+
+#: templates/metacomments.tmpl:186
 msgid "linear"
 msgstr ""
 
-#: templates/metacomments.tmpl:244
+#: templates/metacomments.tmpl:302
 msgid "needs approval"
 msgstr "necessita approvazione"
 
-#: templates/metacomments.tmpl:215
+#: templates/metacomments.tmpl:266
 msgid "new"
 msgstr ""
 
-#: templates/metacomments.tmpl:225
-msgid "permlink"
-msgstr "permalink"
-
-#: templates/metacomments.tmpl:135
+#: templates/metacomments.tmpl:186
 msgid "reverse"
 msgstr ""
 
-#: templates/metacomments.tmpl:135
+#: templates/metacomments.tmpl:186
 msgid "threaded"
 msgstr ""
 
-#: templates/metacomments.tmpl:217
+#: templates/metacomments.tmpl:268
 msgid "updated"
 msgstr ""
 
-#~ msgid "Reply on this comment"
-#~ msgstr "Rispondere a questo commento"
+#, fuzzy
+#~ msgid "Link to comment %1"
+#~ msgstr "Modificare commento"

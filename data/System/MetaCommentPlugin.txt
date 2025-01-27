@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1605804814" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1655478401" format="1.1" version="1"}%
 ---+!! MetaCommentPlugin
 %FORMFIELD{"Description"}%
 
@@ -39,7 +39,7 @@ Each comment is stored into a =META:COMMENT= field of a topic with properties
 ---++ Configuring the comment system
 
 ---+++ Using !MetaCommentPlugin on !NatSkin
-The easiest way to switch on commenting on a page is when using it together with [[Foswiki:Extensions/NatSkin][NatSkin]].
+The easiest way to switch on commenting on a page is when using it together with [[https://foswiki.org/Extensions/NatSkin][NatSkin]].
 When opening the topic editor, there's a "Settings" tab that allows you to switch on and off commenting,
 switch between different commenting styles as well as configure moderation.
 
@@ -63,7 +63,7 @@ Other values:
    * threaded (default): nested commenting; allows to reply on a reply
    * reverse: list comments in linear order in reverse twitter-like fashion
    * insidetab: list comments inside a tab at the bottom of the page; 
-     only available when used together with [[Foswiki:Extensions/TopicInteractionPlugin][TopicInteractionPlugin]])
+     only available when used together with [[https://foswiki.org/Extensions/TopicInteractionPlugin][TopicInteractionPlugin]])
 
 A discussion can be either open or closed:
 
@@ -154,6 +154,52 @@ Or use a per web configuration in the !WebPreferences using
 
 See [[System.AccessControl][AccessControl]] for more information on setting up access control lists.
 
+---+++ Notification
+
+There are two ways of being notified about new comments:
+
+   * !WebNotify: this is the standard Foswiki way of notifying people about general changes to a topic; a cronjob
+     will send out emails in regular intervals
+   * !CommentNotify: this method immediately notifies subscribers when a new comment arrived in a topic; it does
+     so _immediately_ that is it does not rely on an asynchronous cronjob sending out emails
+
+By default !%TOPIC% is configured to send out comment notifications immediately. Note that this mode is incompatible
+to !WebNotify: people that have registered to topic changes using !WebNotify won't be subscribed to !CommentNotify.
+You will have to use the plugin's means to subscribe/unsubscribe to individual topics that have comments on them.
+
+The comment system can be configured in various ways using the preference settings:
+
+<verbatim>   * Set COMMENTWEBNOTIFY = on</verbatim>
+
+This will activate !WebNotify again being off by default.
+
+<verbatim>   * Set COMMENTNOTIFY = off</verbatim>
+
+This will deactivate !CommentNotify. This is on by default.
+
+Note that comment notifications are not send to oneself, that is the person that created a comment won't receive
+an email notifications about its own comment, unless the following flag is set:
+
+<verbatim>   * Set COMMENTNOTIFYSELF = on</verbatim>
+
+---+++ Auto-subscription
+
+Users may be subscribed to comment changes automatically by setting the =COMMENTAUTOSUBSCRIBE= preference setting. It 
+holds the !DataForm formfields that are parsed for valid user or group names. For example:
+
+<verbatim>   * Set COMMENTAUTOSUBSCRIBE = Author, Approvers</verbatim>
+
+This setting will analyse any topic being saved and extract users in formfields
+=Author= and =Approvers=. Note that a formfield can either be a =user=, a
+=group= or a multi-value field such as =user+multi=, =group+multi=, =userorgroup=,
+=userorgroup+multi= (see [[MoreFormfieldsPlugin]]). The found users will be subsribed
+to the commenting system and notified immediately when a new comment has
+arrived. Users may opt out later from these subscriptions as normal.
+
+There is a special identifier called "creator" that can be used in this list to auto-subscribe the author of the
+initial revision of a topic.
+
+
 ---++ METACOMMENTS
 
 Renders a discussion on a given topic
@@ -187,7 +233,7 @@ Parameters:
    * mindate: minimum date of a comment to be displayed
    * maxdate: maximum date of a comment to be displayed
    * threaded: switch on/off threaded rendering, comments will be rendered recursively
-   * sort: specify the way comments are sorted; possible values: name (default), date, modified, author, likes (if [[Foswiki:Extensions/LikePlugin][LikePlugin]] is installed)
+   * sort: specify the way comments are sorted; possible values: name (default), date, modified, author, likes (if [[https://foswiki.org/Extensions/LikePlugin][LikePlugin]] is installed)
    * reverse: switch on/off reverse order of sorted comments
 
 When rendering a comment, the following variables can be used in the =format= strings:
@@ -234,6 +280,41 @@ Use this to render a list of all unapproved comments in a web:
 }%
 </verbatim>
 
+---++ METACOMMENT
+
+render a single comment of a given id 
+
+<verbatim>
+%METACOMMENT{
+  "$id"
+  topic="..."
+  format="..."
+  encode="..."
+}%
+</verbatim>
+
+Parameters:
+
+  * "$id" or id="...": the id of the comment to render
+  * topic: the topic which to extract a comment from
+  * format: a format string for the comment
+  * encode: type of encoding, could be undefined, entity or url
+
+The format string can hold the following variables:
+
+  * $author
+  * $date
+  * $id or $name
+  * $lang
+  * $modified
+  * $read
+  * $ref
+  * $topic
+  * $web
+  * $state
+  * $title
+  * $text
+
 ---++ RSS feeds
 
 By default every page has got a separate RSS feed with all comments in it. This allows to monitor individual discussions. To monitor _all_
@@ -266,6 +347,9 @@ The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
 
 ---++ Change History
 %TABLE{columnwidths="7em" tablewidth="100%"}%
+|  27 Jan 2025: | 9.10 - reworked js and css structure |
+|  11 Jun 2024: | 9.00 - new macro METACOMMENT, reworked comment editor |
+|  29 Mar 2023: | 8.00 - new immediate notification system; reworked comment preference settings |
 |  04 May 2022: | 7.00 - added interface to render comments from a base translation; \
                          improve usability of threaded commenting; \
                          better editor integration; \
@@ -276,8 +360,8 @@ The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
 |  31 Mar 2021: | 6.00 - rewrite of javascript code; blocking browser navigation when there are unsaved comments |
 |  26 Nov 2019: | 5.10 - added rev parameter to display comments of previous revisions of a topic; \
                          added "delete all", "approve all", "mark all" features to moderate comments in bunches; \
-                         improved [[Foswiki:Extensions/SolrPlugin][SolrPlugin]] integration |
-|  28 May 2018: | 5.03 - depend on new [[Foswiki:Extensions/TopicTitlePlugin][TopicTitlePlugin]] |
+                         improved [[https://foswiki.org/Extensions/SolrPlugin][SolrPlugin]] integration |
+|  28 May 2018: | 5.03 - depend on new [[https://foswiki.org/Extensions/TopicTitlePlugin][TopicTitlePlugin]] |
 |  05 Mar 2018: | 5.01 - cleaned up templates |
 |  16 Jan 2017: | 5.00 - implemented a registerCommentHandler() api to let other plugins interact with comment changes |
 |  11 Sep 2015: | 4.10 - added display settings to switch on of voting and permlink |
@@ -286,7 +370,7 @@ The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
 |  27 Feb 2015: | 2.90 - removing collection field form solr index handler |
 |  16 Dec 2014: | 2.80 - fixed extracting substrings from unicode strings |
 |  29 Aug 2014: | 2.70 - improved finding user photo |
-|  18 Mar 2014: | 2.60 - fixed dependency on [[Foswiki:Extensions/ImagePlugin][ImagePlugin]]; \
+|  18 Mar 2014: | 2.60 - fixed dependency on [[https://foswiki.org/Extensions/ImagePlugin][ImagePlugin]]; \
                          some css and js fixes |
 |  15 Aug 2013: | 2.50 - protect comments from being edited by others; \
                          fixed error reporting using pnotify now; \
@@ -313,12 +397,12 @@ The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
                          improved comment rendering features; \
                          added fixes for !PatternSkin |
 |  10 Jan 2012: | 1.10 - added german translation; \
-                         added missing dependency on [[Foswiki:Extensions/RenderPlugin][RenderPlugin]]; \
+                         added missing dependency on [[https://foswiki.org/Extensions/RenderPlugin][RenderPlugin]]; \
                          backwards compatibility to older foswiki engines; \
                          adjusted index handler to latest changes in !SolrPlugin; \
                          improved print css; \
                          fixed js error together with newer jquery versions |
-|  10 May 2011: | 1.00 - partial rewrite to use [[Foswiki:Extensions/JsonRpcContrib][JsonRpcContrib]]; \
+|  10 May 2011: | 1.00 - partial rewrite to use [[https://foswiki.org/Extensions/JsonRpcContrib][JsonRpcContrib]]; \
                   renamed preference COMMENTAPPROVAL to COMMENTMODERATION |
 |  20 Apr 2011: | fixed error in regular expression |
 |  15 Apr 2011: | using CPAN:JSON to properly encode json-rpc data; \
@@ -326,12 +410,12 @@ The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
                   improved the way photos are gathered |
 
 %META:FORM{name="PackageForm"}%
-%META:FIELD{name="Author" title="Author" value="Foswiki:Main/MichaelDaum"}%
+%META:FIELD{name="Author" title="Author" value="Michael Daum"}%
 %META:FIELD{name="Version" title="Version" value="%25$VERSION%25"}%
 %META:FIELD{name="Release" title="Release" value="%25$RELEASE%25"}%
 %META:FIELD{name="Description" title="Description" value="%25$SHORTDESCRIPTION%25"}%
 %META:FIELD{name="Repository" title="Repository" value="https://github.com/foswiki/MetaCommentPlugin"}%
-%META:FIELD{name="Copyright" title="Copyright" value="2009-2022, Michael Daum"}%
+%META:FIELD{name="Copyright" title="Copyright" value="2009-2025 Michael Daum"}%
 %META:FIELD{name="License" title="License" value="[[http://www.gnu.org/licenses/gpl.html][GPL (Gnu General Public License)]]"}%
 %META:FIELD{name="Home" title="Home" value="https://foswiki.org/Extensions/MetaCommentPlugin"}%
 %META:FIELD{name="Support" title="Support" value="Foswiki:Support/MetaCommentPlugin"}%

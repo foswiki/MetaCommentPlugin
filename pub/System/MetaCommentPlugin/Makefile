@@ -1,8 +1,20 @@
 FOSWIKI_ROOT?=~/foswiki/trunk/core
 TARGET=\
-  metacomment.css \
-  metacomment.js \
-  naviblocker.js \
-  metacomment.pattern.css
+  build/pkg.js \
+  build/metacomments.css \
+  build/metacomments.pattern.css
+
+PKG_SOURCES=\
+  src/NaviBlocker.js \
+  src/JsonRpcForm.js \
+  src/SubscribeButton.js \
+  src/MetaComments.js 
 
 -include $(FOSWIKI_ROOT)/pub/System/JQueryPlugin/Makefile.include
+
+clean:
+	rm -f build/*
+
+build/pkg.uncompressed.js: $(PKG_SOURCES)
+	@echo creating $@; $(CAT) $^ > $@;
+

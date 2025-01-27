@@ -1,6 +1,6 @@
 # Extension for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# JQuery Jitsi Meet is Copyright (C) 2021 Michael Daum 
+# JQuery MetaCommentPlugin is Copyright (C) 2021-2025 Michael Daum 
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -32,9 +32,9 @@ sub new {
       version => $Foswiki::Plugins::MetaCommentPlugin::VERSION,
       author => 'Michael Daum',
       homepage => 'https://foswiki.org/Extensions/MetaCommentPlugin',
-      javascript => ['naviblocker.js', 'metacomment.js'],
-      css => ['metacomment.css'],
-      puburl => '%PUBURLPATH%/%SYSTEMWEB%/MetaCommentPlugin',
+      javascript => ['pkg.js'],
+      css => ['metacomments.css'],
+      puburl => '%PUBURLPATH%/%SYSTEMWEB%/MetaCommentPlugin/build',
       dependencies => ['ui', 'form', 'jsonrpc', 'pnotify', 'scrollto'],
     ),
     $class
@@ -43,3 +43,4 @@ sub new {
   return $this;
 }
 
+1;

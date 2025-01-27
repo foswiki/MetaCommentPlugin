@@ -1,34 +1,19 @@
 <noautolink>
 <?xml version="1.0" encoding="%CHARSET%" ?>
-<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://purl.org/rss/1.0/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:wiki="http://purl.org/rss/1.0/modules/wiki/" >
-<channel rdf:about="%SCRIPTURL{"view"}%/%BASEWEB%%/%BASETOPIC%">
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
   <title>%ENCODE{"%URLPARAM{"title" default="%WIKITOOLNAME% - Comments on %GETTOPICTITLE{"%BASEWEB%.%BASETOPIC%"}%"}%" type="html"}%</title>
   <link>%SCRIPTURL{"view"}%/%BASEWEB%/%BASETOPIC%</link>
   <description>%MAKETEXT{"Comments"}%</description>
-  <image rdf:resource="%IF{"defined WEBLOGOIMG" then="%WEBLOGOIMG%" else="%WIKILOGOIMG%"}%" />
-  <dc:language>en-us</dc:language>
-  <dc:rights>%WEBRSSCOPYRIGHT%</dc:rights>
-  <dc:publisher>%WIKIWEBMASTERNAME% [%WIKIWEBMASTER%]</dc:publisher>
-  <dc:creator>The contributing authors of %WIKITOOLNAME%</dc:creator>
+  <atom:link href="%SCRIPTURL{"view" topic="%WEB%.%TOPIC%"}%" rel="self" type="application/rss+xml" />
   <dc:source>%WIKITOOLNAME%</dc:source>
-%METACOMMENTS{
-  web="%URLPARAM{"web" default="%BASEWEB%"}%"
-  sort="date"
-  reverse="on"
-  limit="%URLPARAM{"limit" default="10"}%"
-  header="  <items>$n    <rdf:Seq>$n"
-  format="      <rdf:li rdf:resource=\"%SCRIPTURL{"view"}%/$web/$topic%IF{"$COMMENTFORMAT='insidetab'" then="?tab=comments"}%#comment$id\" />"
-  footer="$n    </rdf:Seq>$n  </items>"
-  separator="$n"
-  %IF{"$COMMENTMODERATION='on'" then="moderation=\"on\"" else="moderation=\"off\""}%
-  %IF{"defined search" then="search=\"$percntURLPARAM{\"search\" encode=\"off\"}$percnt\""}%
-}%
-</channel>
-<image rdf:about="%IF{"defined WEBLOGOIMG" then="%WEBLOGOIMG%" else="%WIKILOGOIMG%"}%">
-  <title>%IF{"defined WEBLOGOALT" then="%WEBLOGOALT%" else="%WIKILOGOALT%"}%</title>
-  <link>%WEBLOGOURL%</link>
-  <url>%IF{"defined WEBLOGOIMG" then="%WEBLOGOIMG%" else="%WIKILOGOIMG%"}%</url>
-</image>
+  <image>
+    <url>%WEBLOGOIMG{default="%WIKILOGOIMG%"}%</url>
+    <title>%ENCODE{"%URLPARAM{"title" default="%WIKITOOLNAME% - Comments on %GETTOPICTITLE{"%BASEWEB%.%BASETOPIC%"}%"}%" type="html"}%</title>
+    <link>%SCRIPTURL{"view"}%/%BASEWEB%/%BASETOPIC%</link>
+  </image>
+  <language>en-us</language>
+  <copyright>%WEBRSSCOPYRIGHT%</copyright>
 %METACOMMENTS{
   web="%URLPARAM{"web" default="%BASEWEB%"}%"
   sort="date"
@@ -36,17 +21,12 @@
   limit="%URLPARAM{"limit" default="10"}%"
   %IF{"defined search" then="search=\"$percntURLPARAM{\"search\" encode=\"off\"}$percnt\""}%
   %IF{"$COMMENTMODERATION='on'" then="moderation=\"on\"" else="moderation=\"off\""}%
-  format="<item rdf:about=\"%SCRIPTURL{"view"}%/%BASEWEB%/%BASETOPIC%%IF{"$COMMENTFORMAT='insidetab'" then="?tab=comments"}%#comment$id\">
+  format="<item>
   <title>$percntGETTOPICTITLE{\"$web.$topic\"}$percnt</title>
   <link>%SCRIPTURL{"view"}%/$web/$topic%IF{"$COMMENTFORMAT='insidetab'" then="?tab=comments"}%#comment$id</link>
-  <dc:creator>$author</dc:creator>
+  <guid>%SCRIPTURL{"view"}%/$web/$topic%IF{"$COMMENTFORMAT='insidetab'" then="?tab=comments"}%#comment$id</guid>
+  <dc:creator>$percntGETTOPICTITLE{\"%USERSWEB%.$author\"}$percnt</dc:creator>
   <dc:date>$isodate</dc:date>
-  <dc:subject>$title</dc:subject>
-  <dc:contributor>
-    <rdf:Description link=\"%SCRIPTURL{"view"}%/%USERSWEB%/$author\">
-      <rdf:value>$author</rdf:value>
-    </rdf:Description>
-  </dc:contributor>
   <description>
     $percntENCODE{
       \"$percntIF{\"'$title'!=''\" then=\"<h2>$title</h2>\"}$percnt $text\" 
@@ -56,5 +36,6 @@
 </item>"
   separator="$n"
 }%
-</rdf:RDF>
+</channel>
+</rss>
 </noautolink>

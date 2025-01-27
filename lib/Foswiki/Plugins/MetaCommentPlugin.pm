@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2009-2022 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2009-2025 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,16 +20,16 @@ use Foswiki::Plugins ();
 use Foswiki::Contrib::JsonRpcContrib ();
 use Foswiki::Plugins::JQueryPlugin ();
 
-our $VERSION = '7.00';
-our $RELEASE = '04 May 2022';
+our $VERSION = '9.10';
+our $RELEASE = '%$RELEASE%';
 our $SHORTDESCRIPTION = 'An easy to use comment system';
+our $LICENSECODE = '%$LICENSECODE%';
 our $NO_PREFS_IN_TOPIC = 1;
 our $core;
 our @commentHandlers;
 
 sub initPlugin {
 
-  $core = undef;
   @commentHandlers = ();
 
   Foswiki::Plugins::JQueryPlugin::registerPlugin("MetaComment", 'Foswiki::Plugins::MetaCommentPlugin::JQuery');
@@ -37,6 +37,22 @@ sub initPlugin {
   Foswiki::Func::registerTagHandler('METACOMMENTS', sub {
     return getCore(shift)->METACOMMENTS(@_);
   });
+
+  Foswiki::Func::registerTagHandler('METACOMMENT', sub {
+    return getCore(shift)->METACOMMENT(@_);
+  });
+
+  Foswiki::Func::registerTagHandler('METASUBSCRIBED', sub {
+    return getCore(shift)->METASUBSCRIBED(@_);
+  });
+
+  Foswiki::Func::registerRESTHandler('unsubscribe', sub {
+      return getCore(shift)->restUnsubscribe(@_);
+    },
+    authenticate => 1,
+    validate => 0,
+    http_allow => 'GET',
+  );
 
   Foswiki::Contrib::JsonRpcContrib::registerMethod("MetaCommentPlugin", "getComment", sub {
     return getCore(shift)->jsonRpcGetComment(@_);
@@ -62,6 +78,18 @@ sub initPlugin {
     return getCore(shift)->jsonRpcDeleteAllComments(@_);
   });
 
+  Foswiki::Contrib::JsonRpcContrib::registerMethod("MetaCommentPlugin", "subscribe", sub {
+    return getCore(shift)->jsonRpcSubscribe(@_);
+  });
+
+  Foswiki::Contrib::JsonRpcContrib::registerMethod("MetaCommentPlugin", "unsubscribe", sub {
+    return getCore(shift)->jsonRpcUnsubscribe(@_);
+  });
+
+  Foswiki::Contrib::JsonRpcContrib::registerMethod("MetaCommentPlugin", "unsubscribeAll", sub {
+    return getCore(shift)->jsonRpcUnsubscribeAll(@_);
+  });
+
   Foswiki::Contrib::JsonRpcContrib::registerMethod("MetaCommentPlugin", "approveAllComments", sub {
     return getCore(shift)->jsonRpcApproveAllComments(@_);
   });
@@ -74,63 +102,77 @@ sub initPlugin {
     return getCore(shift)->jsonRpcMarkComment(@_);
   });
 
-  if ($Foswiki::cfg{Plugins}{SolrPlugin} && $Foswiki::cfg{Plugins}{SolrPlugin}{Enabled}) {
+  my $solrInstalled = (exists $Foswiki::cfg{Plugins}{SolrPlugin} && $Foswiki::cfg{Plugins}{SolrPlugin}{Enabled}) ? 1 :0;
+  if ($solrInstalled) {
     require Foswiki::Plugins::SolrPlugin;
     Foswiki::Plugins::SolrPlugin::registerIndexTopicHandler(sub {
       return getCore()->solrIndexTopicHandler(@_);
     });
   }
 
-  if ($Foswiki::cfg{Plugins}{DBCachePlugin}{Enabled}) {
+  my $dbCacheInstalled = (exists $Foswiki::cfg{Plugins}{DBCachePlugin} && $Foswiki::cfg{Plugins}{DBCachePlugin}{Enabled}) ? 1 :0;
+  if ($dbCacheInstalled) {
     require Foswiki::Plugins::DBCachePlugin;
     Foswiki::Plugins::DBCachePlugin::registerIndexTopicHandler(sub {
       return getCore()->dbcacheIndexTopicHandler(@_);
     });
   }
 
-  if ($Foswiki::cfg{Plugins}{LikePlugin}{Enabled}) {
+  if (exists $Foswiki::cfg{Plugins}{LikePlugin} && $Foswiki::cfg{Plugins}{LikePlugin}{Enabled}) {
     require Foswiki::Plugins::LikePlugin;
     Foswiki::Plugins::LikePlugin::registerAfterLikeHandler(sub {
       return getCore()->afterLikeHandler(@_);
     });
   }
 
-  if ($Foswiki::cfg{Plugins}{JQDataTablesPlugin}{Enabled}) {
+  if (exists $Foswiki::cfg{Plugins}{JQDataTablesPlugin} && $Foswiki::cfg{Plugins}{JQDataTablesPlugin}{Enabled}) {
     # register qmstate properties to JQDataTablesPlugin
     require Foswiki::Plugins::JQDataTablesPlugin;
 
-    Foswiki::Plugins::JQDataTablesPlugin::describeColumn("dbcache", "comments", {
-      type => "number",
-      data => 'length(comments)',
-      search => 'length(comments)',
-      sort => 'length(comments)',
-    });
-    Foswiki::Plugins::JQDataTablesPlugin::describeColumn("dbcache", "commentdate", {
-      type => 'date',
-      data => 'commentdate',
-      search => 'lc(n2d(commentdate))',
-      sort => 'commentdate',
-    });
+    if ($dbCacheInstalled) {
+      Foswiki::Plugins::JQDataTablesPlugin::describeColumn("dbcache", "comments", {
+        type => "number",
+        data => 'length(comment)',
+        search => 'length(comment)',
+        sort => 'length(comment)',
+      });
+      Foswiki::Plugins::JQDataTablesPlugin::describeColumn("dbcache", "commentdate", {
+        type => 'date',
+        data => 'commentdate',
+        search => 'lc(n2d(commentdate))',
+        sort => 'commentdate',
+      });
+    }
 
-    Foswiki::Plugins::JQDataTablesPlugin::describeColumn("solr", "comments", {
-      type => 'number',
-      data => 'field_Comments_d',
-      search => 'field_Comments_d',
-      sort => 'field_Comments_d',
-    });
-    Foswiki::Plugins::JQDataTablesPlugin::describeColumn("solr", "commentdate", {
-      type => 'date',
-      data => 'field_Comments_dt',
-      search => 'field_Comments_search',
-      sort => 'field_Comments_dt',
-    });
+    if ($solrInstalled) {
+      Foswiki::Plugins::JQDataTablesPlugin::describeColumn("solr", "comments", {
+        type => 'number',
+        data => 'field_Comments_d',
+        search => 'field_Comments_d',
+        sort => 'field_Comments_d',
+      });
+      Foswiki::Plugins::JQDataTablesPlugin::describeColumn("solr", "commentdate", {
+        type => 'date',
+        data => 'field_Comments_dt',
+        search => 'field_Comments_search',
+        sort => 'field_Comments_dt',
+      });
+    }
   }
 
   if ($Foswiki::Plugins::VERSION > 2.0) {
-    Foswiki::Meta::registerMETA("COMMENT", many=>1, alias=>"comment");
+    Foswiki::Meta::registerMETA("COMMENT", many => 1, alias => "comment");
+    Foswiki::Meta::registerMETA("NOTIFY", many => 1, alias => "notify");
   }
 
   return 1;
+}
+
+sub finishPlugin {
+  if (defined $core) {
+    $core->finish();
+    undef $core;
+  }
 }
 
 sub getCore {
@@ -151,5 +193,12 @@ sub registerCommentHandler {
     options => $options,
   };
 }
+
+sub beforeSaveHandler {
+  my ($text, $topic, $web, $meta) = @_;
+
+  getCore()->beforeSaveHandler($web, $topic, $meta);
+}
+
 
 1;

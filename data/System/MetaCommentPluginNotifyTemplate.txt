@@ -1,0 +1,101 @@
+%META:TOPICINFO{author="micha" comment="reprev" date="1701690151" format="1.1" reprev="7" version="7"}%
+%META:TOPICPARENT{name="MetaCommentPlugin"}%
+%{ WARNING: Please do not modify this template. Create a skin overlay instead. }%
+
+%TMPL:DEF{"comments::notify"}%%TMPL:P{"comments::notify::init"}%%TMPL:P{"comments::notify::header"}%%TMPL:P{"comments::notify::body"}%%TMPL:END%
+
+%{ header definitions }%
+%TMPL:DEF{"comments::notify::header"}%%{}%
+%TMPL:P{"comments::notify::header::from"}%
+%TMPL:P{"comments::notify::header::to"}%
+%TMPL:P{"comments::notify::header::subject"}%
+%TMPL:P{"comments::notify::header::priority"}%
+%TMPL:P{"comments::notify::header::misc"}%
+%TMPL:END%
+
+%TMPL:DEF{"comments::notify::header::from"}%From: %WIKIWEBMASTERNAME% <%WIKIWEBMASTER%>%TMPL:END%
+%TMPL:DEF{"comments::notify::header::to"}%To: %COMMENT_EMAILS%%TMPL:END%
+%TMPL:DEF{"comments::notify::header::subject"}%Subject: %WIKITOOLNAME% - %GETTOPICTITLE{"%WEB%.%HOMETOPIC%"}% - %TRANSLATE{"There is a new comment on '[_1]'" arg1="%GETTOPICTITLE{"%WEB%.%TOPIC%"}%"}%%TMPL:END%
+%TMPL:DEF{"comments::notify::header::priority"}%X-Priority: 2%TMPL:END%
+%TMPL:DEF{"comments::notify::header::misc"}%Auto-Submitted: auto-generated
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="=_=0i0k0i0w0s0o0fXuOi0E0A"
+%TMPL:END%
+
+%TMPL:DEF{"comments::notify::body::text::header"}%
+This is a multi-part message in MIME format.
+--=_=0i0k0i0w0s0o0fXuOi0E0A
+Content-Type: text/plain; charset=%CHARSET%
+Content-Transfer-Encoding: 8bit
+%TMPL:END%
+
+%TMPL:DEF{"comments::notify::body::html::header"}%
+--=_=0i0k0i0w0s0o0fXuOi0E0A
+Content-Type: text/html; charset=%CHARSET%
+Content-Transfer-Encoding: 8bit
+%TMPL:END%
+
+%{ body definitions }%
+%TMPL:DEF{"comments::notify::body"}%%TMPL:P{"comments::notify::body::text::header"}%
+%TMPL:P{"comments::notify::body::text"}%
+%TMPL:P{"comments::notify::body::html::header"}%
+%TMPL:P{"comments::notify::body::html"}%%TMPL:END%
+
+%{ text body }%
+%TMPL:DEF{"comments::notify::body::text"}%%{}%
+%TMPL:P{"comments::notify::greeting::text"}%
+
+%TRANSLATE{"[_1] commented on [_2]:" 
+  arg1="%GETTOPICTITLE{"%USERSWEB%.%WIKINAME%"}%"
+  arg2="%GETTOPICTITLE{"%WEB%.%TOPIC%"}%"
+}%
+
+%TMPL:P{context="has_title" then="comments::notify::title::text"}%%TMPL:P{"comments::notify::text"}%
+
+%TRANSLATE{"See [_1]" arg1="%SCRIPTURL{"view"}%/%WEB%/%TOPIC%#comment%COMMENT_ID%"}%
+
+%TRANSLATE{"Unsubscribe: [_1]" arg1="%SCRIPTURL{"rest"}%/MetaCommentPlugin/unsubscribe?topic=%WEB%.%TOPIC%"}%
+
+%TMPL:P{"comments::notify::closing::text"}%
+%TMPL:END%
+
+%TMPL:DEF{"comments::notify::title::text"}%*%COMMENT_TITLE%*
+%TMPL:END%
+%TMPL:DEF{"comments::notify::text"}%%COMMENT_TEXT%%TMPL:END%
+
+%TMPL:DEF{"comments::notify::greeting::text"}%%TRANSLATE{"Hello"}%,%TMPL:END%
+%TMPL:DEF{"comments::notify::closing::text"}%%TRANSLATE{"Best Regards, Your Wiki Team."}%%TMPL:END%
+
+%{ html body }%
+%TMPL:DEF{"comments::notify::body::html"}%
+%TMPL:P{"comments::notify::title::html"}%
+%TMPL:P{"comments::notify::greeting::html"}%
+<p>
+%TRANSLATE{"[_1] commented on [_2]:" 
+  arg1="<a href='%SCRIPTURL{"view" topic="%USERSWEB%.%WIKINAME%"}%'>%GETTOPICTITLE{"%USERSWEB%.%WIKINAME%"}%</a>"
+  arg2="<a href='%SCRIPTURL{"view" topic="%WEB%.%TOPIC%"}%'>%GETTOPICTITLE{"%WEB%.%TOPIC%"}%</a>"
+}%
+<div>
+<blockquote>
+%TMPL:P{context="has_title" then="comments::notify::title::html"}%
+%TMPL:P{"comments::notify::text"}%
+</blockquote>
+</div>
+</p>
+<p>
+   <a href='%SCRIPTURL{"view"}%/%WEB%/%TOPIC%#comment%COMMENT_ID%'>
+    %TRANSLATE{"See [_1]" arg1="%SCRIPTURL{"view"}%/%WEB%/%TOPIC%#comment%COMMENT_ID%"}%
+  </a>
+</p>
+<p>
+   <a href='%SCRIPTURL{"rest"}%/MetaCommentPlugin/unsubscribe?topic=%WEB%.%TOPIC%'>%TRANSLATE{"Unsubscribe from notifications"}%</a>
+</p>
+%TMPL:P{"comments::notify::closing::html"}%
+%TMPL:END%
+
+%TMPL:DEF{"comments::notify::title::html"}%<h2>%TRANSLATE{"There is a new comment on '[_1]'" arg1="%GETTOPICTITLE{"%WEB%.%TOPIC%"}%"}%</h2>%TMPL:END%
+%TMPL:DEF{"comments::notify::greeting::html"}%<b>%TRANSLATE{"Hello"}%</b>%TMPL:END%
+%TMPL:DEF{"comments::notify::closing::html"}%<p>%TRANSLATE{"Best Regards, Your Wiki Team."}%</p>%TMPL:END%
+
+%TMPL:DEF{"comments::notify::title::html"}%<b>%COMMENT_TITLE%</b><br />
+%TMPL:END%

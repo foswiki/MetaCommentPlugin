@@ -9,36 +9,39 @@
   margin:0 1em 0 0;
 }
 
+.cmtMoreActionsLabel,
+.cmtSubscribeButton,
 .cmtRssFeed {
   float:right;
   text-decoration:none;
   padding:2px 2px 0px 2px;
   margin:0 0 0 1em;
 }
+.cmtMoreActionsLabel:hover,
 .cmtDeleteAll:hover,
+.cmtSubscribeButton:hover,
 .cmtRssFeed:hover {
-  background-color: var(--color-hover-background, #eee);
   color: var(--color-hover-foreground, #222);
   text-decoration:none;
+}
+
+.cmtMoreActionsMenu {
+  float:right;
 }
 
 .foswikiMetaData .cmtAddComment {
   margin:1em 0em; /* 18px 0px */
 }
 
-.cmtCommentsContainer .cmtApproveAll, 
-.cmtCommentsContainer .cmtDeleteAll {
-  display:none;
-}
-
 .cmtCommentsIsModerator .cmtApproveAll, 
-.cmtCommentsIsModerator .cmtDeleteAll {
+.cmtCommentsIsModerator .cmtDeleteAll,
+.cmtCommentsIsModerator .cmtUnsubscribeAll {
   display:inline;
 }
 
 .cmtCommentContainer {
-  margin:1.3846em 0em;
-  padding:1.3076em 1.3846em;
+  margin:var(--margin, 1.3846em) 0em;
+  padding:0;
 }
 
 .cmtCommentContainer .cmtAddComment {
@@ -53,17 +56,37 @@
 .cmtMarkContainer {
   color:#7CD400;
 }
+.cmtMark {
+  margin-left:0.1em;
+}
+.cmtSep {
+  margin:0 0.5em;
+}
+.cmtComments .jqLikeButton {
+  margin:0;
+}
+.cmtComments .jqDislikeButton {
+  margin-left:0.5em;
+}
+.cmtComments .cmtReply,
+.cmtComments .cmtReply:hover {
+  margin:calc(var(--margin, 1em) * 0.5) 0 0 0;
+}
 .cmtSubComments .cmtCommentContainer {
-  margin:0px;
+  margin-bottom:0;
 }
 .cmtSubComments {
-  border-left:5px solid #ddd;
+  border-left:5px solid var(--color-border, #ddd);
   margin-top:1.3846em;
   margin-right:-1.3846em;
 }
 
+.cmtComments h5 {
+  color:var(--color-foreground, #333);
+}
+
 .cmtComments h3 {
-  margin:0em 0em 1.0588em;
+  margin:var(--margin, 1em) 0 calc(var(--margin, 1em) * 0.5) 0;
 }
 h3.cmtCommentNr {
   float:right;
@@ -90,7 +113,7 @@ h3.cmtCommentNr {
 }
 .cmtComment {
   position:relative;
-  padding-top:0.5em;
+  margin-left:4.5em;
 }
 .cmtComment:hover .cmtControls {
   opacity:1;
@@ -99,15 +122,11 @@ h3.cmtCommentNr {
   opacity:0;
 }
 a.cmtMark,
-a.cmtPermLink,
 .cmtAuthor a {
   text-decoration:none;
 }
 .cmtState_closed .cmtControls {
   display:none;
-}
-.cmtCommentText {
-  margin:0em 0em 1.3846em ;
 }
 .cmtComments input,
 .cmtComments textarea {
@@ -118,9 +137,9 @@ a.cmtPermLink,
   width:99%;
 }
 
-.cmtComment .imagePlain_left,
-.cmtComment .imageSimple_left {
-  margin:-0.5em 0.6923em 0.3077em 0em; 
+.cmtComment .natUserPhoto,
+.cmtComment .cmtUserPhoto {
+  margin:-0.5em 0.6923em 0 -4.5em; 
 }
 .cmtStyle_insidetab h2.cmtCounter,
 .cmtStyle_insidetab .cmtAddComment h2 {
