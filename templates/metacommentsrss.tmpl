@@ -1,6 +1,8 @@
 <noautolink>
 <?xml version="1.0" encoding="%CHARSET%" ?>
-<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom">
+%IF{"istopic 'Applications.RssViewTemplate'"
+  then="<?xml-stylesheet href=\"%PUBURLPATH%/Applications/RssViewTemplate/pretty-feed.xsl\" type=\"text/xsl\" ?>"
+}%<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
   <title>%ENCODE{"%URLPARAM{"title" default="%WIKITOOLNAME% - Comments on %GETTOPICTITLE{"%BASEWEB%.%BASETOPIC%"}%"}%" type="html"}%</title>
   <link>%SCRIPTURL{"view"}%/%BASEWEB%/%BASETOPIC%</link>
@@ -22,17 +24,12 @@
   %IF{"defined search" then="search=\"$percntURLPARAM{\"search\" encode=\"off\"}$percnt\""}%
   %IF{"$COMMENTMODERATION='on'" then="moderation=\"on\"" else="moderation=\"off\""}%
   format="<item>
-  <title>$percntGETTOPICTITLE{\"$web.$topic\"}$percnt</title>
-  <link>%SCRIPTURL{"view"}%/$web/$topic%IF{"$COMMENTFORMAT='insidetab'" then="?tab=comments"}%#comment$id</link>
-  <guid>%SCRIPTURL{"view"}%/$web/$topic%IF{"$COMMENTFORMAT='insidetab'" then="?tab=comments"}%#comment$id</guid>
+  <title>$titleOrText</title>
+  <link>%SCRIPTURL{"view"}%/$web/$topic#comment$id</link>
+  <guid>%SCRIPTURL{"view"}%/$web/$topic#comment$id</guid>
   <dc:creator>$percntGETTOPICTITLE{\"%USERSWEB%.$author\"}$percnt</dc:creator>
   <dc:date>$isodate</dc:date>
-  <description>
-    $percntENCODE{
-      \"$percntIF{\"'$title'!=''\" then=\"<h2>$title</h2>\"}$percnt $text\" 
-      type=\"html\"
-    }$percnt
-  </description>
+  <description> <![CDATA[ $text ]]></description>
 </item>"
   separator="$n"
 }%

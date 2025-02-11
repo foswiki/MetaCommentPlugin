@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1655478401" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1739284083" format="1.1" version="1"}%
 ---+!! MetaCommentPlugin
 %FORMFIELD{"Description"}%
 
@@ -177,8 +177,14 @@ This will activate !WebNotify again being off by default.
 
 This will deactivate !CommentNotify. This is on by default.
 
-Note that comment notifications are not send to oneself, that is the person that created a comment won't receive
-an email notifications about its own comment, unless the following flag is set:
+To exclude a list of users from !CommentNotify use
+
+<verbatim>   * Set COMMENTNOTIFYEXCLUDE = WikiName1, WikiName2, ... </verbatim>
+
+By default !AdminUser is excluded from notification.  Furthermore, comment
+notifications are not send to oneself by default.  A user that created a
+comment by him/herself won't receive an email notifications about it, unless
+the following flag is set:
 
 <verbatim>   * Set COMMENTNOTIFYSELF = on</verbatim>
 
@@ -255,6 +261,7 @@ When rendering a comment, the following variables can be used in the =format= st
    * $text: the actual comment
    * $summary: a short summary of the text (the first 100 characters)
    * $title: the title of the comment
+   * $titleOrText: renders the title or if not present the first 20 chars of the text
    * $subcomments: expands to the list of all comments that are a reply to the current one
    * $web: the web this comment is in
    * $topic: the topic this is a comment of
@@ -313,6 +320,7 @@ The format string can hold the following variables:
   * $web
   * $state
   * $title
+  * $titleOrText
   * $text
 
 ---++ RSS feeds
@@ -347,6 +355,11 @@ The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
 
 ---++ Change History
 %TABLE{columnwidths="7em" tablewidth="100%"}%
+|  03 Jan 2025: | 9.11 - new preference setting =COMMENTNOTIFYEXCLUDE=; \
+                         better user experience in comment dialog; \
+                         read parameter of a comment not properly normalized; \
+                         improved rss feed for comments;\
+                         new =$titleOrText= formatting string |
 |  27 Jan 2025: | 9.10 - reworked js and css structure |
 |  11 Jun 2024: | 9.00 - new macro METACOMMENT, reworked comment editor |
 |  29 Mar 2023: | 8.00 - new immediate notification system; reworked comment preference settings |
@@ -419,4 +432,4 @@ The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
 %META:FIELD{name="License" title="License" value="[[http://www.gnu.org/licenses/gpl.html][GPL (Gnu General Public License)]]"}%
 %META:FIELD{name="Home" title="Home" value="https://foswiki.org/Extensions/MetaCommentPlugin"}%
 %META:FIELD{name="Support" title="Support" value="Foswiki:Support/MetaCommentPlugin"}%
-%META:FILEATTACHMENT{name="MetaCommentSnap1.jpeg" attachment="MetaCommentSnap1.jpeg" attr="h" comment="" date="1574759516" path="MetaCommentSnap1.jpeg" size="51144" user="ProjectContributor" version="1"}%
+%META:FILEATTACHMENT{name="MetaCommentSnap1.jpeg" attachment="MetaCommentSnap1.jpeg" attr="h" comment="" date="1739284083" path="MetaCommentSnap1.jpeg" size="51144" user="ProjectContributor" version="1"}%

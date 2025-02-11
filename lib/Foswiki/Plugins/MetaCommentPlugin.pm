@@ -20,7 +20,7 @@ use Foswiki::Plugins ();
 use Foswiki::Contrib::JsonRpcContrib ();
 use Foswiki::Plugins::JQueryPlugin ();
 
-our $VERSION = '9.10';
+our $VERSION = '9.20';
 our $RELEASE = '%$RELEASE%';
 our $SHORTDESCRIPTION = 'An easy to use comment system';
 our $LICENSECODE = '%$LICENSECODE%';

@@ -3,6 +3,7 @@
 }%
 %TMPL:INCLUDE{"MetaCommentPluginNotify"}%
 %TMPL:INCLUDE{"edittoolbar"}%
+%TMPL:INCLUDE{"editbase"}%
 
 %TMPL:DEF{"icon::comment::name"}%fa-comment%TMPL:END%
 %TMPL:DEF{"icon::comment"}%%JQICON{"%TMPL:P{"icon::comment::name"}%"}%%TMPL:END%
@@ -43,8 +44,22 @@
   then="$percntTMPL:P{\"comments::add::default\"}$percnt"
 }%</div>
 </noautolink>%TMPL:END%
-%TMPL:DEF{"textarea::spellcheck"}%%NATEDIT_SPELLCHECK{default="true"}%%TMPL:END%
-%TMPL:DEF{"textarea::metadata"}%data-show-toolbar='true' data-show-fullscreen='true' data-toolbar-template='metacomments' data-toolbar='comments::toolbar' data-block-unload='false' data-purify-input='true' data-codemirror='{"lineWrapping":true}'%TMPL:END%
+%TMPL:DEF{"textarea::metadata"}%%TMPL:P{"natedit::options"}%%TMPL:END%
+
+%TMPL:DEF{"natedit::options"}%%TMPL:PREV% data-show-toolbar='true' data-show-fullscreen='true' data-toolbar-template='metacomments' data-toolbar='comments::toolbar' data-block-unload='false'%TMPL:END%
+%TMPL:DEF{"natedit::engine"}%data-engine="%IF{"$'URLPARAM{nowysiwyg}'='on'"
+  then="CodemirrorEngine"
+  else="%NATEDIT_COMMENT_ENGINE{
+          default="%NATEDIT_ENGINE{
+                      default="%IF{
+                          "'%NOWYSIWYG{default="%URLPARAM{"nowysiwyg" default="off"}%"}%'='on'" 
+                          then="CodemirrorEngine" 
+                          else="TinyMCEEngine"
+                      }%"
+                    }%"
+        }%"
+}%"%TMPL:END%
+%TMPL:DEF{"natedit::codemirror::linewrapping"}%true%TMPL:END%
 
 %TMPL:DEF{"comments::toolbar"}%
 %TMPL:P{"edittoolbar::start"}%
@@ -78,9 +93,9 @@
    comments::topbar - renders the number of comments
 }%
 %TMPL:DEF{"comments::topbar"}%%{}%
-%TMPL:P{"comments::topbar::more"}%<!-- -->
+%TMPL:P{context="authenticated" then="comments::topbar::more"}%<!-- -->
 %TMPL:P{"comments::topbar::rss"}%<!-- -->
-%TMPL:P{"comments::topbar::mail"}%<!-- -->
+%TMPL:P{context="authenticated" then="comments::topbar::mail"}%<!-- -->
 %TMPL:P{"comments::topbar::title"}%<!-- -->
 %{}%%TMPL:END%
 
@@ -536,12 +551,11 @@
 %{}%%TMPL:END%
 
 %TMPL:DEF{"comments::updater::titlestep"}%<div class="foswikiFormStep cmtTitleStep">
-    <input type="text" size="60" name="title" class="foswikiInputField" value="%METACOMMENT{"%URLPARAM{"commentId" encode="safe"}%" format="$title" encode="entity"}%" />
-    <label for="title"><b>%TRANSLATE{"Title"}%</b></label>
+    <input type="text" size="60" name="title" class="foswikiInputField" value="%METACOMMENT{"%URLPARAM{"commentId" encode="safe"}%" format="$title" encode="entity"}%" placeholder="%TRANSLATE{"Title/Subject"}%" />
 </div>%TMPL:END%
 
 %TMPL:DEF{"comments::updater::textstep"}%<div class="foswikiFormStep">
-  <textarea class="foswikiTextarea natedit" wrap="virtual" name="text"  style="width:100%;height:400px" autofocus="on" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="%TMPL:P{"textarea::spellcheck"}%" %TMPL:P{"textarea::metadata"}%>%METACOMMENT{"%URLPARAM{"commentId" encode="safe"}%" format="$text" encode="entity"}%</textarea>
+  <textarea class="foswikiTextarea natedit" wrap="virtual" name="text"  style="width:100%;height:400px" autofocus="on" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="%TMPL:P{"textarea::spellcheck"}%" %TMPL:P{"textarea::metadata"}% placeholder="%MAKETEXT{"Enter your comment"}%">%METACOMMENT{"%URLPARAM{"commentId" encode="safe"}%" format="$text" encode="entity"}%</textarea>
 </div>%TMPL:END%
 
 %TMPL:DEF{"comments::updater::end"}%%TMPL:P{"comments::subscribe"}%<!-- -->
@@ -657,13 +671,12 @@
 
 %{ ################################################################################ }%
 %TMPL:DEF{"comments::titlestep"}%<div class="foswikiFormStep">
-  <input class="foswikiInputField" type="text" name="title" size="60" %IF{"not context canComment" then="disabled='disabled'"}% />
-  <label for="title"><b>%TRANSLATE{"Title"}%</b></label>
+  <input class="foswikiInputField" type="text" name="title" size="60" %IF{"not context canComment" then="disabled='disabled'"}% placeholder="%TRANSLATE{"Title/Subject"}%" />
 </div>%TMPL:END%
 
 %{ ################################################################################ }%
 %TMPL:DEF{"comments::textstep"}%<div class="foswikiFormStep">
-  <textarea class="foswikiTextarea natedit" wrap="virtual" name="text"  rows="%ROWS%" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="%TMPL:P{"textarea::spellcheck"}%" %TMPL:P{"textarea::metadata"}% %IF{"not context canComment" then="disabled='disabled'"}% %IF{"'%PLACEHOLDER%'!=''" then="placeholder='%PLACEHOLDER%'"}%></textarea>
+  <textarea class="foswikiTextarea natedit" wrap="virtual" name="text"  rows="%ROWS%" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="%TMPL:P{"textarea::spellcheck"}%" %TMPL:P{"textarea::metadata"}% %IF{"not context canComment" then="disabled='disabled'"}% placeholder="%IF{"'%PLACEHOLDER%'!=''" then="%PLACEHOLDER%" else="%MAKETEXT{"Enter your comment"}%"}%"></textarea>
 </div>%TMPL:END%
 
 %{ ################################################################################ }%
