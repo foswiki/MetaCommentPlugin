@@ -9,64 +9,59 @@ msgstr "ghItlhHom"
 msgid "%1 commented on %2:"
 msgstr "ghItlhHom"
 
-#: templates/metacomments.tmpl:186
+#: templates/metacomments.tmpl:653
 #, fuzzy
 msgid "Add a comment"
-msgstr "tep"
-
-#: templates/metacomments.tmpl:684
-#, fuzzy
-msgid "Add comment"
 msgstr "tep"
 
 #: templates/metacomments.tmpl:141
 msgid "Approve all"
 msgstr ""
 
-#: templates/metacomments.tmpl:469
+#: templates/metacomments.tmpl:472
 #, fuzzy
 msgid "Approve all comments?"
 msgstr "ghItlhHom"
 
-#: templates/metacomments.tmpl:515
+#: templates/metacomments.tmpl:518
 msgid "Approve comment?"
 msgstr ""
 
-#: templates/metacomments.tmpl:337
+#: templates/metacomments.tmpl:340
 msgid "Approve this comment"
 msgstr ""
 
-#: templates/metacomments.tmpl:470
+#: templates/metacomments.tmpl:473
 #, fuzzy
 msgid "Approving all comments"
 msgstr "ghItlhHom"
 
-#: templates/metacomments.tmpl:516
+#: templates/metacomments.tmpl:519
 #, fuzzy
 msgid "Approving comment"
 msgstr "ghItlhHom"
 
-#: templates/metacomments.tmpl:474
+#: templates/metacomments.tmpl:477
 msgid "Are you sure that you want to approve all comments?"
 msgstr ""
 
-#: templates/metacomments.tmpl:522
+#: templates/metacomments.tmpl:525
 msgid "Are you sure that you want to approve comment %1 posted by %2 on %3?"
 msgstr ""
 
-#: templates/metacomments.tmpl:459
+#: templates/metacomments.tmpl:462
 msgid "Are you sure that you want to delete all comments ?"
 msgstr ""
 
-#: templates/metacomments.tmpl:504
+#: templates/metacomments.tmpl:507
 msgid "Are you sure that you want to delete all subscriptions?"
 msgstr ""
 
-#: templates/metacomments.tmpl:440
+#: templates/metacomments.tmpl:443
 msgid "Are you sure that you want to delete comment %1 posted by %2 on %3?"
 msgstr ""
 
-#: templates/metacomments.tmpl:489
+#: templates/metacomments.tmpl:492
 msgid "Are you sure that you want to mark all comments as read?"
 msgstr ""
 
@@ -79,15 +74,15 @@ msgstr ""
 msgid "Bold"
 msgstr ""
 
-#: templates/metacomments.tmpl:563 templates/metacomments.tmpl:588
+#: templates/metacomments.tmpl:566 templates/metacomments.tmpl:591
 msgid "Cancel"
 msgstr "qIl"
 
-#: templates/metacomments.tmpl:281 templates/metacomments.tmpl:283
+#: templates/metacomments.tmpl:284 templates/metacomments.tmpl:286
 msgid "Click to mark as read"
 msgstr ""
 
-#: templates/metacomments.tmpl:349
+#: templates/metacomments.tmpl:352
 msgid "Comment on this thread"
 msgstr ""
 
@@ -101,52 +96,52 @@ msgstr "ghItlhHom"
 msgid "Delete all comments"
 msgstr "tep %1 polHa&&#39;"
 
-#: templates/metacomments.tmpl:454
+#: templates/metacomments.tmpl:457
 #, fuzzy
 msgid "Delete all comments?"
 msgstr "tep %1 polHa&&#39;"
 
-#: templates/metacomments.tmpl:499
+#: templates/metacomments.tmpl:502
 #, fuzzy
 msgid "Delete all subscriptions?"
 msgstr "tep %1 polHa&&#39;"
 
-#: templates/metacomments.tmpl:433
+#: templates/metacomments.tmpl:436
 #, fuzzy
 msgid "Delete comment?"
 msgstr "tep %1 polHa&&#39;"
 
-#: templates/metacomments.tmpl:341
+#: templates/metacomments.tmpl:344
 #, fuzzy
 msgid "Delete this comment"
 msgstr "tep %1 polHa&&#39;"
 
-#: templates/metacomments.tmpl:455
+#: templates/metacomments.tmpl:458
 #, fuzzy
 msgid "Deleting all comments"
 msgstr "tep %1 polHa&&#39;"
 
-#: templates/metacomments.tmpl:500
+#: templates/metacomments.tmpl:503
 #, fuzzy
 msgid "Deleting all subscriptions"
 msgstr "tep %1 polHa&&#39;"
 
-#: templates/metacomments.tmpl:434
+#: templates/metacomments.tmpl:437
 #, fuzzy
 msgid "Deleting comment"
 msgstr "tep %1 polHa&&#39;"
 
-#: templates/metacomments.tmpl:536
+#: templates/metacomments.tmpl:539
 #, fuzzy
 msgid "Edit comment"
 msgstr "ghItlhHom"
 
-#: templates/metacomments.tmpl:333
+#: templates/metacomments.tmpl:336
 #, fuzzy
 msgid "Edit this comment"
 msgstr "ghItlhvam choH"
 
-#: templates/metacomments.tmpl:558 templates/metacomments.tmpl:679
+#: templates/metacomments.tmpl:157
 #, fuzzy
 msgid "Enter your comment"
 msgstr "ghItlhHom"
@@ -172,12 +167,12 @@ msgstr ""
 msgid "Italic"
 msgstr ""
 
-#: templates/metacomments.tmpl:330
+#: templates/metacomments.tmpl:333
 #, fuzzy
 msgid "Link to this comment"
 msgstr "ghItlhvam choH"
 
-#: templates/metacomments.tmpl:484
+#: templates/metacomments.tmpl:487
 #, fuzzy
 msgid "Mark all comments?"
 msgstr "ghItlhHom"
@@ -186,7 +181,7 @@ msgstr "ghItlhHom"
 msgid "Mark as read"
 msgstr ""
 
-#: templates/metacomments.tmpl:485
+#: templates/metacomments.tmpl:488
 #, fuzzy
 msgid "Marking all comments"
 msgstr "ghItlhHom"
@@ -199,17 +194,17 @@ msgstr ""
 msgid "More character formats"
 msgstr ""
 
-#: templates/metacomments.tmpl:666
+#: templates/metacomments.tmpl:668
 msgid "Name"
 msgstr ""
 
-#: templates/metacomments.tmpl:447 templates/metacomments.tmpl:462
-#: templates/metacomments.tmpl:477 templates/metacomments.tmpl:492
-#: templates/metacomments.tmpl:507 templates/metacomments.tmpl:529
+#: templates/metacomments.tmpl:450 templates/metacomments.tmpl:465
+#: templates/metacomments.tmpl:480 templates/metacomments.tmpl:495
+#: templates/metacomments.tmpl:510 templates/metacomments.tmpl:532
 msgid "No, thanks"
 msgstr ""
 
-#: templates/metacomments.tmpl:691
+#: templates/metacomments.tmpl:693
 msgid "Notify me of followup comments"
 msgstr ""
 
@@ -240,11 +235,11 @@ msgstr ""
 msgid "Remove Format"
 msgstr ""
 
-#: templates/metacomments.tmpl:345
+#: templates/metacomments.tmpl:348
 msgid "Reply"
 msgstr ""
 
-#: templates/metacomments.tmpl:569
+#: templates/metacomments.tmpl:572
 msgid "Reply on comment"
 msgstr ""
 
@@ -257,11 +252,12 @@ msgstr ""
 msgid "Sorry, commenting not allowed."
 msgstr ""
 
-#: templates/metacomments.tmpl:562 templates/metacomments.tmpl:587
+#: templates/metacomments.tmpl:565 templates/metacomments.tmpl:590
+#: templates/metacomments.tmpl:686
 msgid "Submit"
 msgstr "ngeH"
 
-#: templates/metacomments.tmpl:576 templates/metacomments.tmpl:654
+#: templates/metacomments.tmpl:579 templates/metacomments.tmpl:656
 #, fuzzy
 msgid "Submitting comment"
 msgstr "ghItlhvam choH"
@@ -275,7 +271,7 @@ msgstr ""
 msgid "There is a new comment on '%1'"
 msgstr ""
 
-#: templates/metacomments.tmpl:554 templates/metacomments.tmpl:674
+#: templates/metacomments.tmpl:156
 msgid "Title/Subject"
 msgstr ""
 
@@ -299,34 +295,34 @@ msgstr ""
 msgid "Unsubscribe: %1"
 msgstr ""
 
-#: templates/metacomments.tmpl:546
+#: templates/metacomments.tmpl:549
 #, fuzzy
 msgid "Updating comment"
 msgstr "ghItlhHom"
 
-#: templates/metacomments.tmpl:528
+#: templates/metacomments.tmpl:531
 msgid "Yes, approve"
 msgstr ""
 
-#: templates/metacomments.tmpl:476
+#: templates/metacomments.tmpl:479
 msgid "Yes, approve all"
 msgstr ""
 
-#: templates/metacomments.tmpl:446
+#: templates/metacomments.tmpl:449
 #, fuzzy
 msgid "Yes, delete"
 msgstr "(<nop>polHa&&#39;)"
 
-#: templates/metacomments.tmpl:461
+#: templates/metacomments.tmpl:464
 #, fuzzy
 msgid "Yes, delete all"
 msgstr "(<nop>polHa&&#39;)"
 
-#: templates/metacomments.tmpl:491
+#: templates/metacomments.tmpl:494
 msgid "Yes, mark all"
 msgstr ""
 
-#: templates/metacomments.tmpl:506
+#: templates/metacomments.tmpl:509
 msgid "Yes, unsubscribe all"
 msgstr ""
 
@@ -339,31 +335,31 @@ msgstr ""
 msgid "You unsubscribed from this thread."
 msgstr ""
 
-#: templates/metacomments.tmpl:277
+#: templates/metacomments.tmpl:280
 msgid "about now"
 msgstr ""
 
-#: templates/metacomments.tmpl:201
+#: templates/metacomments.tmpl:204
 msgid "linear"
 msgstr ""
 
-#: templates/metacomments.tmpl:317
+#: templates/metacomments.tmpl:320
 msgid "needs approval"
 msgstr ""
 
-#: templates/metacomments.tmpl:281
+#: templates/metacomments.tmpl:284
 msgid "new"
 msgstr "chu&&#39;"
 
-#: templates/metacomments.tmpl:201
+#: templates/metacomments.tmpl:204
 msgid "reverse"
 msgstr ""
 
-#: templates/metacomments.tmpl:201
+#: templates/metacomments.tmpl:204
 msgid "threaded"
 msgstr ""
 
-#: templates/metacomments.tmpl:283
+#: templates/metacomments.tmpl:286
 #, fuzzy
 msgid "updated"
 msgstr "chu&&#39;moH"
@@ -371,6 +367,10 @@ msgstr "chu&&#39;moH"
 # somewhere
 #~ msgid "Title"
 #~ msgstr "Titel"
+
+#, fuzzy
+#~ msgid "Add comment"
+#~ msgstr "tep"
 
 #, fuzzy
 #~ msgid "Link to comment %1"

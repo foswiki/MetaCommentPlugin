@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1739284083" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1739469782" format="1.1" version="1"}%
 ---+!! MetaCommentPlugin
 %FORMFIELD{"Description"}%
 
@@ -355,7 +355,8 @@ The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
 
 ---++ Change History
 %TABLE{columnwidths="7em" tablewidth="100%"}%
-|  03 Jan 2025: | 9.11 - new preference setting =COMMENTNOTIFYEXCLUDE=; \
+|  13 Feb 2025: | 9.21 - better comment dialog |
+|  03 Jan 2025: | 9.20 - new preference setting =COMMENTNOTIFYEXCLUDE=; \
                          better user experience in comment dialog; \
                          read parameter of a comment not properly normalized; \
                          improved rss feed for comments;\
@@ -432,4 +433,4 @@ The parameters =THEWEB=, =WHERE= and =LIMIT= are optional where
 %META:FIELD{name="License" title="License" value="[[http://www.gnu.org/licenses/gpl.html][GPL (Gnu General Public License)]]"}%
 %META:FIELD{name="Home" title="Home" value="https://foswiki.org/Extensions/MetaCommentPlugin"}%
 %META:FIELD{name="Support" title="Support" value="Foswiki:Support/MetaCommentPlugin"}%
-%META:FILEATTACHMENT{name="MetaCommentSnap1.jpeg" attachment="MetaCommentSnap1.jpeg" attr="h" comment="" date="1739284083" path="MetaCommentSnap1.jpeg" size="51144" user="ProjectContributor" version="1"}%
+%META:FILEATTACHMENT{name="MetaCommentSnap1.jpeg" attachment="MetaCommentSnap1.jpeg" attr="h" comment="" date="1739469782" path="MetaCommentSnap1.jpeg" size="51144" user="ProjectContributor" version="1"}%

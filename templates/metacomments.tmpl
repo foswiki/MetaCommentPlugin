@@ -72,8 +72,8 @@
 %TMPL:END%
 
 %TMPL:DEF{"edittoolbar::insertbuttons"}%<div class="ui-natedit-buttons ui-natedit-insert-object-buttons">
-  <a href="#" title="%MAKETEXT{"Insert a link"}%" data-dialog="insertlink" data-okay-handler="handleInsertLink" data-open-handler="initLinkDialog" data-opts-handler="parseLink"><i class="fa fa-link"></i></a>
-  <a href="#" title="%MAKETEXT{"Insert Image"}%" data-dialog="insertimage" data-okay-handler="handleInsertImage" data-open-handler="initImageDialog" data-opts-handler="parseImageSelection"><i class="fa fa-picture-o"></i></a>
+  <a href="#" title="%TRANSLATE{"Insert a link"}%" data-dialog="insertlink" data-okay-handler="handleInsertLink" data-open-handler="initLinkDialog" data-opts-handler="parseLink"><i class="fa fa-link"></i></a>
+  <a href="#" title="%TRANSLATE{"Insert Image"}%" data-dialog="insertimage" data-okay-handler="handleInsertImage" data-open-handler="initImageDialog" data-opts-handler="parseImageSelection"><i class="fa fa-picture-o"></i></a>
 </div>%TMPL:END%
 
 %TMPL:DEF{"edittoolbar::typobuttons"}%<div class="ui-natedit-buttons ui-natedit-typo-buttons">
@@ -143,15 +143,18 @@
 %TMPL:DEF{"comments::menu::unsubscribeall"}%<li><a href='#' data-expand='comments::confirmunsubscribeall' class='cmtUnsubscribeAll'>%TMPL:P{"icon::unsubscribe"}% %TRANSLATE{"Unsubscribe all"}%</a></li>%TMPL:END%
 
 %{ ################################################################################ 
-   comments::add::denied - display a message why somebody can't comment
+   comments::placeholder::... messages
 }%
-%TMPL:DEF{"comments::add::denied"}%%IF{"context authenticated"
+%TMPL:DEF{"comments::placeholder::denied"}%%IF{"context authenticated"
   then="%TRANSLATE{"Sorry, commenting not allowed."}%"
   else="%IF{"context registration_enabled"
     then="%TRANSLATE{"Please log in or register to comment."}%"
     else="%TRANSLATE{"Please log in to comment."}%"
   }%"
 }%%TMPL:END%
+
+%TMPL:DEF{"comments::placeholder::title"}%%TRANSLATE{"Title"}%%TMPL:END%
+%TMPL:DEF{"comments::placeholder::textarea"}%%TRANSLATE{"Comment"}%%TMPL:END%
 
 %{ ################################################################################ 
    comments::add::default - constructing the form to add a new comment
@@ -165,7 +168,7 @@
 %TMPL:P{"comments::moresteps"}%%{}%
 %TMPL:P{"comments::textstep" 
   ROWS="10" 
-  PLACEHOLDER="%IF{"not context canComment" then="$percntTMPL:P{\"comments::add::denied\"}$percnt"}%"
+  PLACEHOLDER="%TMPL:P{context="canComment" then="comments::placeholder::textarea" else="comments::placeholder::denied" }%"
 }%%{}%
 %TMPL:P{"comments::buttonstep"}%%{}%
 %TMPL:P{"comments::formend"}%%{}%
@@ -183,7 +186,7 @@
 %TMPL:P{"comments::moresteps"}%%{}%
 %TMPL:P{"comments::textstep" 
   ROWS="10" 
-  PLACEHOLDER="%IF{"not context canComment" then="$percntTMPL:P{\"comments::add::denied\"}$percnt" else="%TRANSLATE{"Add a comment"}%"}%"
+  PLACEHOLDER="%TMPL:P{context="canComment" then="comments::placeholder::textarea" else="comments::placeholder::denied" }%"
 }%%{}%
 %TMPL:P{"comments::buttonstep"}%%{}%
 %TMPL:P{"comments::formend"}%%{}%
@@ -551,11 +554,11 @@
 %{}%%TMPL:END%
 
 %TMPL:DEF{"comments::updater::titlestep"}%<div class="foswikiFormStep cmtTitleStep">
-    <input type="text" size="60" name="title" class="foswikiInputField" value="%METACOMMENT{"%URLPARAM{"commentId" encode="safe"}%" format="$title" encode="entity"}%" placeholder="%TRANSLATE{"Title/Subject"}%" />
+    <input type="text" size="60" name="title" class="foswikiInputField" value="%METACOMMENT{"%URLPARAM{"commentId" encode="safe"}%" format="$title" encode="entity"}%" placeholder="%TMPL:P{"comments::placeholder::title"}%" />
 </div>%TMPL:END%
 
 %TMPL:DEF{"comments::updater::textstep"}%<div class="foswikiFormStep">
-  <textarea class="foswikiTextarea natedit" wrap="virtual" name="text"  style="width:100%;height:400px" autofocus="on" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="%TMPL:P{"textarea::spellcheck"}%" %TMPL:P{"textarea::metadata"}% placeholder="%MAKETEXT{"Enter your comment"}%">%METACOMMENT{"%URLPARAM{"commentId" encode="safe"}%" format="$text" encode="entity"}%</textarea>
+  <textarea class="foswikiTextarea natedit" wrap="virtual" name="text"  style="width:100%;height:400px" autofocus="on" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="%TMPL:P{"textarea::spellcheck"}%" %TMPL:P{"textarea::metadata"}% placeholder="%TMPL::P{"comments::placeholder::textarea"}%">%METACOMMENT{"%URLPARAM{"commentId" encode="safe"}%" format="$text" encode="entity"}%</textarea>
 </div>%TMPL:END%
 
 %TMPL:DEF{"comments::updater::end"}%%TMPL:P{"comments::subscribe"}%<!-- -->
@@ -647,9 +650,8 @@
 }%%TMPL:END%
 
 %{ ################################################################################ }%
-%TMPL:DEF{"comments::title"}%%TMPL:END%
+%TMPL:DEF{"comments::title"}%%TRANSLATE{"Add a comment"}%%TMPL:END%
 
-%{ ################################################################################ }%
 %TMPL:DEF{"comments::formstart"}%<h2 id='addcomment' class='cmtAddCommentTitle'>%TMPL:P{"comments::title"}%</h2>
 <form class="cmtJsonRpcForm naviBlocker" name="addCommentForm" action="%SCRIPTURLPATH{"jsonrpc"}%/MetaCommentPlugin/saveComment" method="post" data-message="%TRANSLATE{"Submitting comment"}%">
 <input type="hidden" name="topic" value="%TMPL:P{"comments::topic"}%" />
@@ -671,17 +673,17 @@
 
 %{ ################################################################################ }%
 %TMPL:DEF{"comments::titlestep"}%<div class="foswikiFormStep">
-  <input class="foswikiInputField" type="text" name="title" size="60" %IF{"not context canComment" then="disabled='disabled'"}% placeholder="%TRANSLATE{"Title/Subject"}%" />
+  <input class="foswikiInputField" type="text" name="title" size="60" %IF{"not context canComment" then="disabled='disabled'"}% placeholder="%TMPL:P{"comments::placeholder::title"}%" />
 </div>%TMPL:END%
 
 %{ ################################################################################ }%
 %TMPL:DEF{"comments::textstep"}%<div class="foswikiFormStep">
-  <textarea class="foswikiTextarea natedit" wrap="virtual" name="text"  rows="%ROWS%" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="%TMPL:P{"textarea::spellcheck"}%" %TMPL:P{"textarea::metadata"}% %IF{"not context canComment" then="disabled='disabled'"}% placeholder="%IF{"'%PLACEHOLDER%'!=''" then="%PLACEHOLDER%" else="%MAKETEXT{"Enter your comment"}%"}%"></textarea>
+  <textarea class="foswikiTextarea natedit" wrap="virtual" name="text"  rows="%ROWS%" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="%TMPL:P{"textarea::spellcheck"}%" %TMPL:P{"textarea::metadata"}% %IF{"not context canComment" then="disabled='disabled'"}% placeholder="%PLACEHOLDER%"></textarea>
 </div>%TMPL:END%
 
 %{ ################################################################################ }%
 %TMPL:DEF{"comments::buttonstep"}%<div class="foswikiFormStep foswikiFormLast foswikiFormButtons">
-  %BUTTON{"%TRANSLATE{"Add comment"}%" icon="%TMPL:P{"icon::comment::name"}%" type="save" class="%IF{"not context canComment" then="jqButtonDisabled"}%"}%
+  %BUTTON{"%TRANSLATE{"Submit"}%" icon="%TMPL:P{"icon::comment::name"}%" type="save" class="%IF{"not context canComment" then="jqButtonDisabled"}%"}%
   %TMPL:P{"comments::subscribe"}%<!-- -->
 </div>%TMPL:END%
 
