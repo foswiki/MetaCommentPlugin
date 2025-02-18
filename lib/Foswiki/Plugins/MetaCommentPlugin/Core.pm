@@ -128,11 +128,12 @@ sub METACOMMENT {
   $result =~ s/\$read\b/$comment->{read}/g;
   $result =~ s/\$ref\b/$comment->{ref}/g;
   $result =~ s/\$state\b/$comment->{state}/g;
-  $result =~ s/\$text\b/$comment->{text}/g;
   $result =~ s/\$title\b/$comment->{title}/g;
   $result =~ s/\$titleOrText\b/$titleOrText/g;
 
   $result = Foswiki::Func::decodeFormatTokens($result) if $result =~ /%/;
+
+  $result =~ s/\$text\b/$comment->{text}/g;
 
   my $encode = $params->{encode} // '';
   $result = Foswiki::entityEncode($result) if $encode eq 'entity';
@@ -969,7 +970,8 @@ sub METACOMMENTS {
   } else {
     @topComments = values %$comments;
   }
-  my @result = $this->formatComments(\@topComments, $params);
+  my %seen = ();
+  my @result = $this->formatComments(\@topComments, $params, undef, \%seen);
 
   my $result = expandVariables(
     $params->{header},
@@ -991,6 +993,7 @@ sub METACOMMENTS {
   $result =~ s/\$n/\n/g;
   $result =~ s/\$dollar/\$/g;
   $result =~ s/\\\\/\\/g;
+  $result =~ s/\0(.*?)\0/$seen{$1}/g;
 
   return $result;
 }
@@ -1176,6 +1179,7 @@ sub formatComments {
   my $count = scalar(@sortedComments);
   foreach my $comment (@sortedComments) {
     next if $seen->{$comment->{name}};
+    $seen->{$comment->{name}} = $comment->{text};
 
     $index++;
     next if $params->{skip} && $index <= $params->{skip};
@@ -1242,7 +1246,7 @@ sub formatComments {
       id => ($comment->{name} || 0),
       index => $indexString,
       ref => ($comment->{ref} || ''),
-      text => $text,
+      text => "\0$comment->{name}\0",
       title => $comment->{title},
       titleOrText => $this->titleOrText($comment->{title}, $comment->{text}, 20),
       subcomments => $subComments,
@@ -1292,11 +1296,6 @@ sub expandVariables {
     $val = '' unless defined $val;
     $text =~ s/\$$key\b/$val/g;
   }
-
-  # $text =~ s/\$perce?nt/\%/g;
-  # $text =~ s/\$nop//g;
-  # $text =~ s/\$n/\n/g;
-  # $text =~ s/\$dollar/\$/g;
 
   return $text;
 }
